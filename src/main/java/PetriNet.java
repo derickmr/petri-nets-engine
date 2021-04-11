@@ -16,6 +16,8 @@ public class PetriNet {
     public String toString() {
         StringBuilder result = new StringBuilder();
 
+        result.append("------------------------------\n");
+
         result.append("Lugar            ");
         for (Place place : places) {
             result.append(place.toString()).append(" ");
@@ -36,7 +38,7 @@ public class PetriNet {
             result.append(transition.isEnabledString()).append(" ");
         }
 
-        result.append("\n");
+        result.append("\n------------------------------\n");
 
         return result.toString();
 
