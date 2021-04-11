@@ -1,7 +1,10 @@
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@XmlRootElement(name="subnet")
 public class PetriNet {
 
     List<Place> places;
@@ -43,7 +46,7 @@ public class PetriNet {
         return result.toString();
 
     }
-
+    @XmlElement(name="place")
     public List<Place> getPlaces() {
         return places;
     }
@@ -51,7 +54,7 @@ public class PetriNet {
     public void setPlaces(List<Place> places) {
         this.places = places;
     }
-
+    @XmlElement(name="transition")
     public List<Transition> getTransitions() {
         return transitions;
     }
