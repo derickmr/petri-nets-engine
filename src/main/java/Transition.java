@@ -20,4 +20,13 @@ public class Transition {
     public void setOutputArcs(List<Arc> outputArcs) {
         this.outputArcs = outputArcs;
     }
+
+    public boolean isEnabled(){
+        //TODO
+        return true;
+    }
+
+    public String isEnabledString(){
+        return isEnabled() ? "S" : "N";
+    }
 }
