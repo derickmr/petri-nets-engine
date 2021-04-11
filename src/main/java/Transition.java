@@ -30,9 +30,13 @@ public class Transition {
         this.outputArcs = outputArcs;
     }
 
+    public void fire(){
+        inputArcs.forEach(Arc::fireInputArc);
+        outputArcs.forEach(Arc::fireOutputArc);
+    }
+
     public boolean isEnabled(){
-        //TODO
-        return true;
+        return inputArcs.stream().allMatch(Arc::canFire);
     }
 
     public String isEnabledString(){

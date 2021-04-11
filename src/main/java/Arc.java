@@ -29,11 +29,20 @@ public class Arc {
     }
 
     public boolean canFire() {
-        //TODO
-        return true;
+        return place.getTokens().size() >= weight;
     }
 
-    public void fire() {
-        //TODO
+    public void fireInputArc() {
+        for (int i = 0; i < weight; i++) {
+            place.getTokens().pop();
+        }
     }
+
+    public void fireOutputArc() {
+        for (int i = 0; i < weight; i++) {
+            Token token = new Token();
+            place.getTokens().push(token);
+        }
+    }
+
 }

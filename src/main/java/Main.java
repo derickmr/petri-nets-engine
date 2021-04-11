@@ -16,9 +16,7 @@ public class Main {
         Token token2 = new Token();
 
         Transition transition = new Transition();
-        Transition transition2 = new Transition();
         transition.setId("1");
-        transition2.setId("2");
 
         Stack<Token> tokens = new Stack<>();
         tokens.push(token1);
@@ -28,11 +26,27 @@ public class Main {
         place.setTokens(tokens);
 
         place2.setId("2");
-        place2.setTokens(tokens);
+        place2.setTokens(new Stack<>());
+
+        Arc inputArc = new Arc();
+        inputArc.setTransition(transition);
+        inputArc.setPlace(place);
+        inputArc.setWeight(1);
+        transition.setInputArcs(Arrays.asList(inputArc));
+
+        Arc outputArc = new Arc();
+        outputArc.setTransition(transition);
+        outputArc.setPlace(place2);
+        outputArc.setWeight(4);
+        transition.setOutputArcs(Arrays.asList(outputArc));
 
         petriNet.setPlaces(Arrays.asList(place, place2));
-        petriNet.setTransitions(Arrays.asList(transition, transition2));
+        petriNet.setTransitions(Arrays.asList(transition));
 
+        System.out.println(petriNet.toString());
+        petriNet.run();
+        System.out.println(petriNet.toString());
+        petriNet.run();
         System.out.println(petriNet.toString());
 
         /* Mock ends */

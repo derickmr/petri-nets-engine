@@ -1,4 +1,6 @@
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class PetriNet {
 
@@ -6,7 +8,8 @@ public class PetriNet {
     List<Transition> transitions;
 
     public void run() {
-        //TODO
+        List<Transition> executableTransitions = transitions.stream().filter(Transition::isEnabled).collect(Collectors.toList());
+        executableTransitions.forEach(Transition::fire);
     }
 
     @Override
@@ -23,7 +26,7 @@ public class PetriNet {
             result.append(place.getTokens().size()).append(" ");
         }
 
-        result.append("\n").append("Transição        ");
+        result.append("\n\n").append("Transição        ");
         for (Transition transition : transitions){
             result.append(transition.toString()).append(" ");
         }
@@ -32,6 +35,8 @@ public class PetriNet {
         for (Transition transition : transitions){
             result.append(transition.isEnabledString()).append(" ");
         }
+
+        result.append("\n");
 
         return result.toString();
 

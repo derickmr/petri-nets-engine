@@ -7,8 +7,14 @@ public class ResetArc extends Arc {
     }
 
     @Override
-    public void fire() {
+    public void fireInputArc() {
         //TODO
-        super.fire();
+        super.fireInputArc();
+    }
+
+    @Override
+    public void fireOutputArc() {
+        //TODO
+        super.fireOutputArc();
     }
 }
