@@ -1,11 +1,31 @@
+import javax.xml.bind.annotation.XmlElement;
+
 public class Arc {
 
     private Transition transition;
     private Place place;
     private int weight;
+    private String sourceId;
+    private String destinationId;
 
     public Transition getTransition() {
         return transition;
+    }
+
+    public String getDestinationId() {
+        return destinationId;
+    }
+
+    public void setDestinationId(String destinationId) {
+        this.destinationId = destinationId;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId;
     }
 
     public void setTransition(Transition transition) {
@@ -19,7 +39,7 @@ public class Arc {
     public void setPlace(Place place) {
         this.place = place;
     }
-
+    @XmlElement(name = "multiplicity")
     public int getWeight() {
         return weight;
     }

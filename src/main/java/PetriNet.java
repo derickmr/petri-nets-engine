@@ -4,15 +4,23 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@XmlRootElement(name="subnet")
 public class PetriNet {
-
     List<Place> places;
     List<Transition> transitions;
+    private List<Arc> arcs;
 
     public void run() {
         List<Transition> executableTransitions = transitions.stream().filter(Transition::isEnabled).collect(Collectors.toList());
         executableTransitions.forEach(Transition::fire);
+    }
+
+    @XmlElement(name="arc")
+    public List<Arc> getArcs() {
+        return arcs;
+    }
+
+    public void setArcs(List<Arc> arcs) {
+        this.arcs = arcs;
     }
 
     @Override
@@ -50,7 +58,6 @@ public class PetriNet {
     public List<Place> getPlaces() {
         return places;
     }
-
     public void setPlaces(List<Place> places) {
         this.places = places;
     }
@@ -58,7 +65,6 @@ public class PetriNet {
     public List<Transition> getTransitions() {
         return transitions;
     }
-
     public void setTransitions(List<Transition> transitions) {
         this.transitions = transitions;
     }

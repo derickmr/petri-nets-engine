@@ -1,17 +1,30 @@
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
+@XmlRootElement(name="transition")
 public class Transition {
 
     private String id;
+    private String label;
     private List<Arc> inputArcs;
     private List<Arc> outputArcs;
-
+    
+    @XmlElement
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+    @XmlElement
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public List<Arc> getInputArcs() {
