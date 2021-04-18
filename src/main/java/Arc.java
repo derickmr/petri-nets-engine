@@ -49,20 +49,15 @@ public class Arc {
     }
 
     public boolean canFire() {
-        return place.getTokens().size() >= weight;
+        return place.getTokens() >= weight;
     }
 
     public void fireInputArc() {
-        for (int i = 0; i < weight; i++) {
-            place.getTokens().pop();
-        }
+        place.setTokens(place.getTokens() - weight);
     }
 
     public void fireOutputArc() {
-        for (int i = 0; i < weight; i++) {
-            Token token = new Token();
-            place.getTokens().push(token);
-        }
+        place.setTokens(place.getTokens() + weight);
     }
 
 }

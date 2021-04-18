@@ -1,7 +1,6 @@
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Stack;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,21 +13,14 @@ public class PetriNetTest {
         Place place = new Place();
         Place place2 = new Place();
 
-        Token token1 = new Token();
-        Token token2 = new Token();
-
         Transition transition = new Transition();
         transition.setId("1");
 
-        Stack<Token> tokens = new Stack<>();
-        tokens.push(token1);
-        tokens.push(token2);
-
         place.setId("1");
-        place.setTokens(tokens);
+        place.setTokens(2);
 
         place2.setId("2");
-        place2.setTokens(new Stack<>());
+        place2.setTokens(0);
 
         Arc inputArc = new Arc();
         inputArc.setTransition(transition);
@@ -50,14 +42,14 @@ public class PetriNetTest {
         petriNet.run();
         System.out.println(petriNet.toString());
 
-        assertEquals(1, place.getTokens().size());
-        assertEquals(4, place2.getTokens().size());
+        assertEquals(1, place.getTokens());
+        assertEquals(4, place2.getTokens());
 
         petriNet.run();
         System.out.println(petriNet.toString());
 
-        assertEquals(0, place.getTokens().size());
-        assertEquals(8, place2.getTokens().size());
+        assertEquals(0, place.getTokens());
+        assertEquals(8, place2.getTokens());
 
     }
 

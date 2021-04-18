@@ -36,7 +36,7 @@ public class PetriNet {
 
         result.append("\n").append("Marcação         ");
         for (Place place : places) {
-            result.append(place.getTokens().size()).append(" ");
+            result.append(place.getTokens()).append(" ");
         }
 
         result.append("\n\n").append("Transição        ");
