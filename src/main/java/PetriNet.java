@@ -21,11 +21,10 @@ public class PetriNet {
         return result;
     }
 
-    private List<Transition> removeConcurrentTransitionsFromEnabledTransitions(List<Transition> enabledTransitions, Collection<List<Transition>> concurrentTransitions){
+    private void removeConcurrentTransitionsFromEnabledTransitions(List<Transition> enabledTransitions, Collection<List<Transition>> concurrentTransitions){
         concurrentTransitions.forEach(
                 enabledTransitions::removeAll
         );
-        return enabledTransitions;
     }
 
     private Map<Place, List<Transition>> getPlacesWithConcurrentTransitions(List<Transition> enabledTransitions) {
