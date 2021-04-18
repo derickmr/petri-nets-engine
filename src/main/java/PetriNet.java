@@ -1,7 +1,5 @@
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
-import java.util.function.Function;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PetriNet {
@@ -10,8 +8,45 @@ public class PetriNet {
     private List<Arc> arcs;
 
     public void run() {
-        List<Transition> executableTransitions = transitions.stream().filter(Transition::isEnabled).collect(Collectors.toList());
-        executableTransitions.forEach(Transition::fire);
+        List<Transition> enabledTransitions = transitions.stream().filter(Transition::isEnabled).collect(Collectors.toList());
+        Map<Place, List<Transition>> concurrentTransitions = getPlacesWithConcurrentTransitions(enabledTransitions);
+        removeConcurrentTransitionsFromEnabledTransitions(enabledTransitions, concurrentTransitions.values());
+        enabledTransitions.addAll(resolveConcurrencyForTransitions(concurrentTransitions));
+        enabledTransitions.forEach(Transition::fire);
+    }
+
+    private List<Transition> resolveConcurrencyForTransitions(Map<Place, List<Transition>> concurrentTransitions) {
+        //TODO add logic to sort concurrent transitions
+        List<Transition> result = new ArrayList<>();
+        return result;
+    }
+
+    private List<Transition> removeConcurrentTransitionsFromEnabledTransitions(List<Transition> enabledTransitions, Collection<List<Transition>> concurrentTransitions){
+        concurrentTransitions.forEach(
+                enabledTransitions::removeAll
+        );
+        return enabledTransitions;
+    }
+
+    private Map<Place, List<Transition>> getPlacesWithConcurrentTransitions(List<Transition> enabledTransitions) {
+        Map<Place, List<Transition>> placesWithConcurrentTransitions = new HashMap<>();
+        for (Place place : places) {
+            List<Transition> concurrentTransitions = new ArrayList<>();
+
+            for (Transition transition : enabledTransitions) {
+                for (Arc arc : transition.getInputArcs()) {
+                    if (arc.getPlace().equals(place)){
+                        concurrentTransitions.add(arc.getTransition());
+                    }
+                }
+            }
+
+            if (concurrentTransitions.size() > 1){
+                placesWithConcurrentTransitions.put(place, concurrentTransitions);
+            }
+
+        }
+        return placesWithConcurrentTransitions;
     }
 
     @XmlElement(name="arc")
