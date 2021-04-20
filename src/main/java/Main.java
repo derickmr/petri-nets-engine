@@ -4,7 +4,7 @@ public class Main {
 
         //TODO read PNML file and wait ENTER input from user to run
 
-        while (true){
+        while (petriNet.canRun()){
             System.out.println(petriNet.toString());
             petriNet.run();
         }

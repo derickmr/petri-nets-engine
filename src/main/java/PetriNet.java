@@ -16,6 +16,10 @@ public class PetriNet {
         places.forEach(Place::setTokensAfterCycle);
     }
 
+    public boolean canRun() {
+        return transitions.stream().anyMatch(Transition::isEnabled);
+    }
+
     private void fireConcurrentTransitions(Map<Place, List<Transition>> concurrentTransitions) {
         concurrentTransitions.forEach(this::fireConcurrentTransitions);
     }
