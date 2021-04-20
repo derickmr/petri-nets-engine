@@ -44,8 +44,10 @@ public class Transition {
     }
 
     public void fire(){
-        inputArcs.forEach(Arc::fireInputArc);
-        outputArcs.forEach(Arc::fireOutputArc);
+        while (isEnabled()) {
+            inputArcs.forEach(Arc::fireInputArc);
+            outputArcs.forEach(Arc::fireOutputArc);
+        }
     }
 
     public boolean isEnabled(){
@@ -59,5 +61,10 @@ public class Transition {
     @Override
     public String toString() {
         return id;
+    }
+
+    public void fireOnlyOnce() {
+        inputArcs.forEach(Arc::fireInputArc);
+        outputArcs.forEach(Arc::fireOutputArc);
     }
 }

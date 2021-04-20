@@ -11,14 +11,29 @@ public class PetriNet {
         List<Transition> enabledTransitions = transitions.stream().filter(Transition::isEnabled).collect(Collectors.toList());
         Map<Place, List<Transition>> concurrentTransitions = getPlacesWithConcurrentTransitions(enabledTransitions);
         removeConcurrentTransitionsFromEnabledTransitions(enabledTransitions, concurrentTransitions.values());
-        enabledTransitions.addAll(resolveConcurrencyForTransitions(concurrentTransitions));
         enabledTransitions.forEach(Transition::fire);
+        fireConcurrentTransitions(concurrentTransitions);
+        places.forEach(Place::setTokensAfterCycle);
     }
 
-    private List<Transition> resolveConcurrencyForTransitions(Map<Place, List<Transition>> concurrentTransitions) {
-        //TODO add logic to sort concurrent transitions
-        List<Transition> result = new ArrayList<>();
-        return result;
+    private void fireConcurrentTransitions(Map<Place, List<Transition>> concurrentTransitions) {
+        concurrentTransitions.forEach(this::fireConcurrentTransitions);
+    }
+
+    private void fireConcurrentTransitions(Place place, List<Transition> transitions){
+        List<Transition> transitionsToBeFired = getConcurrentTransitionsToBeFired(transitions);
+        while (transitionsToBeFired != null && transitionsToBeFired.size() > 0){
+            Random random = new Random();
+            int randomTransitionPosition = random.nextInt(transitionsToBeFired.size());
+            transitionsToBeFired.get(randomTransitionPosition).fireOnlyOnce();
+            transitionsToBeFired = getConcurrentTransitionsToBeFired(transitionsToBeFired);
+        }
+    }
+
+    private List<Transition> getConcurrentTransitionsToBeFired(List<Transition> transitions){
+        return transitions.stream().filter(
+                Transition::isEnabled
+        ).collect(Collectors.toList());
     }
 
     private void removeConcurrentTransitionsFromEnabledTransitions(List<Transition> enabledTransitions, Collection<List<Transition>> concurrentTransitions){

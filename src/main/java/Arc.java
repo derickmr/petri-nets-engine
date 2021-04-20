@@ -57,7 +57,7 @@ public class Arc {
     }
 
     public void fireOutputArc() {
-        place.setTokens(place.getTokens() + weight);
+        place.setTokensToBeAdded(weight);
     }
 
 }

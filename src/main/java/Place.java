@@ -5,6 +5,7 @@ public class Place {
     private String id;
     private String label;
     private int tokens;
+    private int tokensToBeAdded = 0;
 
     public String getId() {
         return id;
@@ -17,6 +18,19 @@ public class Place {
 
     public void setTokens(int tokens) {
         this.tokens = tokens;
+    }
+
+    public void setTokensAfterCycle(){
+        tokens += tokensToBeAdded;
+        tokensToBeAdded = 0;
+    }
+
+    public int getTokensToBeAdded() {
+        return tokensToBeAdded;
+    }
+
+    public void setTokensToBeAdded(int tokensToBeAdded) {
+        this.tokensToBeAdded = tokensToBeAdded;
     }
 
     public void setId(String id) {
