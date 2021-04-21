@@ -1,15 +1,27 @@
+import java.util.stream.Collectors;
+
 import javax.xml.bind.annotation.XmlElement;
 
 public class Arc {
 
-    private Transition transition;
-    private Place place;
     private int weight;
     private String sourceId;
     private String destinationId;
+    private String type;
 
-    public Transition getTransition() {
-        return transition;
+    public Transition getTransition(PetriNet petriNet) {
+        return petriNet.getTransitions().stream()
+            .filter( transition -> transition.getId().equals(getSourceId()) || transition.getId().equals(getDestinationId()))
+            .collect(Collectors.toList())
+            .get(0);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDestinationId() {
@@ -28,17 +40,13 @@ public class Arc {
         this.sourceId = sourceId;
     }
 
-    public void setTransition(Transition transition) {
-        this.transition = transition;
+    public Place getPlace(PetriNet petriNet) {
+        return petriNet.getPlaces().stream()
+            .filter( place -> place.getId().equals(getSourceId()) || place.getId().equals(getDestinationId()))
+            .collect(Collectors.toList())
+            .get(0);
     }
 
-    public Place getPlace() {
-        return place;
-    }
-
-    public void setPlace(Place place) {
-        this.place = place;
-    }
     @XmlElement(name = "multiplicity")
     public int getWeight() {
         return weight;
@@ -48,15 +56,17 @@ public class Arc {
         this.weight = weight;
     }
 
-    public boolean canFire() {
-        return place.getTokens() >= weight;
+    public boolean canFire(PetriNet petriNet) {
+        return getPlace(petriNet).getTokens() >= weight;
     }
 
-    public void fireInputArc() {
+    public void fireInputArc(PetriNet petriNet) {
+        Place place = getPlace(petriNet);
         place.setTokens(place.getTokens() - weight);
     }
 
-    public void fireOutputArc() {
+    public void fireOutputArc(PetriNet petriNet) {
+        Place place = getPlace(petriNet);
         place.setTokensToBeAdded(weight);
     }
 

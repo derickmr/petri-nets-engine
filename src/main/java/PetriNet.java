@@ -3,21 +3,30 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class PetriNet {
-    List<Place> places;
-    List<Transition> transitions;
+    private List<Place> places;
+    private List<Transition> transitions;
     private List<Arc> arcs;
+    private String id;
 
     public void run() {
-        List<Transition> enabledTransitions = transitions.stream().filter(Transition::isEnabled).collect(Collectors.toList());
+        List<Transition> enabledTransitions = transitions.stream().filter(transition -> transition.isEnabled(this)).collect(Collectors.toList());
         Map<Place, List<Transition>> concurrentTransitions = getPlacesWithConcurrentTransitions(enabledTransitions);
         removeConcurrentTransitionsFromEnabledTransitions(enabledTransitions, concurrentTransitions.values());
-        enabledTransitions.forEach(Transition::fire);
+        enabledTransitions.forEach(transition -> transition.fire(this));
         fireConcurrentTransitions(concurrentTransitions);
         places.forEach(Place::setTokensAfterCycle);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public boolean canRun() {
-        return transitions.stream().anyMatch(Transition::isEnabled);
+        return transitions.stream().anyMatch(transition -> transition.isEnabled(this));
     }
 
     private void fireConcurrentTransitions(Map<Place, List<Transition>> concurrentTransitions) {
@@ -29,14 +38,14 @@ public class PetriNet {
         while (transitionsToBeFired != null && transitionsToBeFired.size() > 0){
             Random random = new Random();
             int randomTransitionPosition = random.nextInt(transitionsToBeFired.size());
-            transitionsToBeFired.get(randomTransitionPosition).fireOnlyOnce();
+            transitionsToBeFired.get(randomTransitionPosition).fireOnlyOnce(this);
             transitionsToBeFired = getConcurrentTransitionsToBeFired(transitionsToBeFired);
         }
     }
 
     private List<Transition> getConcurrentTransitionsToBeFired(List<Transition> transitions){
         return transitions.stream().filter(
-                Transition::isEnabled
+                transition -> transition.isEnabled(this)
         ).collect(Collectors.toList());
     }
 
@@ -52,9 +61,9 @@ public class PetriNet {
             List<Transition> concurrentTransitions = new ArrayList<>();
 
             for (Transition transition : enabledTransitions) {
-                for (Arc arc : transition.getInputArcs()) {
-                    if (arc.getPlace().equals(place)){
-                        concurrentTransitions.add(arc.getTransition());
+                for (Arc arc : transition.getInputArcs(this)) {
+                    if (arc.getPlace(this).equals(place)){
+                        concurrentTransitions.add(arc.getTransition(this));
                     }
                 }
             }
@@ -99,7 +108,7 @@ public class PetriNet {
 
         result.append("\n").append("Habilitada?      ");
         for (Transition transition : transitions){
-            result.append(transition.isEnabledString()).append(" ");
+            result.append(transition.isEnabledString(this)).append(" ");
         }
 
         result.append("\n------------------------------\n");

@@ -1,14 +1,13 @@
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @XmlRootElement(name="transition")
 public class Transition {
 
     private String id;
     private String label;
-    private List<Arc> inputArcs;
-    private List<Arc> outputArcs;
     
     @XmlElement
     public String getId() {
@@ -27,35 +26,35 @@ public class Transition {
         this.label = label;
     }
 
-    public List<Arc> getInputArcs() {
+    public List<Arc> getInputArcs(PetriNet petriNet) {
+        List<String> transitionIds = getTransitionIds(petriNet);
+        List<Arc> inputArcs = petriNet.getArcs().stream().filter(arc -> transitionIds.contains(arc.getDestinationId())).collect(Collectors.toList());
         return inputArcs;
     }
 
-    public void setInputArcs(List<Arc> inputArcs) {
-        this.inputArcs = inputArcs;
+    private List<String> getTransitionIds(PetriNet petriNet) {
+        return petriNet.getTransitions().stream().map(transition -> transition.getId()).collect(Collectors.toList());
     }
 
-    public List<Arc> getOutputArcs() {
+    public List<Arc> getOutputArcs(PetriNet petriNet) {
+        List<String> transitionIds = getTransitionIds(petriNet);
+        List<Arc> outputArcs = petriNet.getArcs().stream().filter(arc -> transitionIds.contains(arc.getSourceId())).collect(Collectors.toList());
         return outputArcs;
     }
 
-    public void setOutputArcs(List<Arc> outputArcs) {
-        this.outputArcs = outputArcs;
-    }
-
-    public void fire(){
-        while (isEnabled()) {
-            inputArcs.forEach(Arc::fireInputArc);
-            outputArcs.forEach(Arc::fireOutputArc);
+    public void fire(PetriNet petriNet){
+        while (isEnabled(petriNet)) {
+            getInputArcs(petriNet).forEach(arc -> arc.fireInputArc(petriNet));
+            getOutputArcs(petriNet).forEach(arc -> arc.fireOutputArc(petriNet));
         }
     }
 
-    public boolean isEnabled(){
-        return inputArcs.stream().allMatch(Arc::canFire);
+    public boolean isEnabled(PetriNet petriNet){
+        return getInputArcs(petriNet).stream().allMatch(arc -> arc.canFire(petriNet));
     }
 
-    public String isEnabledString(){
-        return isEnabled() ? "S" : "N";
+    public String isEnabledString(PetriNet petriNet){
+        return isEnabled(petriNet) ? "S" : "N";
     }
 
     @Override
@@ -63,8 +62,8 @@ public class Transition {
         return id;
     }
 
-    public void fireOnlyOnce() {
-        inputArcs.forEach(Arc::fireInputArc);
-        outputArcs.forEach(Arc::fireOutputArc);
+    public void fireOnlyOnce(PetriNet petriNet) {
+        getInputArcs(petriNet).forEach(arc -> arc.fireInputArc(petriNet));
+        getOutputArcs(petriNet).forEach(arc -> arc.fireOutputArc(petriNet));
     }
 }
