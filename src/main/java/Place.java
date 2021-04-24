@@ -30,7 +30,7 @@ public class Place {
     }
 
     public void setTokensToBeAdded(int tokensToBeAdded) {
-        this.tokensToBeAdded = tokensToBeAdded;
+        this.tokensToBeAdded += tokensToBeAdded;
     }
 
     public void setId(String id) {

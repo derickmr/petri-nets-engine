@@ -14,7 +14,7 @@ public class PetriNetTest {
         Place place2 = new Place();
 
         Transition transition = new Transition();
-        transition.setId("1");
+        transition.setId("10");
 
         place.setId("1");
         place.setTokens(2);
@@ -23,27 +23,20 @@ public class PetriNetTest {
         place2.setTokens(0);
 
         Arc inputArc = new Arc();
-        inputArc.setTransition(transition);
-        inputArc.setPlace(place);
         inputArc.setWeight(1);
-        transition.setInputArcs(Arrays.asList(inputArc));
+        inputArc.setSourceId(place.getId());
+        inputArc.setDestinationId(transition.getId());
 
         Arc outputArc = new Arc();
-        outputArc.setTransition(transition);
-        outputArc.setPlace(place2);
         outputArc.setWeight(4);
-        transition.setOutputArcs(Arrays.asList(outputArc));
+        outputArc.setSourceId(transition.getId());
+        outputArc.setDestinationId(place2.getId());
 
         petriNet.setPlaces(Arrays.asList(place, place2));
         petriNet.setTransitions(Arrays.asList(transition));
+        petriNet.setArcs(Arrays.asList(inputArc, outputArc));
 
         System.out.println(petriNet.toString());
-
-        petriNet.run();
-        System.out.println(petriNet.toString());
-
-        assertEquals(1, place.getTokens());
-        assertEquals(4, place2.getTokens());
 
         petriNet.run();
         System.out.println(petriNet.toString());
