@@ -27,18 +27,12 @@ public class Transition {
     }
 
     public List<Arc> getInputArcs(PetriNet petriNet) {
-        List<String> transitionIds = getTransitionIds(petriNet);
-        List<Arc> inputArcs = petriNet.getArcs().stream().filter(arc -> transitionIds.contains(arc.getDestinationId())).collect(Collectors.toList());
+        List<Arc> inputArcs = petriNet.getArcs().stream().filter(arc -> id.equalsIgnoreCase(arc.getDestinationId())).collect(Collectors.toList());
         return inputArcs;
     }
 
-    private List<String> getTransitionIds(PetriNet petriNet) {
-        return petriNet.getTransitions().stream().map(transition -> transition.getId()).collect(Collectors.toList());
-    }
-
     public List<Arc> getOutputArcs(PetriNet petriNet) {
-        List<String> transitionIds = getTransitionIds(petriNet);
-        List<Arc> outputArcs = petriNet.getArcs().stream().filter(arc -> transitionIds.contains(arc.getSourceId())).collect(Collectors.toList());
+        List<Arc> outputArcs = petriNet.getArcs().stream().filter(arc -> id.equalsIgnoreCase(arc.getSourceId())).collect(Collectors.toList());
         return outputArcs;
     }
 

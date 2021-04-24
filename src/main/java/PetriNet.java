@@ -58,7 +58,7 @@ public class PetriNet {
     private Map<Place, List<Transition>> getPlacesWithConcurrentTransitions(List<Transition> enabledTransitions) {
         Map<Place, List<Transition>> placesWithConcurrentTransitions = new HashMap<>();
         for (Place place : places) {
-            List<Transition> concurrentTransitions = new ArrayList<>();
+            Set<Transition> concurrentTransitions = new HashSet<>();
 
             for (Transition transition : enabledTransitions) {
                 for (Arc arc : transition.getInputArcs(this)) {
@@ -69,7 +69,7 @@ public class PetriNet {
             }
 
             if (concurrentTransitions.size() > 1){
-                placesWithConcurrentTransitions.put(place, concurrentTransitions);
+                placesWithConcurrentTransitions.put(place, new ArrayList<>(concurrentTransitions));
             }
 
         }

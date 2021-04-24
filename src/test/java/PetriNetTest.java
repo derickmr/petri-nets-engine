@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PetriNetTest {
 
@@ -43,6 +44,55 @@ public class PetriNetTest {
 
         assertEquals(0, place.getTokens());
         assertEquals(8, place2.getTokens());
+
+    }
+
+    @Test
+    public void testSimpleConflictScenario() {
+        Place concurrentPlace = new Place();
+        concurrentPlace.setId("1");
+        concurrentPlace.setTokens(1);
+
+        Transition transition = new Transition();
+        transition.setId("2");
+
+        Transition transition2 = new Transition();
+        transition2.setId("3");
+
+        Place place2 = new Place();
+        place2.setId("4");
+
+        Place place3 = new Place();
+        place3.setId("5");
+
+        Arc arc = new Arc();
+        arc.setWeight(1);
+        arc.setSourceId("1");
+        arc.setDestinationId("2");
+
+        Arc arc2 = new Arc();
+        arc2.setWeight(1);
+        arc2.setSourceId("1");
+        arc2.setDestinationId("3");
+
+        Arc arc3 = new Arc();
+        arc3.setWeight(1);
+        arc3.setSourceId("2");
+        arc3.setDestinationId("4");
+
+        Arc arc4 = new Arc();
+        arc4.setWeight(1);
+        arc4.setSourceId("3");
+        arc4.setDestinationId("5");
+
+        PetriNet petriNet = new PetriNet();
+        petriNet.setTransitions(Arrays.asList(transition, transition2));
+        petriNet.setPlaces(Arrays.asList(concurrentPlace, place2, place3));
+        petriNet.setArcs(Arrays.asList(arc, arc2, arc3, arc4));
+
+        petriNet.run();
+
+        assertTrue((place2.getTokens() == 1 || place3.getTokens() == 1) && (concurrentPlace.getTokens() == 0));
 
     }
 
