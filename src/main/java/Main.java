@@ -1,12 +1,34 @@
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.util.Scanner;
+
 public class Main {
     public static void main (String[] args){
-        PetriNet petriNet = new PetriNet();
 
-        //TODO read PNML file and wait ENTER input from user to run
+        Document document;
 
-        while (petriNet.canRun()){
+        try {
+            File file = new File("src/test/java/simple_net.pflow");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Document.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            document = (Document) unmarshaller.unmarshal(file);
+
+            PetriNet petriNet = document.getSubnet().stream().findFirst().get();
+            Scanner scanner = new Scanner(System.in);
+
             System.out.println(petriNet.toString());
-            petriNet.run();
+
+            while (petriNet.canRun()){
+                System.out.println("Aperte \"ENTER\" para continuar...");
+                scanner.nextLine();
+                petriNet.run();
+                System.out.println(petriNet.toString());
+            }
+            System.out.println("Nenhuma transição habilitada. Processamento encerrado.");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
