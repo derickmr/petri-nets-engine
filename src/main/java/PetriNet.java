@@ -102,22 +102,22 @@ public class PetriNet {
 
         result.append("------------------------------\n");
 
-        result.append("Lugar            ");
+        result.append("Lugar (id)            ");
         for (Place place : places) {
             result.append(place.toString()).append(" ");
         }
 
-        result.append("\n").append("Marcação         ");
+        result.append("\n").append("Marcação              ");
         for (Place place : places) {
             result.append(place.getTokens()).append(" ");
         }
 
-        result.append("\n\n").append("Transição        ");
+        result.append("\n\n").append("Transição (id)        ");
         for (Transition transition : transitions){
             result.append(transition.toString()).append(" ");
         }
 
-        result.append("\n").append("Habilitada?      ");
+        result.append("\n").append("Habilitada?           ");
         for (Transition transition : transitions){
             result.append(transition.isEnabledString(this)).append(" ");
         }
