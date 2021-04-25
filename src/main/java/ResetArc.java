@@ -6,4 +6,8 @@ public class ResetArc extends Arc {
         place.setTokens(0);
     }
 
+    @Override
+    public boolean canFire(PetriNet petriNet) {
+        return true;
+    }
 }
