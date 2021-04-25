@@ -37,10 +37,18 @@ public class Transition {
     }
 
     public void fire(PetriNet petriNet){
-        while (isEnabled(petriNet)) {
-            getInputArcs(petriNet).forEach(arc -> arc.fireInputArc(petriNet));
-            getOutputArcs(petriNet).forEach(arc -> arc.fireOutputArc(petriNet));
+        if (areAllArcsInhibitors(petriNet)){
+            fireOnlyOnce(petriNet);
+        } else {
+            while (isEnabled(petriNet)) {
+                getInputArcs(petriNet).forEach(arc -> arc.fireInputArc(petriNet));
+                getOutputArcs(petriNet).forEach(arc -> arc.fireOutputArc(petriNet));
+            }
         }
+    }
+
+    private boolean areAllArcsInhibitors(PetriNet petriNet) {
+        return getInputArcs(petriNet).stream().allMatch(arc -> arc instanceof InhibitorArc);
     }
 
     public boolean isEnabled(PetriNet petriNet){
