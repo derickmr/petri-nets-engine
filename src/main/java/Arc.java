@@ -70,4 +70,24 @@ public class Arc {
         place.setTokensToBeAdded(weight);
     }
 
+    @Override
+    protected Object clone() {
+        Arc clone;
+
+        if (type.equalsIgnoreCase("inhibitor")){
+            clone = new InhibitorArc();
+        }
+        else if (type.equalsIgnoreCase("reset")){
+            clone = new ResetArc();
+        }
+        else {
+            return this;
+        }
+
+        clone.setDestinationId(destinationId);
+        clone.setSourceId(sourceId);
+        clone.setWeight(weight);
+
+        return clone;
+    }
 }

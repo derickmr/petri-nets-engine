@@ -1,5 +1,4 @@
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.util.Scanner;
@@ -10,12 +9,14 @@ public class Main {
         Document document;
 
         try {
-            File file = new File("src/test/java/simple_net.pflow");
+            File file = new File("src/test/java/simple-inhibitor.pflow");
             JAXBContext jaxbContext = JAXBContext.newInstance(Document.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             document = (Document) unmarshaller.unmarshal(file);
 
             PetriNet petriNet = document.getSubnet().stream().findFirst().get();
+            petriNet.initializeArcs();
+
             Scanner scanner = new Scanner(System.in);
 
             System.out.println(petriNet.toString());

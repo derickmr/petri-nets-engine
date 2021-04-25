@@ -76,6 +76,17 @@ public class PetriNet {
         return placesWithConcurrentTransitions;
     }
 
+    public void initializeArcs() {
+        List<Arc> clones;
+
+        try {
+            clones = arcs.stream().map(arc -> (Arc) arc.clone()).collect(Collectors.toList());
+            setArcs(clones);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     @XmlElement(name="arc")
     public List<Arc> getArcs() {
         return arcs;
