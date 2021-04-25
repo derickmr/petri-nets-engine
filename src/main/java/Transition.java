@@ -56,12 +56,13 @@ public class Transition {
     }
 
     public String isEnabledString(PetriNet petriNet){
-        return isEnabled(petriNet) ? "S" : "N";
+        String result = isEnabled(petriNet) ? "S" : "N";
+        return String.format("%5s", result);
     }
 
     @Override
     public String toString() {
-        return id;
+        return String.format("%5s", label);
     }
 
     public void fireOnlyOnce(PetriNet petriNet) {

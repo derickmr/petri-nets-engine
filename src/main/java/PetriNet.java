@@ -96,30 +96,31 @@ public class PetriNet {
         this.arcs = arcs;
     }
 
-    @Override
-    public String toString() {
+    public String toString(int cycle) {
         StringBuilder result = new StringBuilder();
 
         result.append("------------------------------\n");
 
-        result.append("Lugar (id)            ");
+        result.append("Ciclo: " + cycle + "\n\n");
+
+        result.append("Lugar            ");
         for (Place place : places) {
-            result.append(place.toString()).append(" ");
+            result.append(place.toString());
         }
 
-        result.append("\n").append("Marcação              ");
+        result.append("\n").append("Marcação         ");
         for (Place place : places) {
-            result.append(place.getTokens()).append(" ");
+            result.append(String.format("%5s", place.getTokens()));
         }
 
-        result.append("\n\n").append("Transição (id)        ");
+        result.append("\n\n").append("Transição        ");
         for (Transition transition : transitions){
-            result.append(transition.toString()).append(" ");
+            result.append(transition.toString());
         }
 
-        result.append("\n").append("Habilitada?           ");
+        result.append("\n").append("Habilitada?      ");
         for (Transition transition : transitions){
-            result.append(transition.isEnabledString(this)).append(" ");
+            result.append(transition.isEnabledString(this));
         }
 
         result.append("\n------------------------------\n");

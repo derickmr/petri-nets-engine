@@ -47,6 +47,6 @@ public class Place {
 
     @Override
     public String toString() {
-        return id;
+        return String.format("%5s", label);
     }
 }
