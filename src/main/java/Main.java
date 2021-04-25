@@ -9,7 +9,7 @@ public class Main {
         Document document;
 
         try {
-            File file = new File("src/test/java/simple-inhibitor.pflow");
+            File file = new File("src/test/java/simple-reset.pflow");
             JAXBContext jaxbContext = JAXBContext.newInstance(Document.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             document = (Document) unmarshaller.unmarshal(file);
