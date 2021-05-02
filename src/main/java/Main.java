@@ -6,11 +6,17 @@ import java.util.Scanner;
 public class Main {
     public static void main (String[] args){
 
+        if (args.length < 1){
+            return;
+        }
+
+        String path = args[0];
+
         Document document;
         int cycle = 0;
 
         try {
-            File file = new File("src/test/java/exemplo-trabalho.pflow");
+            File file = new File(path);
             JAXBContext jaxbContext = JAXBContext.newInstance(Document.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
             document = (Document) unmarshaller.unmarshal(file);
