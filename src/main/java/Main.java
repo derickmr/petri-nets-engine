@@ -22,7 +22,6 @@ public class Main {
             document = (Document) unmarshaller.unmarshal(file);
 
             PetriNet petriNet = document.getSubnet().stream().findFirst().get();
-            petriNet.initializeArcs();
 
             Scanner scanner = new Scanner(System.in);
 

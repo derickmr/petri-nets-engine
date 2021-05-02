@@ -7,8 +7,13 @@ public class PetriNet {
     private List<Transition> transitions;
     private List<Arc> arcs;
     private String id;
+    private boolean isInitialized = false;
 
     public void run() {
+        if (!isInitialized){
+            initializeArcs();
+            setInitialized(true);
+        }
         List<Transition> enabledTransitions = transitions.stream().filter(transition -> transition.isEnabled(this)).collect(Collectors.toList());
         Map<Place, List<Transition>> concurrentTransitions = getPlacesWithConcurrentTransitions(enabledTransitions);
         removeConcurrentTransitionsFromEnabledTransitions(enabledTransitions, concurrentTransitions.values());
@@ -141,5 +146,13 @@ public class PetriNet {
     }
     public void setTransitions(List<Transition> transitions) {
         this.transitions = transitions;
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    public void setInitialized(boolean initialized) {
+        isInitialized = initialized;
     }
 }
