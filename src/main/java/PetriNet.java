@@ -8,6 +8,7 @@ public class PetriNet {
     private List<Arc> arcs;
     private String id;
     private boolean isInitialized = false;
+    private int cycle = 0;
 
     public void run() {
         if (!isInitialized){
@@ -20,6 +21,7 @@ public class PetriNet {
         enabledTransitions.forEach(transition -> transition.fire(this));
         fireConcurrentTransitions(concurrentTransitions);
         places.forEach(Place::setTokensAfterCycle);
+        setCycle(cycle + 1);
     }
 
     public String getId() {
@@ -101,7 +103,7 @@ public class PetriNet {
         this.arcs = arcs;
     }
 
-    public String toString(int cycle) {
+    public String toString() {
         StringBuilder result = new StringBuilder();
 
         result.append("------------------------------\n");
@@ -154,5 +156,13 @@ public class PetriNet {
 
     public void setInitialized(boolean initialized) {
         isInitialized = initialized;
+    }
+
+    public int getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(int cycle) {
+        this.cycle = cycle;
     }
 }

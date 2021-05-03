@@ -13,7 +13,6 @@ public class Main {
         String path = args[0];
 
         Document document;
-        int cycle = 0;
 
         try {
             File file = new File(path);
@@ -25,14 +24,13 @@ public class Main {
 
             Scanner scanner = new Scanner(System.in);
 
-            System.out.println(petriNet.toString(cycle));
+            System.out.println(petriNet.toString());
 
             while (petriNet.canRun()){
                 System.out.println("Aperte \"ENTER\" para continuar...");
                 scanner.nextLine();
                 petriNet.run();
-                cycle++;
-                System.out.println(petriNet.toString(cycle));
+                System.out.println(petriNet.toString());
             }
             System.out.println("Nenhuma transição habilitada. Processamento encerrado.");
         } catch (Exception e) {
