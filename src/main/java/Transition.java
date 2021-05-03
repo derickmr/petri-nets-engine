@@ -37,7 +37,7 @@ public class Transition {
     }
 
     public void fire(PetriNet petriNet){
-        if (areAllArcsInhibitors(petriNet)){
+        if (containsOnlySpecialArcs(petriNet)){
             fireOnlyOnce(petriNet);
         } else {
             while (isEnabled(petriNet)) {
@@ -47,8 +47,12 @@ public class Transition {
         }
     }
 
-    private boolean areAllArcsInhibitors(PetriNet petriNet) {
-        return getInputArcs(petriNet).stream().allMatch(arc -> arc instanceof InhibitorArc);
+    private boolean containsOnlySpecialArcs(PetriNet petriNet) {
+        return getInputArcs(petriNet).stream().allMatch(this::isSpecialArc);
+    }
+
+    private boolean isSpecialArc(Arc arc) {
+        return arc instanceof InhibitorArc || arc instanceof ResetArc;
     }
 
     public boolean isEnabled(PetriNet petriNet){

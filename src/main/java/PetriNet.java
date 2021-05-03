@@ -11,10 +11,6 @@ public class PetriNet {
     private int cycle = 0;
 
     public void run() {
-        if (!isInitialized){
-            initializeArcs();
-            setInitialized(true);
-        }
         List<Transition> enabledTransitions = transitions.stream().filter(transition -> transition.isEnabled(this)).collect(Collectors.toList());
         Map<Place, List<Transition>> concurrentTransitions = getPlacesWithConcurrentTransitions(enabledTransitions);
         removeConcurrentTransitionsFromEnabledTransitions(enabledTransitions, concurrentTransitions.values());
@@ -33,6 +29,10 @@ public class PetriNet {
     }
 
     public boolean canRun() {
+        if (!isInitialized){
+            initializeArcs();
+            setInitialized(true);
+        }
         return transitions.stream().anyMatch(transition -> transition.isEnabled(this));
     }
 
