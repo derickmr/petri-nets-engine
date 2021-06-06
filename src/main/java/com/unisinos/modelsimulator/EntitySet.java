@@ -1,5 +1,6 @@
 package com.unisinos.modelsimulator;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class EntitySet {
     private String name;
@@ -27,8 +28,14 @@ public class EntitySet {
     }
 
     public Entity removeById(int id) {
-        //implement
-        return new Entity("implement something here");
+        Optional<Entity> entityOptional = mode.stream().filter(entity -> entity.getId() == id).findFirst();
+        if (entityOptional.isPresent()){
+            Entity entity = entityOptional.get();
+            mode.remove(entity);
+            return entity;
+        }
+        System.out.println("Entity with id " + id + " not found for removal.");
+        return null;
     }
 
     public boolean isEmpty() {
