@@ -10,6 +10,19 @@ public class Arc {
     private String destinationId;
     private String type;
 
+    public Arc() {}
+
+    public Arc(Place place, Transition transition) {
+        this.sourceId = place.getId();
+        this.destinationId = transition.getId();
+    }
+
+    public Arc(Transition transition, Place place) {
+        this.sourceId = transition.getId();
+        this.destinationId = place.getId();
+    }
+
+
     public Transition getTransition(PetriNet petriNet) {
         return petriNet.getTransitions().stream()
             .filter( transition -> transition.getId().equals(getSourceId()) || transition.getId().equals(getDestinationId()))

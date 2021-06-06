@@ -8,6 +8,12 @@ public class Place {
     private int tokens;
     private int tokensToBeAdded = 0;
 
+    public Place() {}
+
+    public Place(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }
@@ -32,6 +38,10 @@ public class Place {
 
     public void setTokensToBeAdded(int tokensToBeAdded) {
         this.tokensToBeAdded += tokensToBeAdded;
+    }
+
+    public void addToken() {
+        this.tokens++;
     }
 
     public void setId(String id) {

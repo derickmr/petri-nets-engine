@@ -10,6 +10,12 @@ public class Transition {
 
     private String id;
     private String label;
+
+    public Transition() {}
+
+    public Transition(String id) {
+        this.id = id;
+    }
     
     @XmlElement
     public String getId() {

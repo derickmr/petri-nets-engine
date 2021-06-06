@@ -12,6 +12,14 @@ public class PetriNet {
     private boolean isInitialized = false;
     private int cycle = 0;
 
+    public PetriNet() {}
+
+    public PetriNet(List<Place> places, List<Transition> transitions, List<Arc> arcs) {
+        this.places = places;
+        this.transitions = transitions;
+        this.arcs = arcs;
+    }
+
     public void run() {
         List<Transition> enabledTransitions = transitions.stream().filter(transition -> transition.isEnabled(this)).collect(Collectors.toList());
         Map<Place, List<Transition>> concurrentTransitions = getPlacesWithConcurrentTransitions(enabledTransitions);
