@@ -1,3 +1,4 @@
+package com.unisinos.petri;
 public class InhibitorArc extends Arc {
 
     @Override

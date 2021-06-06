@@ -1,3 +1,4 @@
+package com.unisinos.petri;
 public class ResetArc extends Arc {
 
     @Override

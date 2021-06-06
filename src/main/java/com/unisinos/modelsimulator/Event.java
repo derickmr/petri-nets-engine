@@ -1,3 +1,4 @@
+package com.unisinos.modelsimulator;
 public class Event {
     private String name;
     private int eventId;

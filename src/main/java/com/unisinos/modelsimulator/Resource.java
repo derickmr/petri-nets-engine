@@ -1,3 +1,4 @@
+package com.unisinos.modelsimulator;
 public class Resource {
     private String name;
     private int id;

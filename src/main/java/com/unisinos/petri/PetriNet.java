@@ -1,4 +1,6 @@
+package com.unisinos.petri;
 import javax.xml.bind.annotation.XmlElement;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

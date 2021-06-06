@@ -1,3 +1,4 @@
+package com.unisinos.petri;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;

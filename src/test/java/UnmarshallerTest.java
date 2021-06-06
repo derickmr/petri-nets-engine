@@ -8,6 +8,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.unisinos.petri.Arc;
+import com.unisinos.petri.Document;
+import com.unisinos.petri.PetriNet;
+import com.unisinos.petri.Place;
+import com.unisinos.petri.Transition;
+
 import org.junit.Before;
 import org.junit.Test;
 

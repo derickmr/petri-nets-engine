@@ -1,3 +1,4 @@
+package com.unisinos.modelsimulator;
 import java.util.ArrayList;
 
 public class EntitySet {

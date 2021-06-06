@@ -1,5 +1,7 @@
+package com.unisinos.petri;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -32,6 +34,7 @@ public class Main {
                 petriNet.run();
                 System.out.println(petriNet.toString());
             }
+            scanner.close();
             System.out.println("Nenhuma transição habilitada. Processamento encerrado.");
         } catch (Exception e) {
             e.printStackTrace();

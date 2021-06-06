@@ -1,3 +1,4 @@
+package com.unisinos.modelsimulator;
 public class Process {
     private String name;
     private int processId;

@@ -2,6 +2,11 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
+import com.unisinos.petri.Arc;
+import com.unisinos.petri.PetriNet;
+import com.unisinos.petri.Place;
+import com.unisinos.petri.Transition;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

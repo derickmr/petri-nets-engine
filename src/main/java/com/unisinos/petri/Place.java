@@ -1,3 +1,4 @@
+package com.unisinos.petri;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Place {
