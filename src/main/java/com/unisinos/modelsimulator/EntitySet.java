@@ -96,10 +96,10 @@ public class EntitySet {
                 return this.entities.remove(0);
             case LIFO:
                 return this.entities.remove(this.entities.size() - 1);
-            case NONE:
-                return this.entities.remove((int) (Math.random() * this.entities.size()));
             case PRIORITY:
                 return this.entities.remove(this.getIndexEntityMaxPriority());
+            default:
+                return this.entities.remove((int) (Math.random() * this.entities.size()));
         }
     }
 
