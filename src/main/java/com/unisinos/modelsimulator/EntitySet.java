@@ -210,7 +210,7 @@ public class EntitySet {
 
     private void logTime() {
         if (shouldLogTime()) {
-            log.put(currentTime, entities.size());
+            log.put(lastLogTime + timeGap, entities.size());
             lastLogTime += timeGap;
         }
     }
