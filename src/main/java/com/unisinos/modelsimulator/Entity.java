@@ -1,6 +1,7 @@
 package com.unisinos.modelsimulator;
 import com.unisinos.petri.PetriNet;
 
+//ok
 public class Entity {
     private String name;
     private int id;

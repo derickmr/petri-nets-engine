@@ -109,7 +109,8 @@ public class Scheduler {
 
     public EntitySet getEntitySet(int id) {
         //implement
-        return new EntitySet("implement", new ArrayList<Entity>(Collections.singleton(new Entity("implement"))), 1);
+//        return new EntitySet("implement", new ArrayList<Entity>(Collections.singleton(new Entity("implement"))), 1);
+        return null;
     }
 
     // random variates

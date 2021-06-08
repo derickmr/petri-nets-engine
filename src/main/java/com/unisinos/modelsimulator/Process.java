@@ -1,4 +1,6 @@
 package com.unisinos.modelsimulator;
+
+//TODO check duration logic
 public class Process {
     private String name;
     private int processId;
@@ -7,6 +9,11 @@ public class Process {
 
     public Process(String name) {
         this.name = name;
+    }
+
+    public Process(String name, double duration) {
+        this.name = name;
+        this.duration = duration;
     }
 
     public String getName() {
@@ -37,7 +44,7 @@ public class Process {
         return active;
     }
 
-    public void active(boolean active) {
+    public void activate(boolean active) {
         this.active = active;
     }
 }
