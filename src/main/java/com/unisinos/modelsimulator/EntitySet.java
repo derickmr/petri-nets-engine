@@ -3,6 +3,8 @@ package com.unisinos.modelsimulator;
 import java.util.*;
 
 import static com.unisinos.modelsimulator.EntitySetMode.*;
+import java.util.ArrayList;
+import java.util.Optional;
 
 //FIXME adicionei alguns atributos a mais pra controlar as estatisticas do set (currentTime, lastLogTime e etc.). nao sei se sao necessarios mesmo
 //Podem apagar se achar que nao faz sentido
@@ -23,6 +25,7 @@ public class EntitySet {
     private boolean isLogging;
     private double entitySetCreationTime;
     private Map<Integer, Double> entitiesTimeInSet;
+    private Map<Double, Integer> entitiesSizeInTime;
 
 
     public EntitySet(String name, EntitySetMode mode, int maxPossibleSize) {
@@ -58,14 +61,24 @@ public class EntitySet {
         return mode;
     }
 
+    public void setMode(EntitySetMode mode) {
+        this.mode = mode;
+    }
+
     public void insert(Entity entity) {
         entities.add(entity);
         allEntities.add(entity);
         entitiesTimeInSet.put(entity.getId(), currentTime);
+        updateEntitiesSizeInTime(entity);
     }
 
-    public Entity remove() {
-        return entities.remove(entities.size() - 1);
+    public void updateEntitiesSizeInTime(Entity entity) {
+        var currentSizeInTime = this.entitiesSizeInTime.get(this.currentTime);
+        if (currentSizeInTime != null) {
+            this.entitiesSizeInTime.put(this.currentTime, this.entitiesSizeInTime.get(this.currentTime) + 1);
+        } else {
+            this.entitiesSizeInTime.put(this.currentTime, 1);
+        }
     }
 
     public Entity getById(int id) {
@@ -77,15 +90,37 @@ public class EntitySet {
         return null;
     }
 
-    public Entity removeById(int id) {
-        Optional<Entity> entityOptional = entities.stream().filter(entity -> entity.getId() == id).findFirst();
-        if (entityOptional.isPresent()) {
-            Entity entity = entityOptional.get();
-            entities.remove(entity);
-            return entity;
+    public Entity remove() {
+        switch(this.mode) {
+            case FIFO:
+                return this.entities.remove(0);
+            case LIFO:
+                return this.entities.remove(this.entities.size() - 1);
+            case NONE:
+                return this.entities.remove((int) (Math.random() * this.entities.size()));
+            case PRIORITY:
+                return this.entities.remove(this.getIndexEntityMaxPriority());
         }
-        System.out.println("Entity with id " + id + " not found for removal.");
-        return null;
+    }
+
+    public int getIndexEntityMaxPriority() {
+        var entityWithHighestPriority = this.entities
+                .stream()
+                .max((entity, t1) -> entity.getPriority() > t1.getPriority() ? 1 : -1);
+        return this.entities.indexOf(entityWithHighestPriority);
+    }
+
+    public Entity removeById(int id) {
+        Optional<Entity> entityOptional = entities
+                .stream()
+                .filter(entity -> entity.getId() == id).findFirst();
+        if (entityOptional.isEmpty()){
+            System.out.println("Entity with id " + id + " not found for removal.");
+            return null;
+        }
+        Entity entity = entityOptional.get();
+        entities.remove(entity);
+        return entity;
     }
 
     public boolean isEmpty() {
@@ -171,10 +206,6 @@ public class EntitySet {
 
     public void setSize(int size) {
         this.size = size;
-    }
-
-    public void setMode(EntitySetMode mode) {
-        this.mode = mode;
     }
 
     private void logTime() {

@@ -5,7 +5,7 @@ import java.util.Collections;
 public class Scheduler {
     private double time;
 
-    public double getTime() {
+    public double getTime() { // retorna o tempo atual do modelo
         return time;
     }
 
@@ -35,7 +35,7 @@ public class Scheduler {
         //implement
     }
 
-    public void waitFor(int time) { // sei lá se é int, vou deixar como int por hora
+    public void waitFor(double time) {
         //implement
     }
 
@@ -49,11 +49,11 @@ public class Scheduler {
         //implement
     }
 
-    public void simulateBy(int duration) {  // sei lá se é int, vou deixar como int por hora
+    public void simulateBy(double duration) {
         //implement
     }
 
-    public void simulateUntil(int absoluteTime) { // sei lá se é int, vou deixar como int por hora
+    public void simulateUntil(double absoluteTime) {
         //implement
     }
 
@@ -82,16 +82,6 @@ public class Scheduler {
         return new Resource("implement", 1);
     }
 
-    public int createProcess(String name, int duration) {
-        //implement
-        return 0; //return process id of the newly created process
-    }
-
-    public Process getProcess(int processId) {
-        //implement
-        return new Process("implement");
-    }
-
     public int createEvent(String name) {
         //implement
         return 0; //return event id of the newly created event
@@ -109,7 +99,6 @@ public class Scheduler {
 
     public EntitySet getEntitySet(int id) {
         //implement
-//        return new EntitySet("implement", new ArrayList<Entity>(Collections.singleton(new Entity("implement"))), 1);
         return null;
     }
 

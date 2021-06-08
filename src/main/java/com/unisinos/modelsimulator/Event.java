@@ -4,7 +4,7 @@ package com.unisinos.modelsimulator;
 public class Event {
 
     private String name;
-    private int eventId;
+    private int eventId; // atribuído pelo Scheduler
 
     public Event(String name) {
         this.name = name;
