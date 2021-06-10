@@ -2,6 +2,7 @@ package com.unisinos.modelsimulator;
 
 import com.unisinos.petri.PetriNet;
 import java.util.Date;
+import java.util.List;
 
 //ok
 public class Entity {
@@ -10,6 +11,8 @@ public class Entity {
     private double creationTime; // atribuído pelo Scheduler
     private int priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
     private PetriNet petriNet;
+    private Scheduler scheduler;
+    private List<EntitySet> sets;
 
     public Entity(String name) {
         this.name = name;
@@ -20,8 +23,8 @@ public class Entity {
         this.petriNet = petriNet;
     }
 
-    public EntitySet getSets() { // retorna lista de EntitySets nas quais a entidade está inserida
-        return null; // tem que implementar isso, mas não sei se faz sentido
+    public List<EntitySet> getSets() { // retorna lista de EntitySets nas quais a entidade está inserida
+        return sets;
     }
 
     public String getName() {
@@ -45,7 +48,7 @@ public class Entity {
     }
 
     public double getTimeSinceCreation() {
-        return new Date().getTime() - this.creationTime;
+        return scheduler.getTime() - this.creationTime;
     }
 
     public void setCreationTime(double creationTime) {
@@ -66,5 +69,13 @@ public class Entity {
 
     public void setPetriNet(PetriNet petriNet) {
         this.petriNet = petriNet;
+    }
+
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
+
+    public void setScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
     }
 }

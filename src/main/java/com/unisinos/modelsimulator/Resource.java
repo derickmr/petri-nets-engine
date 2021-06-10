@@ -1,17 +1,17 @@
 package com.unisinos.modelsimulator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Resource {
+
     private String name;
     private int id; // atribuído pelo Scheduler
     private int quantity; // quantidade de recursos disponíveis
     private Scheduler scheduler;
     private double initialTime;
-    private Map<Double, Integer> quantityOverTime;
+    private double totalAllocationTime;
+    private LinkedHashMap<Double, Integer> quantityOverTime;
+    private Tuple<Double, Integer> lastAllocation;
 
     public Resource(String name, int quantity) {
         this.name = name;
@@ -23,8 +23,11 @@ public class Resource {
         this.quantity = quantity;
         this.scheduler = scheduler;
         this.initialTime = scheduler.getTime();
-        this.quantityOverTime = new HashMap<>();
+        this.quantityOverTime = new LinkedHashMap<>();
         quantityOverTime.put(scheduler.getTime(), quantity);
+        lastAllocation = new Tuple<>(scheduler.getTime(), quantity);
+        this.totalAllocationTime = 0;
+
     }
 
     public boolean allocate(int quantity) { // true se conseguiu alocar os recursos
@@ -33,6 +36,9 @@ public class Resource {
         }
         this.quantity -= quantity;
         quantityOverTime.put(scheduler.getTime(), this.quantity);
+        if (lastAllocation.value != 0) {
+            totalAllocationTime += scheduler.getTime() - lastAllocation.key;
+        }
         return true;
     }
 
@@ -44,9 +50,18 @@ public class Resource {
     // coleta de estatísticas
 
     public double allocationRate() { // percentual do tempo (em relação ao tempo total simulado) em que estes recursos foram alocados
-//        double currentTime = scheduler.getTime();
-//        return (currentTime - initialTime) / currentTime;
-        return 0;
+
+        if (quantityOverTime.size() == 1) {
+            int firstValue = quantityOverTime.entrySet().stream().findFirst().get().getValue();
+            if (firstValue == 0) {
+                return 0.0;
+            }
+            else {
+                return 1.0;
+            }
+        }
+
+        return totalAllocationTime/scheduler.getTime();
     }
 
     public double averageAllocation() { // quantidade média destes recursos que foram alocados (em relação ao tempo total simulado)

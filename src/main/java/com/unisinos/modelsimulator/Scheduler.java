@@ -1,9 +1,11 @@
 package com.unisinos.modelsimulator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Scheduler {
     private double time;
+    List<Event> events;
 
     public double getTime() { // retorna o tempo atual do modelo
         return time;
@@ -83,7 +85,7 @@ public class Scheduler {
     }
 
     public int createEvent(String name) {
-        //implement
+
         return 0; //return event id of the newly created event
     }
 
@@ -139,5 +141,17 @@ public class Scheduler {
     public int maxEntitiesPresent() {
         //implement
         return 0;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
+    }
+
+    public List<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(List<Event> events) {
+        this.events = events;
     }
 }
