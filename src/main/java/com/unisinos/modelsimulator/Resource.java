@@ -24,8 +24,8 @@ public class Resource {
         this.scheduler = scheduler;
         this.initialTime = scheduler.getTime();
         this.quantityOverTime = new LinkedHashMap<>();
-        quantityOverTime.put(scheduler.getTime(), quantity);
-        lastAllocation = new Tuple<>(scheduler.getTime(), quantity);
+        quantityOverTime.put(scheduler.getTime(), this.quantity);
+        lastAllocation = new Tuple<>(scheduler.getTime(), this.quantity);
         this.totalAllocationTime = 0;
 
     }
@@ -39,12 +39,17 @@ public class Resource {
         if (lastAllocation.value != 0) {
             totalAllocationTime += scheduler.getTime() - lastAllocation.key;
         }
+        lastAllocation = new Tuple<>(scheduler.getTime(), quantity);
         return true;
     }
 
     public void release(int quantity) { // deve ter um jeito melhor de fazer issae
         this.quantity += quantity;
         quantityOverTime.put(scheduler.getTime(), this.quantity);
+        if (lastAllocation.value != 0) {
+            totalAllocationTime += scheduler.getTime() - lastAllocation.key;
+        }
+        lastAllocation = new Tuple<>(scheduler.getTime(), this.quantity);
     }
 
     // coleta de estatísticas
