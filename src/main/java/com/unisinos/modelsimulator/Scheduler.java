@@ -11,7 +11,7 @@ public class Scheduler {
         return time;
     }
 
-    // disparo de eventos e processos
+    // disparo de eventos
 
     public void scheduleNow(Event event) {
         //implement
@@ -22,18 +22,6 @@ public class Scheduler {
     }
 
     public void scheduleAt(Event event, int absoluteTime) { // sei lá se é int, vou deixar como int por hora
-        //implement
-    }
-
-    public void startProcessNow(int processId) {
-        //implement
-    }
-
-    public void startProcessIn(int processId, int timeToStart) { // sei lá se é int, vou deixar como int por hora
-        //implement
-    }
-
-    public void startProcessAt(int processId, int absoluteTime) { // sei lá se é int, vou deixar como int por hora
         //implement
     }
 
