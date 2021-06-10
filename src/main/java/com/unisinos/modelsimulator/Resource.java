@@ -61,6 +61,10 @@ public class Resource {
             }
         }
 
+        if (lastAllocation.value != 0) {
+            return (totalAllocationTime + scheduler.getTime() - lastAllocation.key)/scheduler.getTime();
+        }
+
         return totalAllocationTime/scheduler.getTime();
     }
 
