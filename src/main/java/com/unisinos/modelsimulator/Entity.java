@@ -12,6 +12,8 @@ public class Entity {
     private int priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
     private PetriNet petriNet;
     private Scheduler scheduler;
+
+    //TODO verificar como fazer/onde atribuir isso aqui
     private List<EntitySet> sets;
 
     public Entity(String name) {
@@ -77,5 +79,9 @@ public class Entity {
 
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
+    }
+
+    public void setSets(List<EntitySet> sets) {
+        this.sets = sets;
     }
 }

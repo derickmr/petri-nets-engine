@@ -36,6 +36,14 @@ public class EntitySet {
         this.entities = new ArrayList<>();
     }
 
+    public EntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize) {
+        this.name = name;
+        this.maxPossibleSize = maxPossibleSize;
+        this.entities = entities;
+        this.mode = NONE;
+        this.entities = new ArrayList<>();
+    }
+
     public EntitySet(String name, EntitySetMode mode, int maxPossibleSize, double currentTime) {
         this.name = name;
         this.maxPossibleSize = maxPossibleSize;
