@@ -92,4 +92,52 @@ public class Resource {
     public void setInitialTime(double initialTime) {
         this.initialTime = initialTime;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalAllocationTime() {
+        return totalAllocationTime;
+    }
+
+    public void setTotalAllocationTime(double totalAllocationTime) {
+        this.totalAllocationTime = totalAllocationTime;
+    }
+
+    public LinkedHashMap<Double, Integer> getQuantityOverTime() {
+        return quantityOverTime;
+    }
+
+    public void setQuantityOverTime(LinkedHashMap<Double, Integer> quantityOverTime) {
+        this.quantityOverTime = quantityOverTime;
+    }
+
+    public Tuple<Double, Integer> getLastAllocation() {
+        return lastAllocation;
+    }
+
+    public void setLastAllocation(Tuple<Double, Integer> lastAllocation) {
+        this.lastAllocation = lastAllocation;
+    }
 }
