@@ -69,7 +69,6 @@ public class Scheduler {
 
     protected void executeEvent (Event event) {
         event.execute();
-        events.remove(event);
         time = getNextEvent().getEventTime();
     }
 
