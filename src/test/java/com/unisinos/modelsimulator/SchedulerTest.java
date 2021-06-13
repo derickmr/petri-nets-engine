@@ -32,4 +32,10 @@ public class SchedulerTest {
     assertNotNull("distribution is null", distribution);
 
   }
+  @Test
+  public void simpleEventsTest() throws MathException {
+    Event event = scheduler.createEvent("fim do semestre");
+    scheduler.scheduleIn(event, scheduler.exponential(10));
+    scheduler.simulate();
+  }
 }
