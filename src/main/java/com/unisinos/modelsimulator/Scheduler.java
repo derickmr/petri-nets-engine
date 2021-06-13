@@ -9,8 +9,17 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 public class Scheduler {
     private double time;
-    private List<Event> events = new ArrayList<>();
-    private List<Resource> resources = new ArrayList<>();
+    private List<Event> events;
+    private List<Resource> resources;
+    private List<EntitySet> entitySets;
+
+    public Scheduler() {
+        time = 0;
+        events = new ArrayList<>();
+        resources = new ArrayList<>();
+        entitySets = new ArrayList<>();
+    }
+
     //Variável pra controlar os ids
     private int currentId = 1;
 
@@ -94,6 +103,7 @@ public class Scheduler {
     public int createResource(String name, int quantity) {
         Resource resource = new Resource(name, quantity, this);
         resource.setId(currentId++);
+        resources.add(resource);
 
         return resource.getId(); // retorna o id
     }
@@ -125,6 +135,7 @@ public class Scheduler {
     public int createEntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize) {
         EntitySet entitySet = new EntitySet(name, entities, maxPossibleSize);
         entitySet.setId(currentId++);
+        entitySets.add(entitySet);
         return entitySet.getId();
     }
 
@@ -211,5 +222,13 @@ public class Scheduler {
 
     public void setCurrentId(int currentId) {
         this.currentId = currentId;
+    }
+
+    public List<EntitySet> getEntitySets() {
+        return entitySets;
+    }
+
+    public void setEntitySets(List<EntitySet> entitySets) {
+        this.entitySets = entitySets;
     }
 }
