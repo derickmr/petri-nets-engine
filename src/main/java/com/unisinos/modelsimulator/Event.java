@@ -9,13 +9,14 @@ public class Event {
     private Scheduler scheduler;
     private EntitySet entitySet;
     private Resource resource;
+    public boolean executed = false;
 
     public Event(String name) {
         this.name = name;
     }
 
-    public void execute(){
-        //Implementado nas classes que extendem
+    public void execute() {
+        this.executed = true;
     }
 
     public void createEntity(Entity entity) {
