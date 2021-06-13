@@ -1,6 +1,8 @@
 package com.unisinos.modelsimulator.restaurante;
 
+import com.unisinos.modelsimulator.EntitySet;
 import com.unisinos.modelsimulator.Event;
+import com.unisinos.modelsimulator.Resource;
 import com.unisinos.modelsimulator.Scheduler;
 import com.unisinos.modelsimulator.restaurante.events.ChegadaGrupo;
 
@@ -12,12 +14,12 @@ public class RestauranteMain {
 
         Scheduler scheduler = new Scheduler();
 
-        int filaCaixa1Id = scheduler.createEntitySet("Fila caixa 1", new ArrayList<>(), 100);
-        int filaCaixa2Id = scheduler.createEntitySet("Fila caixa 2", new ArrayList<>(), 100);
-        int caixa1Id = scheduler.createResource("Caixa 1", 1);
-        int caixa2Id = scheduler.createResource("Caixa 2", 1);
-        Event chegadaGrupo = scheduler.createEvent(new ChegadaGrupo("Chegada grupo", scheduler.getEntitySet(filaCaixa1Id), scheduler.getEntitySet(filaCaixa2Id),
-                scheduler.getResource(caixa1Id), scheduler.getResource(caixa2Id), scheduler));
+        EntitySet filaCaixa1 = scheduler.createEntitySet("Fila caixa 1", new ArrayList<>(), 100);
+        EntitySet filaCaixa2 = scheduler.createEntitySet("Fila caixa 2", new ArrayList<>(), 100);
+        Resource caixa1 = scheduler.createResource("Caixa 1", 1);
+        Resource caixa2 = scheduler.createResource("Caixa 2", 1);
+        Event chegadaGrupo = scheduler.createEvent(new ChegadaGrupo("Chegada grupo", filaCaixa1, filaCaixa2,
+                caixa1, caixa2, scheduler));
         scheduler.scheduleNow(chegadaGrupo);
 
         scheduler.simulate();

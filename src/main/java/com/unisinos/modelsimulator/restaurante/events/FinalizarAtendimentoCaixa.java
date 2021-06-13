@@ -21,8 +21,6 @@ public class FinalizarAtendimentoCaixa extends Event {
     @Override
     public void execute() {
         super.execute();
-        getScheduler().destroyEntity(grupo.getId());
-        getResource().release(1);
 
         if (grupo.getQuantity() == 1) {
             //TODO
