@@ -6,9 +6,9 @@ public class Event {
     private String name;
     private int eventId; // atribuído pelo Scheduler
     private double eventTime; //atribuído pelo Scheduler
-    private Scheduler scheduler;
-    private EntitySet entitySet;
-    private Resource resource;
+    protected Scheduler scheduler;
+    protected EntitySet entitySet;
+    protected Resource resource;
     public boolean executed = false;
 
     public Event(String name) {
@@ -28,10 +28,6 @@ public class Event {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getEventId() {
@@ -54,23 +50,12 @@ public class Event {
         return scheduler;
     }
 
-    public void setScheduler(Scheduler scheduler) {
-        this.scheduler = scheduler;
-    }
 
     public EntitySet getEntitySet() {
         return entitySet;
     }
 
-    public void setEntitySet(EntitySet entitySet) {
-        this.entitySet = entitySet;
-    }
-
     public Resource getResource() {
         return resource;
-    }
-
-    public void setResource(Resource resource) {
-        this.resource = resource;
     }
 }

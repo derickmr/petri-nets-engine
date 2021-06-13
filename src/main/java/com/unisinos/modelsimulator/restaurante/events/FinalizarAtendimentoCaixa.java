@@ -13,9 +13,9 @@ public class FinalizarAtendimentoCaixa extends Event {
     public FinalizarAtendimentoCaixa (String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.grupo = grupo;
-        setResource(caixa);
-        setEntitySet(filaCaixa);
-        setScheduler(scheduler);
+        this.resource = caixa;
+        this.entitySet = filaCaixa;
+        this.scheduler = scheduler;
     }
 
     @Override
