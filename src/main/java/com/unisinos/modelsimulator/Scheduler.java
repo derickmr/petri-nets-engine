@@ -110,6 +110,12 @@ public class Scheduler {
         return event.getEventId(); //return event id of the newly created event
     }
 
+    public int createEvent(Event event) {
+        event.setEventId(currentId++);
+        events.add(event);
+        return event.getEventId();
+    }
+
     public Event getEvent(int eventId) {
         return events.stream()
                 .filter(event -> event.getEventId() == eventId)
