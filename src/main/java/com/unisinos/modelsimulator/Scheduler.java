@@ -9,8 +9,8 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 public class Scheduler {
     private double time;
-    private List<Event> events;
-    private List<Resource> resources;
+    private List<Event> events = new ArrayList<>();
+    private List<Resource> resources = new ArrayList<>();
     //Variável pra controlar os ids
     private int currentId = 1;
 
@@ -103,17 +103,17 @@ public class Scheduler {
         return new Resource("implement", 1);
     }
 
-    public int createEvent(String name) {
+    public Event createEvent(String name) {
         Event event = new Event(name);
         event.setEventId(currentId++);
         events.add(event);
-        return event.getEventId(); //return event id of the newly created event
+        return event;
     }
 
-    public int createEvent(Event event) {
+    public Event createEvent(Event event) {
         event.setEventId(currentId++);
         events.add(event);
-        return event.getEventId();
+        return event;
     }
 
     public Event getEvent(int eventId) {
@@ -180,7 +180,7 @@ public class Scheduler {
     //Próximo evento a ser executado
     public Event getNextEvent() {
         for (Event event : getEvents()) {
-            if (event.getEventTime() >= time) {
+            if (event.getEventTime() > time) {
                 return event;
             }
         }
