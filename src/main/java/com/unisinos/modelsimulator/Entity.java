@@ -12,6 +12,7 @@ public class Entity {
     private int priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
     private PetriNet petriNet;
     private Scheduler scheduler;
+    private int quantity;
 
     //TODO verificar como fazer/onde atribuir isso aqui
     private List<EntitySet> sets;
@@ -83,5 +84,13 @@ public class Entity {
 
     public void setSets(List<EntitySet> sets) {
         this.sets = sets;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

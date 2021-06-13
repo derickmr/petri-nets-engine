@@ -8,6 +8,7 @@ public class Event {
     private double eventTime; //atribuído pelo Scheduler
     private Scheduler scheduler;
     private EntitySet entitySet;
+    private Resource resource;
 
     public Event(String name) {
         this.name = name;
@@ -62,5 +63,13 @@ public class Event {
 
     public void setEntitySet(EntitySet entitySet) {
         this.entitySet = entitySet;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
     }
 }
