@@ -1,8 +1,11 @@
 package com.unisinos.modelsimulator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.apache.commons.math.MathException;
+import org.apache.commons.math.distribution.ExponentialDistributionImpl;
+import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 public class Scheduler {
     private double time;
@@ -112,18 +115,20 @@ public class Scheduler {
     // random variates
 
     public double uniform(double minValue, double maxValue) {
-        //implement
-        return 0;
+        double difference = maxValue - minValue;
+        double res = minValue;
+        res += Math.random() * difference;
+        return res;
     }
 
-    public double exponential(double meanValue) {
-        //implement
-        return 0;
+    public double exponential(double meanValue) throws MathException {
+        ExponentialDistributionImpl exponential = new ExponentialDistributionImpl(meanValue);
+        return exponential.sample();
     }
 
-    public double normal(double meanValue, double stdDeviationValue) {
-        //implement
-        return 0;
+    public double normal(double meanValue, double stdDeviationValue) throws MathException {
+        NormalDistributionImpl normal = new NormalDistributionImpl(meanValue, stdDeviationValue);
+        return normal.sample();
     }
 
     // coleta de estatística
