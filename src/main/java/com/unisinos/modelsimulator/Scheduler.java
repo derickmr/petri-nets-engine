@@ -67,8 +67,9 @@ public class Scheduler {
     }
 
     protected void executeEvent (Event event) {
-        time = event.getEventTime();
         event.execute();
+        events.remove(event);
+        time = getNextEvent().getEventTime();
     }
 
     public void simulateUntil(double absoluteTime) {
@@ -109,8 +110,9 @@ public class Scheduler {
     }
 
     public Resource getResource(int id) {
-        //implement
-        return new Resource("implement", 1);
+        return resources.stream().filter(
+                resource -> resource.getId() == id
+        ).findFirst().orElse(null);
     }
 
     public Event createEvent(String name) {
@@ -140,8 +142,9 @@ public class Scheduler {
     }
 
     public EntitySet getEntitySet(int id) {
-        //implement
-        return null;
+        return entitySets.stream().filter(
+                entitySet -> entitySet.getId() == id
+        ).findFirst().orElse(null);
     }
 
     // random variates
@@ -191,7 +194,7 @@ public class Scheduler {
     //Próximo evento a ser executado
     public Event getNextEvent() {
         for (Event event : getEvents()) {
-            if (event.getEventTime() > time) {
+            if (event.getEventTime() >= time) {
                 return event;
             }
         }

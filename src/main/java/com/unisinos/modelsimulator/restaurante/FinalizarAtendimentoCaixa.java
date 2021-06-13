@@ -40,8 +40,11 @@ public class FinalizarAtendimentoCaixa extends Event {
             //Caso não hajam mesas disponíveis, o grupo aguarda em FilaMesas;
         }
 
+        getScheduler().destroyEntity(grupo.getId());
+        getResource().release(1);
+
         if (!getEntitySet().isEmpty()) {
-            getScheduler().scheduleNow(new AtendimentoCaixa("Atendimento Caixa", getResource(), getEntitySet().remove(), getEntitySet(), getScheduler()));
+            getScheduler().scheduleNow(getScheduler().createEvent(new AtendimentoCaixa("Atendimento Caixa", getResource(), getEntitySet().remove(), getEntitySet(), getScheduler())));
         }
     }
 }

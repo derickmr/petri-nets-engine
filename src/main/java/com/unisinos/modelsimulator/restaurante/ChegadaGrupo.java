@@ -14,8 +14,9 @@ public class ChegadaGrupo extends Event {
     private static final double THREE_HOURS_IN_SECONDS = 10800;
     private static final double THREE_MINUTES_IN_SECONDS = 180;
 
-    public ChegadaGrupo(String name, EntitySet filaCaixa1, EntitySet filaCaixa2, Resource caixa1, Resource caixa2) {
+    public ChegadaGrupo(String name, EntitySet filaCaixa1, EntitySet filaCaixa2, Resource caixa1, Resource caixa2, Scheduler scheduler) {
         super(name);
+        this.scheduler = scheduler;
         this.filaCaixa1 = filaCaixa1;
         this.filaCaixa2 = filaCaixa2;
         this.caixa1 = caixa1;
@@ -32,10 +33,10 @@ public class ChegadaGrupo extends Event {
 
         //O grupo sempre escolhe a menor fila.
         if (filaCaixa1.getSize() < filaCaixa2.getSize()) {
-            scheduler.scheduleNow(new AtendimentoCaixa("Atendimento Caixa 1", caixa1, grupo, filaCaixa1, scheduler));
+            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento Caixa 1", caixa1, grupo, filaCaixa1, scheduler)));
         }
         else {
-            scheduler.scheduleNow(new AtendimentoCaixa("Atendimento Caixa 2", caixa2, grupo, filaCaixa2, scheduler));
+            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento Caixa 2", caixa2, grupo, filaCaixa2, scheduler)));
 
         }
 
@@ -49,7 +50,7 @@ public class ChegadaGrupo extends Event {
             } catch (MathException e) {
                 e.printStackTrace();
             }
-            scheduler.scheduleIn(this, eventTime);
+            scheduler.scheduleIn(scheduler.createEvent(new ChegadaGrupo("Chegada grupo", filaCaixa1, filaCaixa2, caixa1, caixa2, scheduler)), eventTime);
         }
 
     }

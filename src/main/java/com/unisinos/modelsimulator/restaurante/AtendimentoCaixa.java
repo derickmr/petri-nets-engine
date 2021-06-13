@@ -22,12 +22,12 @@ public class AtendimentoCaixa extends Event {
 
     @Override
     public void execute() {
-        if (!getEntitySet().isEmpty()) {
+        if (grupo != null || !getEntitySet().isEmpty()) {
 
             if (getResource().allocate(1)) { //conseguiu alocar caixa pra atender
                 //Agenda final do atendimento em normal (8,2) minutos
                 try {
-                    getScheduler().scheduleIn(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", getResource(), grupo, getEntitySet(), getScheduler()), getScheduler().normal(8, 2));
+                    getScheduler().scheduleIn(getScheduler().createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", getResource(), grupo, getEntitySet(), getScheduler())), getScheduler().normal(8, 2));
                 } catch (MathException e) {
                     e.printStackTrace();
                 }
