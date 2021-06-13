@@ -55,7 +55,6 @@ public class Scheduler {
     }
 
     public void simulateOneStep() {
-        //TODO lógica para executar a cada entrada do teclado
         executeEvent(getNextEvent());
     }
 
@@ -68,8 +67,8 @@ public class Scheduler {
     }
 
     protected void executeEvent (Event event) {
+        time = event.getEventTime();
         event.execute();
-        time = getNextEvent().getEventTime();
     }
 
     public void simulateUntil(double absoluteTime) {
@@ -106,7 +105,7 @@ public class Scheduler {
         resource.setId(currentId++);
         resources.add(resource);
 
-        return resource; // retorna o id
+        return resource;
     }
 
     public Resource getResource(int id) {
