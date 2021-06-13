@@ -21,7 +21,6 @@ public class FinalizarAtendimentoCaixa extends Event {
     @Override
     public void execute() {
         super.execute();
-        getScheduler().destroyEntity(grupo.getId());
         getResource().release(1);
 
         if (grupo.getQuantity() == 1) {
@@ -41,7 +40,6 @@ public class FinalizarAtendimentoCaixa extends Event {
             //Caso não hajam mesas disponíveis, o grupo aguarda em FilaMesas;
         }
 
-        getScheduler().destroyEntity(grupo.getId());
         getResource().release(1);
 
         if (!getEntitySet().isEmpty()) {
