@@ -14,22 +14,15 @@ public class SchedulerTest {
     this.scheduler = new Scheduler();
   }
   @Test
-  public void uniformTest() {
-    double distribution = scheduler.uniform(10, 50);
-    assertTrue("greater than 10 and lesser than 50", distribution >= 10 && distribution <= 50);
-  }
-
-  @Test
-  public void exponentialTest() throws MathException {
-    double distribution = scheduler.exponential(50);
-    assertNotNull("distribution is null", distribution);
-
-  }
-
-  @Test
-  public void normalTest() throws MathException {
-    double distribution = scheduler.normal(50, 2);
-    assertNotNull("distribution is null", distribution);
-
+  public void simpleEventsTest() throws MathException {
+    Event futureEvent = new Event("fim do semestre");
+    scheduler.createEvent(futureEvent);
+    scheduler.scheduleIn(futureEvent, Scheduler.exponential(10));
+    Event nowEvent = new Event("trabalho do grau b");
+    scheduler.createEvent(nowEvent);
+    scheduler.scheduleNow(nowEvent);
+    scheduler.simulate();
+    assertTrue(futureEvent.executed);
+    assertTrue(nowEvent.executed);
   }
 }
