@@ -2,6 +2,7 @@ package com.unisinos.modelsimulator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ExponentialDistributionImpl;
@@ -100,24 +101,17 @@ public class Scheduler {
         return null;
     }
 
-    public int createResource(String name, int quantity) {
+    public Resource createResource(String name, int quantity) {
         Resource resource = new Resource(name, quantity, this);
         resource.setId(currentId++);
         resources.add(resource);
 
-        return resource.getId(); // retorna o id
+        return resource; // retorna o id
     }
 
     public Resource getResource(int id) {
         //implement
         return new Resource("implement", 1);
-    }
-
-    public Event createEvent(String name) {
-        Event event = new Event(name);
-        event.setEventId(currentId++);
-        events.add(event);
-        return event;
     }
 
     public Event createEvent(Event event) {
@@ -132,11 +126,11 @@ public class Scheduler {
                 .findFirst().orElse(null);
     }
 
-    public int createEntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize) {
+    public EntitySet createEntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize) {
         EntitySet entitySet = new EntitySet(name, entities, maxPossibleSize);
         entitySet.setId(currentId++);
         entitySets.add(entitySet);
-        return entitySet.getId();
+        return entitySet;
     }
 
     public EntitySet getEntitySet(int id) {
@@ -146,19 +140,19 @@ public class Scheduler {
 
     // random variates
 
-    public double uniform(double minValue, double maxValue) {
+    public static double uniform(double minValue, double maxValue) {
         double difference = maxValue - minValue;
         double res = minValue;
         res += Math.random() * difference;
         return res;
     }
 
-    public double exponential(double meanValue) throws MathException {
+    public static double exponential(double meanValue) throws MathException {
         ExponentialDistributionImpl exponential = new ExponentialDistributionImpl(meanValue);
         return exponential.sample();
     }
 
-    public double normal(double meanValue, double stdDeviationValue) throws MathException {
+    public static double normal(double meanValue, double stdDeviationValue) throws MathException {
         NormalDistributionImpl normal = new NormalDistributionImpl(meanValue, stdDeviationValue);
         return normal.sample();
     }
@@ -191,7 +185,7 @@ public class Scheduler {
     //Próximo evento a ser executado
     public Event getNextEvent() {
         for (Event event : getEvents()) {
-            if (event.getEventTime() > time) {
+            if (event.getEventTime() >= time) {
                 return event;
             }
         }
@@ -201,7 +195,7 @@ public class Scheduler {
     //Eventos sempre ordenados pelo tempo a ser executado
     public List<Event> getEvents() {
         events.sort(Comparator.comparingDouble(Event::getEventTime));
-        return events;
+        return events.stream().filter(e -> !e.executed).collect(Collectors.toList());
     }
 
     public void setEvents(List<Event> events) {
