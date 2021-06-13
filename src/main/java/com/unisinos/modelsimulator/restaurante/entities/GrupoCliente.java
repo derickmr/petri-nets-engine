@@ -1,4 +1,4 @@
-package com.unisinos.modelsimulator.restaurante;
+package com.unisinos.modelsimulator.restaurante.entities;
 
 import com.unisinos.modelsimulator.Entity;
 import com.unisinos.petri.PetriNet;

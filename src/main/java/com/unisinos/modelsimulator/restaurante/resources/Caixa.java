@@ -1,4 +1,4 @@
-package com.unisinos.modelsimulator.restaurante;
+package com.unisinos.modelsimulator.restaurante.resources;
 
 import com.unisinos.modelsimulator.EntitySet;
 import com.unisinos.modelsimulator.Resource;

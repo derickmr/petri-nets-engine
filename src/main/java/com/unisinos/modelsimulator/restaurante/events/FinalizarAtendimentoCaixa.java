@@ -1,4 +1,4 @@
-package com.unisinos.modelsimulator.restaurante;
+package com.unisinos.modelsimulator.restaurante.events;
 
 import com.unisinos.modelsimulator.*;
 
@@ -20,6 +20,7 @@ public class FinalizarAtendimentoCaixa extends Event {
 
     @Override
     public void execute() {
+        super.execute();
         getScheduler().destroyEntity(grupo.getId());
         getResource().release(1);
 

@@ -2,6 +2,7 @@ package com.unisinos.modelsimulator.restaurante;
 
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Scheduler;
+import com.unisinos.modelsimulator.restaurante.events.ChegadaGrupo;
 
 import java.util.ArrayList;
 

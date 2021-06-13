@@ -1,4 +1,4 @@
-package com.unisinos.modelsimulator.restaurante;
+package com.unisinos.modelsimulator.restaurante.events;
 
 import com.unisinos.modelsimulator.*;
 import org.apache.commons.math.MathException;
@@ -22,6 +22,7 @@ public class AtendimentoCaixa extends Event {
 
     @Override
     public void execute() {
+        super.execute();
         if (grupo != null || !getEntitySet().isEmpty()) {
 
             if (getResource().allocate(1)) { //conseguiu alocar caixa pra atender

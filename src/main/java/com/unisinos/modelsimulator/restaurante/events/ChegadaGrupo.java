@@ -1,6 +1,7 @@
-package com.unisinos.modelsimulator.restaurante;
+package com.unisinos.modelsimulator.restaurante.events;
 
 import com.unisinos.modelsimulator.*;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 import org.apache.commons.math.MathException;
 
 public class ChegadaGrupo extends Event {
@@ -25,7 +26,7 @@ public class ChegadaGrupo extends Event {
 
     @Override
     public void execute() {
-
+        super.execute();
         //Grupo pode ser de 1 a 4 pessoas (sorteio randomico).
         int quantity = (int) (Math.random() * 4) + 1;
         Entity grupo = new GrupoCliente("Grupo de " + quantity + " clientes");
