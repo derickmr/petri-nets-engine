@@ -39,20 +39,33 @@ public class Scheduler {
     // controlando tempo de execução
 
     public void simulate() {
-        getEvents().forEach(Event::execute);
+        while (getNextEvent() != null) {
+            executeEvent(getNextEvent());
+        }
     }
 
     public void simulateOneStep() {
         //TODO lógica para executar a cada entrada do teclado
-        getNextEvent().execute();
+        executeEvent(getNextEvent());
     }
 
     public void simulateBy(double duration) {
-        //implement
+        double timeLimit = time + duration;
+
+        while (time <= timeLimit) {
+            executeEvent(getNextEvent());
+        }
+    }
+
+    protected void executeEvent (Event event) {
+        time = event.getEventTime();
+        event.execute();
     }
 
     public void simulateUntil(double absoluteTime) {
-        //implement
+        while (time <= absoluteTime) {
+            executeEvent(getNextEvent());
+        }
     }
 
     // criação destruição e acesso para componentes
@@ -79,8 +92,10 @@ public class Scheduler {
     }
 
     public int createResource(String name, int quantity) {
+        Resource resource = new Resource(name, quantity, this);
+        resource.setId(currentId++);
 
-        return 0; // retorna o id
+        return resource.getId(); // retorna o id
     }
 
     public Resource getResource(int id) {
