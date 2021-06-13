@@ -47,7 +47,7 @@ public class ChegadaGrupo extends Event {
             //A cada exponencial (3) minutos chega um grupo de clientes
             double eventTime = 0;
             try {
-                eventTime = scheduler.exponential(THREE_MINUTES_IN_SECONDS);
+                eventTime = Scheduler.exponential(THREE_MINUTES_IN_SECONDS);
             } catch (MathException e) {
                 e.printStackTrace();
             }

@@ -14,10 +14,9 @@ public class AtendimentoCaixa extends Event {
     public AtendimentoCaixa(String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.grupo = grupo;
-
-        setResource(caixa);
-        setEntitySet(filaCaixa);
-        setScheduler(scheduler);
+        this.resource = caixa;
+        this.entitySet = filaCaixa;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -28,7 +27,8 @@ public class AtendimentoCaixa extends Event {
             if (getResource().allocate(1)) { //conseguiu alocar caixa pra atender
                 //Agenda final do atendimento em normal (8,2) minutos
                 try {
-                    getScheduler().scheduleIn(getScheduler().createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", getResource(), grupo, getEntitySet(), getScheduler())), getScheduler().normal(8, 2));
+                    Scheduler scheduler = getScheduler();
+                    scheduler.scheduleIn(scheduler.createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", getResource(), grupo, getEntitySet(), scheduler)), Scheduler.normal(8, 2));
                 } catch (MathException e) {
                     e.printStackTrace();
                 }

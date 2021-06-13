@@ -13,18 +13,20 @@ public class FinalizarAtendimentoCaixa extends Event {
     public FinalizarAtendimentoCaixa (String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.grupo = grupo;
-        setResource(caixa);
-        setEntitySet(filaCaixa);
-        setScheduler(scheduler);
+        this.resource = caixa;
+        this.entitySet = filaCaixa;
+        this.scheduler = scheduler;
     }
 
     @Override
     public void execute() {
         super.execute();
+        getResource().release(1);
 
         if (grupo.getQuantity() == 1) {
             //TODO
             //Se for grupo de 1 cliente, vai para o Balcão; se não houver banco disponível, aguarda na FilaBalc.
+
         }
 
         else if (grupo.getQuantity() == 2) {
@@ -39,7 +41,6 @@ public class FinalizarAtendimentoCaixa extends Event {
             //Caso não hajam mesas disponíveis, o grupo aguarda em FilaMesas;
         }
 
-        getScheduler().destroyEntity(grupo.getId());
         getResource().release(1);
 
         if (!getEntitySet().isEmpty()) {
