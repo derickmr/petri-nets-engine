@@ -44,7 +44,6 @@ public class ChegadaGrupo extends Event {
         }
 
         //Gerar grupos de clientes por 3 horas.
-        //TODO verificar se a geração de tempo está correta.
         if (scheduler.getTime() < THREE_HOURS_IN_SECONDS) {
             //A cada exponencial (3) minutos chega um grupo de clientes
             double eventTime = 0;

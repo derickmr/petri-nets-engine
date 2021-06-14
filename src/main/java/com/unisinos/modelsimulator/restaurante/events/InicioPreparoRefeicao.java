@@ -1,11 +1,17 @@
 package com.unisinos.modelsimulator.restaurante.events;
 
+import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
+import com.unisinos.modelsimulator.Scheduler;
 
 public class InicioPreparoRefeicao extends Event {
 
-  public InicioPreparoRefeicao(String name) {
-    super(name);
+  private Entity grupo;
+
+  public InicioPreparoRefeicao(String name, Entity grupo, Scheduler scheduler) {
+    super(name, scheduler);
+    this.grupo = grupo;
+    this.resource = scheduler.getResourceByName("cozinha");
   }
 
   @Override

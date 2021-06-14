@@ -1,11 +1,16 @@
 package com.unisinos.modelsimulator.restaurante.events;
 
+import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
+import com.unisinos.modelsimulator.Scheduler;
 
 public class ChegadaNaMesa4Lugares extends Event {
 
-  public ChegadaNaMesa4Lugares(String name) {
-    super(name);
+  private Entity grupo;
+
+  public ChegadaNaMesa4Lugares(String name, Entity grupo, Scheduler scheduler) {
+    super(name, scheduler);
+    this.grupo = grupo;
   }
 
   @Override

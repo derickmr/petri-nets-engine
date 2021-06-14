@@ -6,10 +6,6 @@ public class FinalizarAtendimentoCaixa extends Event {
 
     private Entity grupo;
 
-    public FinalizarAtendimentoCaixa(String name) {
-        super(name);
-    }
-
     public FinalizarAtendimentoCaixa (String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.grupo = grupo;
@@ -21,30 +17,31 @@ public class FinalizarAtendimentoCaixa extends Event {
     @Override
     public void execute() {
         super.execute();
-        getResource().release(1);
+        resource.release(1);
 
         if (grupo.getQuantity() == 1) {
-            //TODO
             //Se for grupo de 1 cliente, vai para o Balcão; se não houver banco disponível, aguarda na FilaBalc.
-            getScheduler().scheduleNow(getScheduler().createEvent(new ChegadaNoBalcao("Chegada Balcão", grupo, getScheduler())));
+            scheduler.scheduleNow(scheduler.createEvent(new ChegadaNoBalcao("Chegada Balcão", grupo, scheduler)));
         }
 
         else if (grupo.getQuantity() == 2) {
-            //TODO
+            scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa2Lugares("Chegada 2 lugares", grupo, scheduler)));
             //Se for de 2 a 4 clientes, vai para as mesas; grupo de 2 devem tentar sentar em mesas de 2 lugares.
             //Caso não hajam mesas disponíveis, o grupo aguarda em FilaMesas;
         }
 
         else {
-            //TODO
+            scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa4Lugares("Chegada 4 lugares", grupo, scheduler)));
             //Grupos de 3 ou 4 devem tentar mesas de 4 lugares;
             //Caso não hajam mesas disponíveis, o grupo aguarda em FilaMesas;
         }
 
-        getResource().release(1);
+        scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", grupo, scheduler)));
+
+        resource.release(1);
 
         if (!getEntitySet().isEmpty()) {
-            getScheduler().scheduleNow(getScheduler().createEvent(new AtendimentoCaixa("Atendimento " + getResource().getName(), getResource(), getEntitySet(), getScheduler())));
+            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento " + resource.getName(), resource, entitySet, scheduler)));
         }
     }
 }

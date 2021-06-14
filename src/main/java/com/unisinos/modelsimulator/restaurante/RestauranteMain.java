@@ -16,6 +16,7 @@ public class RestauranteMain {
         scheduler.createEntitySet("filaCaixa2", new ArrayList<>(), 100);
         scheduler.createResource("caixa1", 1);
         scheduler.createResource("caixa2", 1);
+        scheduler.createResource("cozinha", 3);
         Event chegadaGrupo = scheduler.createEvent(new ChegadaGrupo("Chegada grupo", scheduler));
         scheduler.scheduleNow(chegadaGrupo);
 

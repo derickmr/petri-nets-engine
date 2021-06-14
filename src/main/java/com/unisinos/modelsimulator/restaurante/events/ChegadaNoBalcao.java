@@ -22,6 +22,8 @@ public class ChegadaNoBalcao extends Event {
 
       if (!getResource().allocate(1)) { //'Grupo' não conseguiu lugar. Coloca na fila
          getEntitySet().insert(grupo);
+      } else {
+        
       }
 
     }
