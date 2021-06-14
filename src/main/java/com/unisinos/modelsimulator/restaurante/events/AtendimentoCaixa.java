@@ -5,7 +5,7 @@ import org.apache.commons.math.MathException;
 
 public class AtendimentoCaixa extends Event {
 
-    public AtendimentoCaixa(String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
+    public AtendimentoCaixa(String name, Resource caixa, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.resource = caixa;
         this.entitySet = filaCaixa;

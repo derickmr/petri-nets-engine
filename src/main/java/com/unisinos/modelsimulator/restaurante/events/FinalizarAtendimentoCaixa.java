@@ -44,7 +44,7 @@ public class FinalizarAtendimentoCaixa extends Event {
         getResource().release(1);
 
         if (!getEntitySet().isEmpty()) {
-            getScheduler().scheduleNow(getScheduler().createEvent(new AtendimentoCaixa("Atendimento Caixa", getResource(), getEntitySet().remove(), getEntitySet(), getScheduler())));
+            getScheduler().scheduleNow(getScheduler().createEvent(new AtendimentoCaixa("Atendimento " + getResource().getName(), getResource(), getEntitySet(), getScheduler())));
         }
     }
 }

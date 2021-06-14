@@ -35,11 +35,11 @@ public class ChegadaGrupo extends Event {
         //O grupo sempre escolhe a menor fila.
         if (filaCaixa1.getSize() < filaCaixa2.getSize()) {
             filaCaixa1.insert(grupo);
-            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento Caixa 1", caixa1, grupo, filaCaixa1, scheduler)));
+            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento Caixa 1", caixa1, filaCaixa1, scheduler)));
         }
         else {
             filaCaixa2.insert(grupo);
-            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento Caixa 2", caixa2, grupo, filaCaixa2, scheduler)));
+            scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento Caixa 2", caixa2, filaCaixa2, scheduler)));
 
         }
 
