@@ -2,6 +2,7 @@ package com.unisinos.modelsimulator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.commons.math.MathException;
@@ -116,7 +117,7 @@ public class Scheduler {
 
     public Resource getResourceByName(String name) {
         return resources.stream().filter(
-                resource -> resource.getName() == name
+                resource -> Objects.equals(resource.getName(), name)
         ).findFirst().orElse(null);
     }
 
