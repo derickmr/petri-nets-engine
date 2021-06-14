@@ -15,6 +15,11 @@ public class Event {
         this.name = name;
     }
 
+    public Event(String name, Scheduler scheduler) {
+        this.name = name;
+        this.scheduler = scheduler;
+    }
+
     public void execute() {
         this.executed = true;
     }

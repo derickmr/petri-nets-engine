@@ -26,7 +26,7 @@ public class FinalizarAtendimentoCaixa extends Event {
         if (grupo.getQuantity() == 1) {
             //TODO
             //Se for grupo de 1 cliente, vai para o Balcão; se não houver banco disponível, aguarda na FilaBalc.
-
+            getScheduler().scheduleNow(getScheduler().createEvent(new ChegadaNoBalcao("Chegada Balcão", grupo, getScheduler())));
         }
 
         else if (grupo.getQuantity() == 2) {
