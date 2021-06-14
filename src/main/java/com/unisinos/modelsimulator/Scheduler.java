@@ -114,6 +114,12 @@ public class Scheduler {
         ).findFirst().orElse(null);
     }
 
+    public Resource getResourceByName(String name) {
+        return resources.stream().filter(
+                resource -> resource.getName() == name
+        ).findFirst().orElse(null);
+    }
+
     public Event createEvent(Event event) {
         event.setEventId(currentId++);
         events.add(event);
@@ -131,6 +137,12 @@ public class Scheduler {
         entitySet.setId(currentId++);
         entitySets.add(entitySet);
         return entitySet;
+    }
+
+    public EntitySet getEntitySetByName(String name) {
+        return entitySets.stream().filter(
+                entitySet -> entitySet.getName() == name
+        ).findFirst().orElse(null);
     }
 
     public EntitySet getEntitySet(int id) {

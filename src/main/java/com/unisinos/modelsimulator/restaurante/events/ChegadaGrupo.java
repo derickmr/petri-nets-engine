@@ -15,13 +15,13 @@ public class ChegadaGrupo extends Event {
     private static final double THREE_HOURS_IN_SECONDS = 10800;
     private static final double THREE_MINUTES_IN_SECONDS = 180;
 
-    public ChegadaGrupo(String name, EntitySet filaCaixa1, EntitySet filaCaixa2, Resource caixa1, Resource caixa2, Scheduler scheduler) {
+    public ChegadaGrupo(String name, Scheduler scheduler) {
         super(name);
         this.scheduler = scheduler;
-        this.filaCaixa1 = filaCaixa1;
-        this.filaCaixa2 = filaCaixa2;
-        this.caixa1 = caixa1;
-        this.caixa2 = caixa2;
+        this.filaCaixa1 = scheduler.getEntitySetByName("filaCaixa1");
+        this.filaCaixa2 = scheduler.getEntitySetByName("filaCaixa2");
+        this.caixa1 = scheduler.getResourceByName("caixa1");
+        this.caixa2 = scheduler.getResourceByName("caixa2");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ChegadaGrupo extends Event {
             } catch (MathException e) {
                 e.printStackTrace();
             }
-            scheduler.scheduleIn(scheduler.createEvent(new ChegadaGrupo("Chegada grupo", filaCaixa1, filaCaixa2, caixa1, caixa2, scheduler)), eventTime);
+            scheduler.scheduleIn(scheduler.createEvent(new ChegadaGrupo("Chegada grupo", scheduler)), eventTime);
         }
 
     }

@@ -14,18 +14,18 @@ public class EntitySet {
     private String name;
     private int id;
     private List<Entity> entities;
-    private List<Entity> allEntities;
+    private List<Entity> allEntities = new ArrayList<>();
     private EntitySetMode mode;
     private int size;
     private int maxPossibleSize;
     private double currentTime;
     private double lastLogTime;
     private double timeGap;
-    private Map<Double, Integer> log;
+    private Map<Double, Integer> log = new HashMap<>();
     private boolean isLogging;
     private double entitySetCreationTime;
-    private Map<Integer, Double> entitiesTimeInSet;
-    private Map<Double, Integer> entitiesSizeInTime;
+    private Map<Integer, Double> entitiesTimeInSet = new HashMap<>();
+    private Map<Double, Integer> entitiesSizeInTime = new HashMap<>();
 
 
     public EntitySet(String name, EntitySetMode mode, int maxPossibleSize) {

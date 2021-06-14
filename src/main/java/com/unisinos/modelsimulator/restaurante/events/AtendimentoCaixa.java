@@ -5,10 +5,6 @@ import org.apache.commons.math.MathException;
 
 public class AtendimentoCaixa extends Event {
 
-    public AtendimentoCaixa(String name) {
-        super(name);
-    }
-
     public AtendimentoCaixa(String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.resource = caixa;
@@ -26,7 +22,7 @@ public class AtendimentoCaixa extends Event {
                 try {
                     Entity grupo = entitySet.remove();
                     Scheduler scheduler = getScheduler();
-                    scheduler.scheduleIn(scheduler.createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", getResource(), grupo, getEntitySet(), scheduler)), Scheduler.normal(8, 2));
+                    scheduler.scheduleIn(scheduler.createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", resource, grupo, entitySet, scheduler)), Scheduler.normal(8, 2));
                 } catch (MathException e) {
                     e.printStackTrace();
                 }
