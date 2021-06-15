@@ -6,10 +6,6 @@ public class ChegadaNoBalcao extends Event {
 
     private Entity grupo;
 
-    public ChegadaNoBalcao(String name, Scheduler scheduler) {
-        super(name, scheduler);
-    }
-
     public ChegadaNoBalcao(String name, Entity grupo, Scheduler scheduler) {
         super(name, scheduler);
         this.grupo = grupo;
@@ -20,12 +16,9 @@ public class ChegadaNoBalcao extends Event {
     @Override
     public void execute() {
 
-      if (!getResource().allocate(1)) { //'Grupo' não conseguiu lugar. Coloca na fila
-         getEntitySet().insert(grupo);
-      } else {
-        
+      if (!resource.allocate(1)) { //'Grupo' não conseguiu lugar. Coloca na fila
+         entitySet.insert(grupo);
       }
-
     }
 
 }
