@@ -38,8 +38,6 @@ public class FinalizarAtendimentoCaixa extends Event {
 
         scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", grupo, scheduler)));
 
-        resource.release(1);
-
         if (!getEntitySet().isEmpty()) {
             scheduler.scheduleNow(scheduler.createEvent(new AtendimentoCaixa("Atendimento " + resource.getName(), resource, entitySet, scheduler)));
         }
