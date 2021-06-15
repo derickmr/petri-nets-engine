@@ -12,6 +12,7 @@ public class TerminoRefeicao extends Event {
 
     public TerminoRefeicao(String name, Entity grupo, Resource resource, Scheduler scheduler) {
         super(name, resource, scheduler);
+        this.grupo = grupo;
     }
 
     @Override

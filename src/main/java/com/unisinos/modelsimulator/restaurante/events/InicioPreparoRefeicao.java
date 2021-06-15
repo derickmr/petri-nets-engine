@@ -32,6 +32,11 @@ public class InicioPreparoRefeicao extends Event {
 
     if (getResource().allocate(1)){
       Entity orderGroup = entitySet.remove();
+
+      if(orderGroup == null) {
+        return;
+      }
+
       try {
         Scheduler scheduler = getScheduler();
         scheduler.scheduleIn(scheduler.createEvent(new TerminoPreparoRefeicao("Termino Preparo Refeicao", orderGroup, resource, scheduler)), Scheduler.normal(14, 5));

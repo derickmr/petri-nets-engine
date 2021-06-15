@@ -19,7 +19,17 @@ public class InicioRefeicao extends Event {
     @Override
     public void execute() {
         super.execute();
-        /*Falta ajustar regras da fila de comidas prontas e verificar se grupo está sentado*/
+
+        //Criar validação grupo não sentado
+        //if(grupo não sentou)
+
+        Entity groupOrder = entitySet.removeById(grupo.getId());
+
+        /* Se comida do grupo não está pronta retorna e aguarda a finalização da cozinha chamar esse evento  */
+        if(groupOrder == null) {
+            return;
+        }
+
         try {
             Scheduler scheduler = getScheduler();
             scheduler.scheduleIn(scheduler.createEvent(new TerminoRefeicao("Termino Refeicao", grupo, resource, scheduler)), Scheduler.normal(20, 8));

@@ -13,7 +13,7 @@ public class TerminoPreparoRefeicao extends Event {
     super(name, resource, scheduler);
     this.grupo = grupo;
     this.resource = resource;
-    this.entitySet = scheduler.getEntitySetByName("filaCozinha");
+    this.entitySet = scheduler.getEntitySetByName("filaComidaPronta");
   }
 
   @Override
@@ -24,9 +24,10 @@ public class TerminoPreparoRefeicao extends Event {
         Scheduler scheduler = getScheduler();
         scheduler.scheduleNow(new InicioRefeicao("Inicio Refeição",grupo, scheduler));
 
-        if(!entitySet.isEmpty()) {
-          scheduler.scheduleNow(new InicioPreparoRefeicao("Inicio Preparo Refeição", scheduler));
-        }
+        entitySet.insert(grupo);
+
+        scheduler.scheduleNow(new InicioPreparoRefeicao("Inicio Preparo Refeição", scheduler));
+
       } catch (Exception e) {
         e.printStackTrace();
       }
