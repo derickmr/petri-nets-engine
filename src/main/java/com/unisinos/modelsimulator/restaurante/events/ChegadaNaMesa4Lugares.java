@@ -20,7 +20,7 @@ public class ChegadaNaMesa4Lugares extends Event {
     super.execute();
 
     if (!resource.allocate(1)) {
-      entitySet.insert(grupo);
+        entitySet.insert(grupo);
     }
   }
   

@@ -22,6 +22,7 @@ public class RestauranteMain {
         scheduler.createResource("cozinha", 3);
         scheduler.createResource("mesa2Lugares", 4);
         scheduler.createResource("mesa4Lugares", 4);
+        scheduler.createResource("balcao", 6);
         Event chegadaGrupo = scheduler.createEvent(new ChegadaGrupo("Chegada grupo", scheduler));
         scheduler.scheduleNow(chegadaGrupo);
 
