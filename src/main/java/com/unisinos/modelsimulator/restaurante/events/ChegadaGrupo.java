@@ -12,7 +12,7 @@ public class ChegadaGrupo extends Event {
     private Resource caixa1;
     private Resource caixa2;
 
-    private static final double THREE_HOURS_IN_MINUTES = 180;
+    private static final double THREE_HOURS_IN_SECONDS = 3 * 60 * 60;
     public ChegadaGrupo(String name, Scheduler scheduler) {
         super(name);
         this.scheduler = scheduler;
@@ -42,7 +42,7 @@ public class ChegadaGrupo extends Event {
         }
 
         //Gerar grupos de clientes por 3 horas.
-        if (scheduler.getTime() < THREE_HOURS_IN_MINUTES) {
+        if (scheduler.getTime() < THREE_HOURS_IN_SECONDS) {
             //A cada exponencial (3) minutos chega um grupo de clientes
             double eventTime = 0;
             try {
