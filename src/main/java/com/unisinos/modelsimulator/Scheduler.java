@@ -78,6 +78,10 @@ public class Scheduler {
         entitySets.forEach(
                 EntitySet::logTime
         );
+
+        resources.forEach(
+                Resource::allocationRate
+        );
     }
 
     public void simulateUntil(double absoluteTime) {
