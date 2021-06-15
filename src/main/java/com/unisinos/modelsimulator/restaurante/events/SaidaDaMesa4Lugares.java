@@ -8,6 +8,9 @@ import com.unisinos.modelsimulator.Scheduler;
 
 public class SaidaDaMesa4Lugares extends Event {
 
+  private final EntitySet filaMesa4Lugares;
+  private final Resource mesa4Lugares;
+
   public SaidaDaMesa4Lugares(String name, Entity grupo, Resource resource, Scheduler scheduler) {
     super(name);
     this.resource = resource;
@@ -21,7 +24,7 @@ public class SaidaDaMesa4Lugares extends Event {
     super.execute();
     mesa4Lugares.release(1);
     if (mesa4Lugares.allocate(1)) {
-      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa4Lugares("Chegada 4 lugares", filaMesa4Lugares.remove(), scheduler));
+      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa4Lugares("Chegada 4 lugares", filaMesa4Lugares.remove(), scheduler)));
     }
   }
 }

@@ -24,7 +24,7 @@ public class SaidaDoBalcao extends Event {
     super.execute();
     balcao.release(1);
     if (balcao.allocate(1)) {
-      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNoBalcao("Chegada 1 lugar", filaBalcao.remove(), scheduler));
+      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNoBalcao("Chegada 1 lugar", filaBalcao.remove(), scheduler)));
     }
   }
 }

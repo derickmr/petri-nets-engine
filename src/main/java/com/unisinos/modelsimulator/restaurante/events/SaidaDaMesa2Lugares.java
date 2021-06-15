@@ -20,7 +20,7 @@ public class SaidaDaMesa2Lugares extends Event {
     super.execute();
     mesa2Lugares.release(1);
     if (mesa2Lugares.allocate(1)) {
-      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa2Lugares("Chegada 2 lugares", filaMesa2Lugares.remove(), scheduler));
+      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa2Lugares("Chegada 2 lugares", filaMesa2Lugares.remove(), scheduler)));
     }
   }
 }
