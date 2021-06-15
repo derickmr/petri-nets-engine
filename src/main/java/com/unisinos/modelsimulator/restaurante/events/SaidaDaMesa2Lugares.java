@@ -7,7 +7,7 @@ public class SaidaDaMesa2Lugares extends Event {
   private final EntitySet filaMesa2Lugares;
   private final Resource mesa2Lugares;
 
-  public SaidaDaMesa2Lugares(String name, Resource resource, Scheduler scheduler) {
+  public SaidaDaMesa2Lugares(String name, Entity grupo, Resource resource, Scheduler scheduler) {
     super(name);
     this.resource = resource;
     this.filaMesa2Lugares = scheduler.getEntitySetByName("filaMesa2Lugares");

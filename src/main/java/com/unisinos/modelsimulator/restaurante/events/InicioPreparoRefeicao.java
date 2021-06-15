@@ -13,17 +13,28 @@ public class InicioPreparoRefeicao extends Event {
     super(name, scheduler);
     this.grupo = grupo;
     this.resource = scheduler.getResourceByName("cozinha");
+    this.entitySet = scheduler.getEntitySetByName("filaCozinha");
+  }
+
+  public InicioPreparoRefeicao(String name, Scheduler scheduler) {
+    super(name, scheduler);
+    this.resource = scheduler.getResourceByName("cozinha");
+    this.entitySet = scheduler.getEntitySetByName("filaCozinha");
   }
 
   @Override
   public void execute() {
 
     super.execute();
+    if (grupo != null) {
+      entitySet.insert(grupo);
+    }
 
     if (getResource().allocate(1)){
+      Entity orderGroup = entitySet.remove();
       try {
         Scheduler scheduler = getScheduler();
-        scheduler.scheduleIn(scheduler.createEvent(new TerminoPreparoRefeicao("Termino Preparo Refeicao", grupo, resource, scheduler)), Scheduler.normal(14, 5));
+        scheduler.scheduleIn(scheduler.createEvent(new TerminoPreparoRefeicao("Termino Preparo Refeicao", orderGroup, resource, scheduler)), Scheduler.normal(14, 5));
       } catch (MathException e) {
         e.printStackTrace();
       }

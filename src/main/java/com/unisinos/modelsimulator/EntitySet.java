@@ -26,6 +26,7 @@ public class EntitySet {
     private double entitySetCreationTime;
     private Map<Integer, Double> entitiesTimeInSet = new HashMap<>();
     private Map<Double, Integer> entitiesSizeInTime = new HashMap<>();
+    private Scheduler scheduler;
 
 
     public EntitySet(String name, EntitySetMode mode, int maxPossibleSize) {
@@ -44,6 +45,16 @@ public class EntitySet {
         this.entities = new ArrayList<>();
     }
 
+    public EntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize, Scheduler scheduler) {
+        this.name = name;
+        this.maxPossibleSize = maxPossibleSize;
+        this.entities = entities;
+        this.mode = NONE;
+        this.entities = new ArrayList<>();
+        this.scheduler = scheduler;
+    }
+
+
     public EntitySet(String name, EntitySetMode mode, int maxPossibleSize, double currentTime) {
         this.name = name;
         this.maxPossibleSize = maxPossibleSize;
@@ -53,6 +64,7 @@ public class EntitySet {
         this.currentTime = currentTime;
         this.entitySetCreationTime = currentTime;
     }
+
 
     /**
      * Atualiza o tempo de permanência no set das entities que ainda estão associadas a esse set
@@ -212,15 +224,23 @@ public class EntitySet {
         this.size = size;
     }
 
-    private void logTime() {
+    public void logTime() {
         if (shouldLogTime()) {
             log.put(lastLogTime + timeGap, entities.size());
             lastLogTime += timeGap;
+            System.out.println(name + "; Time: " + lastLogTime + "; Size: " + entities.size());
         }
     }
 
     private boolean shouldLogTime() {
-        return isLogging && lastLogTime + timeGap <= currentTime;
+        return isLogging && lastLogTime + timeGap <= scheduler.getTime();
     }
 
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
+
+    public void setScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
 }

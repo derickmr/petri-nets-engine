@@ -59,18 +59,24 @@ public class Resource {
         if (quantityOverTime.size() == 1) {
             int firstValue = quantityOverTime.entrySet().stream().findFirst().get().getValue();
             if (firstValue == 0) {
+                System.out.println(name + ": 0.0%" );
                 return 0.0;
             }
             else {
+                System.out.println(name + ": 100%" );
                 return 1.0;
             }
         }
 
         if (lastAllocation.value != 0) {
-            return (totalAllocationTime + scheduler.getTime() - lastAllocation.key)/scheduler.getTime();
+            double result = (totalAllocationTime + scheduler.getTime() - lastAllocation.key)/scheduler.getTime();
+            System.out.println(name + ": " + result*100 + "%");
+            return result;
         }
 
-        return totalAllocationTime/scheduler.getTime();
+        double result = totalAllocationTime/scheduler.getTime();
+        System.out.println(name + ": " + result*100 + "%");
+        return result;
     }
 
     public double averageAllocation() { // quantidade média destes recursos que foram alocados (em relação ao tempo total simulado)

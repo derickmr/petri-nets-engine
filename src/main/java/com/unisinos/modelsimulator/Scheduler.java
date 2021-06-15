@@ -10,6 +10,7 @@ import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 public class Scheduler {
+
     private double time;
     private List<Event> events;
     private List<Resource> resources;
@@ -68,8 +69,19 @@ public class Scheduler {
     }
 
     protected void executeEvent (Event event) {
+        collectLogs();
         time = event.getEventTime();
         event.execute();
+    }
+
+    private void collectLogs() {
+        entitySets.forEach(
+                EntitySet::logTime
+        );
+
+        resources.forEach(
+                Resource::allocationRate
+        );
     }
 
     public void simulateUntil(double absoluteTime) {
@@ -134,7 +146,7 @@ public class Scheduler {
     }
 
     public EntitySet createEntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize) {
-        EntitySet entitySet = new EntitySet(name, entities, maxPossibleSize);
+        EntitySet entitySet = new EntitySet(name, entities, maxPossibleSize, this);
         entitySet.setId(currentId++);
         entitySets.add(entitySet);
         return entitySet;
@@ -142,7 +154,7 @@ public class Scheduler {
 
     public EntitySet getEntitySetByName(String name) {
         return entitySets.stream().filter(
-                entitySet -> entitySet.getName() == name
+                entitySet -> Objects.equals(entitySet.getName(), name)
         ).findFirst().orElse(null);
     }
 
@@ -174,7 +186,7 @@ public class Scheduler {
     // coleta de estatística
 
     public int getEntityTotalQuantity() {
-        //implement
+        //TODO
         return 0;
     }
 
@@ -183,7 +195,7 @@ public class Scheduler {
     }
 
     public double averageTimeInModel() {
-        //implement
+        //TODO
         return 0;
     }
 

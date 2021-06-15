@@ -4,7 +4,6 @@ import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Resource;
 import com.unisinos.modelsimulator.Scheduler;
-import org.apache.commons.math.MathException;
 
 public class TerminoPreparoRefeicao extends Event {
 
@@ -14,6 +13,7 @@ public class TerminoPreparoRefeicao extends Event {
     super(name, resource, scheduler);
     this.grupo = grupo;
     this.resource = resource;
+    this.entitySet = scheduler.getEntitySetByName("filaCozinha");
   }
 
   @Override
@@ -22,21 +22,13 @@ public class TerminoPreparoRefeicao extends Event {
       try {
         resource.release(1);
         Scheduler scheduler = getScheduler();
-        scheduler.scheduleIn(scheduler.createEvent(RemoveFromCorrectTable(scheduler)),Scheduler.normal(20, 8));
-      } catch (MathException e) {
+        scheduler.scheduleNow(new InicioRefeicao("Inicio Refeição",grupo, scheduler));
+
+        if(!entitySet.isEmpty()) {
+          scheduler.scheduleNow(new InicioPreparoRefeicao("Inicio Preparo Refeição", scheduler));
+        }
+      } catch (Exception e) {
         e.printStackTrace();
       }
-  }
-
-  private Event RemoveFromCorrectTable(Scheduler scheduler) {
-      Event eventValue = null;
-      if (this.grupo.getQuantity() == 1) {
-        eventValue = new SaidaDoBalcao("Saida Balcao", resource, scheduler);
-      } else if (this.grupo.getQuantity() == 2) {
-        eventValue = new SaidaDaMesa2Lugares("Saida Mesa 2 Lugares", resource, scheduler);
-      } else {
-        eventValue = new SaidaDaMesa4Lugares("Saida Mesa 4 Lugares", resource, scheduler);
-      }
-      return eventValue;
   }
 }
