@@ -20,7 +20,7 @@ public class EntitySet {
     private double currentTime;
     private double lastLogTime;
     private double timeGap;
-    private Map<Double, Integer> log = new HashMap<>();
+    private Map<Double, Integer> log = new LinkedHashMap<>();
     private boolean isLogging;
     private double entitySetCreationTime;
     private Map<Integer, Double> entitiesTimeInSet = new HashMap<>();
@@ -226,10 +226,9 @@ public class EntitySet {
     }
 
     public void logTime() {
-        if (shouldLogTime()) {
+        while (shouldLogTime()) {
             log.put(lastLogTime + timeGap, entities.size());
             lastLogTime += timeGap;
-            System.out.println(name + "; Time: " + lastLogTime + "; Size: " + entities.size());
         }
     }
 

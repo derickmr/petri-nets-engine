@@ -69,18 +69,23 @@ public class Scheduler {
     }
 
     protected void executeEvent (Event event) {
-        collectLogs();
+        entitySets.forEach(EntitySet::logTime);
         time = event.getEventTime();
         event.execute();
     }
 
-    private void collectLogs() {
-        entitySets.forEach(
-                EntitySet::logTime
-        );
+//    TODO
+    public void collectLogs() {
 
-        resources.forEach(
-                Resource::allocationRate
+//        resources.forEach(
+//                Resource::allocationRate
+//        );
+
+        entitySets.forEach(
+                set -> {
+                    System.out.println("\nSet: " + set.getName());
+                    set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
+                }
         );
     }
 

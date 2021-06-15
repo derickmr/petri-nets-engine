@@ -35,9 +35,10 @@ public class RestauranteMain {
         Event chegadaGrupo = scheduler.createEvent(new ChegadaGrupo("Chegada grupo", scheduler));
         scheduler.scheduleNow(chegadaGrupo);
 
-        scheduler.getEntitySets().forEach(set -> set.startLog(60));
+        scheduler.getEntitySets().forEach(set -> set.startLog(600));
 
         scheduler.simulate();
+        scheduler.collectLogs();
 
     }
 
