@@ -17,6 +17,8 @@ public class RestauranteMain {
         scheduler.createEntitySet("filaMesa2Lugares", new ArrayList<>(), 100);
         scheduler.createEntitySet("filaMesa4Lugares", new ArrayList<>(), 100);
         scheduler.createEntitySet("filaBalcao", new ArrayList<>(), 100);
+        scheduler.createEntitySet("filaCozinha", new ArrayList<>(), 100);
+        scheduler.createEntitySet("filaComidaPronta", new ArrayList<>(), 100);
         scheduler.createResource("caixa1", 1);
         scheduler.createResource("caixa2", 1);
         scheduler.createResource("cozinha", 3);
