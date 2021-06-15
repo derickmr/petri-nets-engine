@@ -3,6 +3,7 @@ package com.unisinos.modelsimulator.restaurante.events;
 import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Scheduler;
+import org.apache.commons.math.MathException;
 
 public class InicioPreparoRefeicao extends Event {
 
@@ -16,7 +17,16 @@ public class InicioPreparoRefeicao extends Event {
 
   @Override
   public void execute() {
+
     super.execute();
+
+    if (getResource().allocate(1)){
+      try {
+        Scheduler scheduler = getScheduler();
+        scheduler.scheduleIn(scheduler.createEvent(new TerminoPreparoRefeicao("Termino Preparo Refeicao", grupo, resource, scheduler)), Scheduler.normal(14, 5));
+      } catch (MathException e) {
+        e.printStackTrace();
+      }
+    }
   }
-  
 }

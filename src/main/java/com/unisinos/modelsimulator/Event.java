@@ -20,6 +20,12 @@ public class Event {
         this.scheduler = scheduler;
     }
 
+    public Event(String name, Resource resource, Scheduler scheduler) {
+        this.name = name;
+        this.resource = resource;
+        this.scheduler = scheduler;
+    }
+
     public void execute() {
         this.executed = true;
     }
