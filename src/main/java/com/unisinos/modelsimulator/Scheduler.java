@@ -150,7 +150,7 @@ public class Scheduler {
 
     public EntitySet getEntitySetByName(String name) {
         return entitySets.stream().filter(
-                entitySet -> entitySet.getName() == name
+                entitySet -> Objects.equals(entitySet.getName(), name)
         ).findFirst().orElse(null);
     }
 
