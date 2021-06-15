@@ -23,7 +23,7 @@ public class SaidaDoBalcao extends Event {
   public void execute() {
     super.execute();
     balcao.release(1);
-    if (balcao.allocate(1)) {
+    if (!filaBalcao.isEmpty()) {
       scheduler.scheduleNow(scheduler.createEvent(new ChegadaNoBalcao("Chegada 1 lugar", filaBalcao.remove(), scheduler)));
     }
   }

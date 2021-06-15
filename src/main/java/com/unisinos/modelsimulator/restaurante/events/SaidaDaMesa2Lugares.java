@@ -19,7 +19,7 @@ public class SaidaDaMesa2Lugares extends Event {
   public void execute() {
     super.execute();
     mesa2Lugares.release(1);
-    if (mesa2Lugares.allocate(1)) {
+    if (!filaMesa2Lugares.isEmpty()) {
       scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa2Lugares("Chegada 2 lugares", filaMesa2Lugares.remove(), scheduler)));
     }
   }

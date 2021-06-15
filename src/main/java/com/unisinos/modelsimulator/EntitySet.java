@@ -16,7 +16,6 @@ public class EntitySet {
     private List<Entity> entities;
     private List<Entity> allEntities = new ArrayList<>();
     private EntitySetMode mode;
-    private int size;
     private int maxPossibleSize;
     private double currentTime;
     private double lastLogTime;
@@ -111,6 +110,9 @@ public class EntitySet {
     }
 
     public Entity remove() {
+        if (this.entities.size() == 0) {
+            return null;
+        }
         switch(this.mode) {
             case FIFO:
                 return this.entities.remove(0);
@@ -221,7 +223,6 @@ public class EntitySet {
     }
 
     public void setSize(int size) {
-        this.size = size;
     }
 
     public void logTime() {

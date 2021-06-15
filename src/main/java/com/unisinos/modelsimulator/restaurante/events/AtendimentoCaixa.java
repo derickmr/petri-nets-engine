@@ -15,13 +15,12 @@ public class AtendimentoCaixa extends Event {
     @Override
     public void execute() {
         super.execute();
-        if (!getEntitySet().isEmpty()) {
+        if (!entitySet.isEmpty()) {
 
-            if (getResource().allocate(1)) { //conseguiu alocar caixa pra atender
+            if (resource.allocate(1)) { //conseguiu alocar caixa pra atender
                 //Agenda final do atendimento em normal (8,2) minutos
                 try {
                     Entity grupo = entitySet.remove();
-                    Scheduler scheduler = getScheduler();
                     scheduler.scheduleIn(scheduler.createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", resource, grupo, entitySet, scheduler)), Scheduler.normal(8, 2));
                 } catch (MathException e) {
                     e.printStackTrace();

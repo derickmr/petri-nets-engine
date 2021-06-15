@@ -1,7 +1,6 @@
 package com.unisinos.modelsimulator;
 
 import com.unisinos.petri.PetriNet;
-import java.util.Date;
 import java.util.List;
 
 //ok

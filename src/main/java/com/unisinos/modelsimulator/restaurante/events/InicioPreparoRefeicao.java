@@ -20,23 +20,16 @@ public class InicioPreparoRefeicao extends Event {
   public void execute() {
 
     super.execute();
-    if (grupo != null) {
-      entitySet.insert(grupo);
-    }
-
-    if (getResource().allocate(1)){
-      Entity orderGroup = entitySet.remove();
-
-      if(orderGroup == null) {
-        return;
-      }
+    if (resource.allocate(1)){
 
       try {
         Scheduler scheduler = getScheduler();
-        scheduler.scheduleIn(scheduler.createEvent(new TerminoPreparoRefeicao("Termino Preparo Refeicao", orderGroup, resource, scheduler)), Scheduler.normal(14, 5));
+        scheduler.scheduleIn(scheduler.createEvent(new TerminoPreparoRefeicao("Termino Preparo Refeicao", grupo, resource, scheduler)), Scheduler.normal(14, 5));
       } catch (MathException e) {
         e.printStackTrace();
       }
+    } else {
+      entitySet.insert(grupo);
     }
   }
 }

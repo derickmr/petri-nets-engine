@@ -18,16 +18,9 @@ public class TerminoRefeicao extends Event {
     @Override
     public void execute() {
         super.execute();
-        try {
-            Scheduler scheduler = getScheduler();
-            scheduler.scheduleIn(scheduler.createEvent(RemoveFromCorrectTable(scheduler)),Scheduler.normal(20, 8));
-        } catch (MathException e) {
-            e.printStackTrace();
-        }
+        Scheduler scheduler = getScheduler();
+        scheduler.scheduleNow(scheduler.createEvent(RemoveFromCorrectTable(scheduler)));
 
-        if(!entitySet.isEmpty()) {
-            scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", grupo, scheduler)));
-        }
     }
 
     private Event RemoveFromCorrectTable(Scheduler scheduler) {
