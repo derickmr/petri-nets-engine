@@ -20,8 +20,6 @@ public class InicioRefeicao extends Event {
     public void execute() {
         super.execute();
 
-        //Criar validação grupo não sentado
-        //if(grupo não sentou)
 
         Entity groupOrder = entitySet.removeById(grupo.getId());
 

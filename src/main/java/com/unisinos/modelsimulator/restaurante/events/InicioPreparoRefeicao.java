@@ -16,12 +16,6 @@ public class InicioPreparoRefeicao extends Event {
     this.entitySet = scheduler.getEntitySetByName("filaCozinha");
   }
 
-  public InicioPreparoRefeicao(String name, Scheduler scheduler) {
-    super(name, scheduler);
-    this.resource = scheduler.getResourceByName("cozinha");
-    this.entitySet = scheduler.getEntitySetByName("filaCozinha");
-  }
-
   @Override
   public void execute() {
 

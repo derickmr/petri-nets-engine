@@ -26,7 +26,7 @@ public class TerminoRefeicao extends Event {
         }
 
         if(!entitySet.isEmpty()) {
-            scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", scheduler)));
+            scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", grupo, scheduler)));
         }
     }
 
