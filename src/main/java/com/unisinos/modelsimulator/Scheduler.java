@@ -74,12 +74,11 @@ public class Scheduler {
         event.execute();
     }
 
-//    TODO
     public void collectLogs() {
 
-//        resources.forEach(
-//                Resource::allocationRate
-//        );
+        resources.forEach(
+                Resource::allocationRate
+        );
 
         entitySets.forEach(
                 set -> {
@@ -87,6 +86,8 @@ public class Scheduler {
                     set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
                 }
         );
+
+
     }
 
     public void simulateUntil(double absoluteTime) {

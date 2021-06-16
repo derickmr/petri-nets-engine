@@ -20,8 +20,7 @@ public class AtendimentoCaixa extends Event {
             if (resource.allocate(1)) { //conseguiu alocar caixa pra atender
                 //Agenda final do atendimento em normal (8,2) minutos
                 try {
-                    Entity grupo = entitySet.remove();
-                    scheduler.scheduleIn(scheduler.createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", resource, grupo, entitySet, scheduler)), Scheduler.normal(8, 2));
+                    scheduler.scheduleIn(scheduler.createEvent(new FinalizarAtendimentoCaixa("Finalizar atendimento caixa", resource, entitySet, scheduler)), Scheduler.normal(8, 2));
                 } catch (MathException e) {
                     e.printStackTrace();
                 }

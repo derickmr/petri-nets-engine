@@ -1,5 +1,6 @@
 package com.unisinos.modelsimulator;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Resource {
@@ -25,7 +26,7 @@ public class Resource {
         this.scheduler = scheduler;
         this.allocatedResourcesOverTime = new LinkedHashMap<>();
         allocatedResourcesOverTime.put(scheduler.getTime(), 0);
-        lastAllocation = new Tuple<>(scheduler.getTime(), this.quantity);
+        lastAllocation = new Tuple<>(scheduler.getTime(), initialQuantity - this.quantity);
         this.totalAllocationTime = 0;
     }
 
@@ -57,14 +58,14 @@ public class Resource {
 
         //recursos nunca foram alocados
         if (allocatedResourcesOverTime.size() == 1) {
-            System.out.println(name + ": 0.0%" );
+            System.out.println("Resource " + name + " allocation rate: 0.0%" );
             return 0.0;
         }
 
         saveAllocationStatistics();
 
         double result = totalAllocationTime/scheduler.getTime();
-        System.out.println(name + ": " + result*100 + "%");
+        System.out.println("Resource " + name + " allocation rate: " +  new DecimalFormat("#.##").format(result * 100) + "%");
         return result;
     }
 
