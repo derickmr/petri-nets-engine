@@ -6,11 +6,11 @@ public class FinalizarAtendimentoCaixa extends Event {
 
     private Entity grupo;
 
-    public FinalizarAtendimentoCaixa (String name, Resource caixa, Entity grupo, EntitySet filaCaixa, Scheduler scheduler) {
+    public FinalizarAtendimentoCaixa (String name, Resource caixa, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
-        this.grupo = grupo;
         this.resource = caixa;
         this.entitySet = filaCaixa;
+        this.grupo = entitySet.remove();
         this.scheduler = scheduler;
     }
 

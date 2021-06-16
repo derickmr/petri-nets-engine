@@ -41,4 +41,9 @@ public class SchedulerTest {
     assertTrue(futureEvent.executed);
     assertTrue(nowEvent.executed);
   }
+
+  @Test
+  public void exponentialLambdaTest() {
+    assertTrue(Scheduler.exponential(50) > 50);
+  }
 }

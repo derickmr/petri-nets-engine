@@ -3,7 +3,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
+
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ExponentialDistributionImpl;
@@ -69,19 +72,25 @@ public class Scheduler {
     }
 
     protected void executeEvent (Event event) {
-        collectLogs();
+        entitySets.forEach(EntitySet::logTime);
         time = event.getEventTime();
         event.execute();
     }
 
-    private void collectLogs() {
-        entitySets.forEach(
-                EntitySet::logTime
-        );
+    public void collectLogs() {
 
         resources.forEach(
                 Resource::allocationRate
         );
+
+        entitySets.forEach(
+                set -> {
+                    System.out.println("\nSet: " + set.getName());
+                    set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
+                }
+        );
+
+
     }
 
     public void simulateUntil(double absoluteTime) {
@@ -167,24 +176,20 @@ public class Scheduler {
     // random variates
 
     public static double uniform(double minValue, double maxValue) {
-        minValue = 60 * minValue;
-        maxValue = 60 * maxValue;
         double difference = maxValue - minValue;
         double res = minValue;
         res += Math.random() * difference;
-        return res;
+        return 60 * res;
     }
 
-    public static double exponential(double meanValue) throws MathException {
-        meanValue = 60 * meanValue;
-        ExponentialDistributionImpl exponential = new ExponentialDistributionImpl(meanValue);
-        return exponential.sample();
+    public static double exponential(double lambda) {
+        Random rand = new Random();
+        return 60 * Math.log(1-rand.nextDouble())/(-lambda);
     }
 
     public static double normal(double meanValue, double stdDeviationValue) throws MathException {
-        meanValue = 60 * meanValue;
         NormalDistributionImpl normal = new NormalDistributionImpl(meanValue, stdDeviationValue);
-        return normal.sample();
+        return 60 * normal.sample();
     }
 
     // coleta de estatística
@@ -254,5 +259,11 @@ public class Scheduler {
 
     public void setEntitySets(List<EntitySet> entitySets) {
         this.entitySets = entitySets;
+    }
+
+    public Entity createGrupoCliente(String name) {
+        var grupoCliente = new GrupoCliente(name);
+        grupoCliente.setId(currentId++);
+        return grupoCliente;
     }
 }

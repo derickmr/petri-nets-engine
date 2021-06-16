@@ -1,5 +1,6 @@
 package com.unisinos.modelsimulator;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Resource {
@@ -8,10 +9,10 @@ public class Resource {
     private int id; // atribuído pelo Scheduler
     private int quantity; // quantidade de recursos disponíveis
     private Scheduler scheduler;
-    private double initialTime;
     private double totalAllocationTime;
-    private LinkedHashMap<Double, Integer> quantityOverTime;
+    private LinkedHashMap<Double, Integer> allocatedResourcesOverTime;
     private Tuple<Double, Integer> lastAllocation;
+    private int initialQuantity;
 
     public Resource(String name, int quantity) {
         this.name = name;
@@ -21,13 +22,12 @@ public class Resource {
     public Resource(String name, int quantity, Scheduler scheduler) {
         this.name = name;
         this.quantity = quantity;
+        this.initialQuantity = quantity;
         this.scheduler = scheduler;
-        this.initialTime = scheduler.getTime();
-        this.quantityOverTime = new LinkedHashMap<>();
-        quantityOverTime.put(scheduler.getTime(), this.quantity);
-        lastAllocation = new Tuple<>(scheduler.getTime(), this.quantity);
+        this.allocatedResourcesOverTime = new LinkedHashMap<>();
+        allocatedResourcesOverTime.put(scheduler.getTime(), 0);
+        lastAllocation = new Tuple<>(scheduler.getTime(), initialQuantity - this.quantity);
         this.totalAllocationTime = 0;
-
     }
 
     public boolean allocate(int quantity) { // true se conseguiu alocar os recursos
@@ -35,52 +35,42 @@ public class Resource {
             return false;
         }
         this.quantity -= quantity;
-        quantityOverTime.put(scheduler.getTime(), this.quantity);
-        if (lastAllocation.value != 0) {
-            totalAllocationTime += scheduler.getTime() - lastAllocation.key;
-        }
-        lastAllocation = new Tuple<>(scheduler.getTime(), quantity);
+        saveAllocationStatistics();
         return true;
     }
 
-    public void release(int quantity) { // deve ter um jeito melhor de fazer issae
+    public void release(int quantity) {
         this.quantity += quantity;
-        quantityOverTime.put(scheduler.getTime(), this.quantity);
+        saveAllocationStatistics();
+    }
+
+    private void saveAllocationStatistics() {
+        allocatedResourcesOverTime.put(scheduler.getTime(), initialQuantity - this.quantity);
         if (lastAllocation.value != 0) {
             totalAllocationTime += scheduler.getTime() - lastAllocation.key;
         }
-        lastAllocation = new Tuple<>(scheduler.getTime(), this.quantity);
+        lastAllocation = new Tuple<>(scheduler.getTime(), initialQuantity - this.quantity);
     }
 
     // coleta de estatísticas
 
     public double allocationRate() { // percentual do tempo (em relação ao tempo total simulado) em que estes recursos foram alocados
 
-        if (quantityOverTime.size() == 1) {
-            int firstValue = quantityOverTime.entrySet().stream().findFirst().get().getValue();
-            if (firstValue == 0) {
-                System.out.println(name + ": 0.0%" );
-                return 0.0;
-            }
-            else {
-                System.out.println(name + ": 100%" );
-                return 1.0;
-            }
+        //recursos nunca foram alocados
+        if (allocatedResourcesOverTime.size() == 1) {
+            System.out.println("Resource " + name + " allocation rate: 0.0%" );
+            return 0.0;
         }
 
-        if (lastAllocation.value != 0) {
-            double result = (totalAllocationTime + scheduler.getTime() - lastAllocation.key)/scheduler.getTime();
-            System.out.println(name + ": " + result*100 + "%");
-            return result;
-        }
+        saveAllocationStatistics();
 
         double result = totalAllocationTime/scheduler.getTime();
-        System.out.println(name + ": " + result*100 + "%");
+        System.out.println("Resource " + name + " allocation rate: " +  new DecimalFormat("#.##").format(result * 100) + "%");
         return result;
     }
 
     public double averageAllocation() { // quantidade média destes recursos que foram alocados (em relação ao tempo total simulado)
-        return quantityOverTime.values().stream().mapToInt(integer -> integer).sum() / quantityOverTime.size();
+        return allocatedResourcesOverTime.values().stream().mapToInt(integer -> integer).sum() / allocatedResourcesOverTime.size();
     }
 
     public Scheduler getScheduler() {
@@ -89,14 +79,6 @@ public class Resource {
 
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
-    }
-
-    public double getInitialTime() {
-        return initialTime;
-    }
-
-    public void setInitialTime(double initialTime) {
-        this.initialTime = initialTime;
     }
 
     public String getName() {
@@ -127,12 +109,12 @@ public class Resource {
         this.totalAllocationTime = totalAllocationTime;
     }
 
-    public LinkedHashMap<Double, Integer> getQuantityOverTime() {
-        return quantityOverTime;
+    public LinkedHashMap<Double, Integer> getAllocatedResourcesOverTime() {
+        return allocatedResourcesOverTime;
     }
 
-    public void setQuantityOverTime(LinkedHashMap<Double, Integer> quantityOverTime) {
-        this.quantityOverTime = quantityOverTime;
+    public void setAllocatedResourcesOverTime(LinkedHashMap<Double, Integer> allocatedResourcesOverTime) {
+        this.allocatedResourcesOverTime = allocatedResourcesOverTime;
     }
 
     public Tuple<Double, Integer> getLastAllocation() {
