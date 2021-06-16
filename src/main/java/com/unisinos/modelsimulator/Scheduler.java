@@ -6,6 +6,8 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
+
 import org.apache.commons.math.MathException;
 import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
@@ -257,5 +259,11 @@ public class Scheduler {
 
     public void setEntitySets(List<EntitySet> entitySets) {
         this.entitySets = entitySets;
+    }
+
+    public Entity createGrupoCliente(String name) {
+        var grupoCliente = new GrupoCliente(name);
+        grupoCliente.setId(currentId++);
+        return grupoCliente;
     }
 }

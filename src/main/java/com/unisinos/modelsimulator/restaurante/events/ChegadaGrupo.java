@@ -27,7 +27,7 @@ public class ChegadaGrupo extends Event {
         super.execute();
         //Grupo pode ser de 1 a 4 pessoas (sorteio randomico).
         int quantity = (int) (Math.random() * 4) + 1;
-        Entity grupo = new GrupoCliente("Grupo de " + quantity + " clientes");
+        Entity grupo = scheduler.createGrupoCliente("Grupo de " + quantity + " clientes");
         grupo.setQuantity(quantity);
 
         //O grupo sempre escolhe a menor fila.

@@ -31,7 +31,6 @@ public class TerminoPreparoRefeicao extends Event {
       try {
         resource.release(1);
 
-        entitySet.insert(grupo); // insere grupo na fila de comida pronta
 
         if (esperandoNoBalcao.getById(grupo.getId()) != null) { // verifica se o grupo já está sentado em algum lugar para iniciar a refeicao
           esperandoNoBalcao.removeById(grupo.getId());
@@ -42,6 +41,8 @@ public class TerminoPreparoRefeicao extends Event {
         } else if (esperandoM4.getById(grupo.getId()) != null) {
           esperandoM4.removeById(grupo.getId());
           scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição",grupo, scheduler)));
+        } else {
+          entitySet.insert(grupo); // insere grupo na fila de comida pronta
         }
 
         var nextPedido = filaCozinha.remove();
