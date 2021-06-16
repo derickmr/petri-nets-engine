@@ -22,7 +22,7 @@ public class ChegadaNoBalcao extends Event {
       super.execute();
 
       if (!resource.allocate(1)) { //'Grupo' não conseguiu lugar. Coloca na fila
-         entitySet.insert(grupo);
+         entitySet.insertFirstPosition(grupo);
       } else {
         if (this.filaCozinha.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
           filaCozinha.removeById(grupo.getId());

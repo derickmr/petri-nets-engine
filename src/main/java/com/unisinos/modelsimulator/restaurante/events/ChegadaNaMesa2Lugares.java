@@ -25,7 +25,7 @@ public class ChegadaNaMesa2Lugares extends Event {
     super.execute();
 
     if (!resource.allocate(1)) { // nao conseguiu alocar, vai pra fila
-      entitySet.insert(grupo);
+      entitySet.insertFirstPosition(grupo);
     } else {
       if (this.filaCozinha.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
         filaCozinha.removeById(grupo.getId());

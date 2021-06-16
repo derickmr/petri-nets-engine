@@ -91,6 +91,16 @@ public class EntitySet {
         updateEntitiesSizeInTime(entity);
     }
 
+    public void insertFirstPosition(Entity entity) {
+        if (this.mode == FIFO) {
+            this.entities.add(0, entity);
+        } else {
+            this.entities.add(this.entities.size(), entity);
+        }
+        entitiesTimeInSet.put(entity.getId(), currentTime);
+        updateEntitiesSizeInTime(entity);
+    }
+
     public void updateEntitiesSizeInTime(Entity entity) {
         var currentSizeInTime = this.entitiesSizeInTime.get(this.currentTime);
         if (currentSizeInTime != null) {
