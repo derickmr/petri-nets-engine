@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.apache.commons.math.MathException;
@@ -180,14 +181,15 @@ public class Scheduler {
         return res;
     }
 
-    public static double exponential(double meanValue) throws MathException {
-        meanValue = 60 * meanValue;
-        ExponentialDistributionImpl exponential = new ExponentialDistributionImpl(meanValue);
-        return exponential.sample();
+    public static double exponential(double lambda) {
+        lambda = 60 * lambda;
+        Random rand = new Random();
+        return  Math.log(1-rand.nextDouble())/(-lambda);
     }
 
     public static double normal(double meanValue, double stdDeviationValue) throws MathException {
         meanValue = 60 * meanValue;
+        
         NormalDistributionImpl normal = new NormalDistributionImpl(meanValue, stdDeviationValue);
         return normal.sample();
     }
