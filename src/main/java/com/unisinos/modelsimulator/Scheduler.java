@@ -173,25 +173,20 @@ public class Scheduler {
     // random variates
 
     public static double uniform(double minValue, double maxValue) {
-        minValue = 60 * minValue;
-        maxValue = 60 * maxValue;
         double difference = maxValue - minValue;
         double res = minValue;
         res += Math.random() * difference;
-        return res;
+        return 60 * res;
     }
 
     public static double exponential(double lambda) {
-        lambda = 60 * lambda;
         Random rand = new Random();
-        return  Math.log(1-rand.nextDouble())/(-lambda);
+        return 60 * Math.log(1-rand.nextDouble())/(-lambda);
     }
 
     public static double normal(double meanValue, double stdDeviationValue) throws MathException {
-        meanValue = 60 * meanValue;
-        
         NormalDistributionImpl normal = new NormalDistributionImpl(meanValue, stdDeviationValue);
-        return normal.sample();
+        return 60 * normal.sample();
     }
 
     // coleta de estatística
