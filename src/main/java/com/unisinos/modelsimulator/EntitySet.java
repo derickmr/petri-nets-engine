@@ -85,10 +85,12 @@ public class EntitySet {
     }
 
     public void insert(Entity entity) {
-        entities.add(entity);
-        allEntities.add(entity);
-        entitiesTimeInSet.put(entity.getId(), currentTime);
-        updateEntitiesSizeInTime(entity);
+        if (!isFull()) {
+            entities.add(entity);
+            allEntities.add(entity);
+            entitiesTimeInSet.put(entity.getId(), currentTime);
+            updateEntitiesSizeInTime(entity);
+        }
     }
 
     public void updateEntitiesSizeInTime(Entity entity) {
