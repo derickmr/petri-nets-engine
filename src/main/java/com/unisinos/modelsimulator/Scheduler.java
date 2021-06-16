@@ -15,12 +15,16 @@ import org.apache.commons.math.distribution.NormalDistributionImpl;
 public class Scheduler {
 
     private double time;
+    private double timeLimit;
+    private boolean timeLimitMode;
     private List<Event> events;
     private List<Resource> resources;
     private List<EntitySet> entitySets;
 
     public Scheduler() {
         time = 0;
+        timeLimit = 0;
+        timeLimitMode = false;
         events = new ArrayList<>();
         resources = new ArrayList<>();
         entitySets = new ArrayList<>();
@@ -64,17 +68,28 @@ public class Scheduler {
     }
 
     public void simulateBy(double duration) {
+        timeLimitMode = true;
         double timeLimit = time + duration;
+        this.timeLimit = timeLimit;
 
-        while (time <= timeLimit) {
+        while (canExecute() && time < timeLimit) {
             executeEvent(getNextEvent());
         }
     }
 
+    public boolean canExecute() {
+        return getEvents().size() > 0;
+    }
+
     protected void executeEvent (Event event) {
         entitySets.forEach(EntitySet::logTime);
-        time = event.getEventTime();
-        event.execute();
+        if (timeLimitMode && timeLimit < event.getEventTime()) {
+            time = timeLimit;
+        }
+        else {
+            time = event.getEventTime();
+            event.execute();
+        }
     }
 
     public void collectLogs() {
@@ -90,11 +105,14 @@ public class Scheduler {
                 }
         );
 
+        System.out.println("Tempo atual: " + time);
 
     }
 
     public void simulateUntil(double absoluteTime) {
-        while (time <= absoluteTime) {
+        timeLimit = absoluteTime;
+        timeLimitMode = true;
+        while (canExecute() && time < absoluteTime) {
             executeEvent(getNextEvent());
         }
     }

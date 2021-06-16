@@ -3,6 +3,7 @@ package com.unisinos.modelsimulator.restaurante;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Scanner;
 
 import com.unisinos.modelsimulator.EntitySetMode;
 import com.unisinos.modelsimulator.Event;
@@ -36,9 +37,27 @@ public class RestauranteMain {
         scheduler.scheduleNow(chegadaGrupo);
 
         scheduler.getEntitySets().forEach(set -> set.startLog(600));
+        Scanner scanner = new Scanner(System.in);
 
-        scheduler.simulate();
-        scheduler.collectLogs();
+        //Simulate all
+//        scheduler.simulate();
+//        scheduler.collectLogs();
+
+        //SimulateBy
+//        while (scheduler.canExecute()) {
+//            System.out.println("Digite por quanto tempo (em segundos) deseja executar o simulador: ");
+//            String value = scanner.nextLine();
+//            scheduler.simulateBy(Double.parseDouble(value));
+//            scheduler.collectLogs();
+//        }
+
+        //SimulateUntil
+//        while (scheduler.canExecute()) {
+//            System.out.println("Digite até quando (tempo absoluto, em segundos) deseja executar o simulador: ");
+//            String value = scanner.nextLine();
+//            scheduler.simulateUntil(Double.parseDouble(value));
+//            scheduler.collectLogs();
+//        }
 
     }
 
