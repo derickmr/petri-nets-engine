@@ -5,7 +5,7 @@ import com.unisinos.modelsimulator.*;
 public class ChegadaNoBalcao extends Event {
 
     private Entity grupo;
-    private EntitySet filaCozinha;
+    private EntitySet filaComidaPronta;
     private EntitySet esperandoNoBalcao;
 
     public ChegadaNoBalcao(String name, Entity grupo, Scheduler scheduler) {
@@ -13,7 +13,7 @@ public class ChegadaNoBalcao extends Event {
         this.grupo = grupo;
         this.entitySet = scheduler.getEntitySetByName("filaBalcao");
         this.resource = scheduler.getResourceByName("bancos");
-        this.filaCozinha = scheduler.getEntitySetByName("filaCozinha");
+        this.filaComidaPronta = scheduler.getEntitySetByName("filaComidaPronta");
         this.esperandoNoBalcao = scheduler.getEntitySetByName("esperandoNoBalcao");
     }
 
@@ -24,8 +24,8 @@ public class ChegadaNoBalcao extends Event {
       if (!resource.allocate(1)) { //'Grupo' não conseguiu lugar. Coloca na fila
          entitySet.insertFirstPosition(grupo);
       } else {
-        if (this.filaCozinha.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
-          filaCozinha.removeById(grupo.getId());
+        if (this.filaComidaPronta.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
+          filaComidaPronta.removeById(grupo.getId());
           scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição",grupo, scheduler)));
         } else {
           esperandoNoBalcao.insert(grupo);
