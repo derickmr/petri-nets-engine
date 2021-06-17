@@ -4,13 +4,10 @@ import com.unisinos.modelsimulator.*;
 
 public class FinalizarAtendimentoCaixa extends Event {
 
-    private Entity grupo;
-
     public FinalizarAtendimentoCaixa (String name, Resource caixa, EntitySet filaCaixa, Scheduler scheduler) {
         super(name);
         this.resource = caixa;
         this.entitySet = filaCaixa;
-        this.grupo = entitySet.remove();
         this.scheduler = scheduler;
     }
 
@@ -18,6 +15,8 @@ public class FinalizarAtendimentoCaixa extends Event {
     public void execute() {
         super.execute();
         resource.release(1);
+
+        var grupo = entitySet.remove();
 
         if (grupo.getQuantity() == 1) {
             //Se for grupo de 1 cliente, vai para o Balcão; se não houver banco disponível, aguarda na FilaBalc.

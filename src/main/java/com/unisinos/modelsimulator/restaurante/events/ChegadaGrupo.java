@@ -1,8 +1,10 @@
 package com.unisinos.modelsimulator.restaurante.events;
 
-import com.unisinos.modelsimulator.*;
-import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
-import org.apache.commons.math.MathException;
+import com.unisinos.modelsimulator.Entity;
+import com.unisinos.modelsimulator.EntitySet;
+import com.unisinos.modelsimulator.Event;
+import com.unisinos.modelsimulator.Resource;
+import com.unisinos.modelsimulator.Scheduler;
 
 public class ChegadaGrupo extends Event {
 
