@@ -40,8 +40,7 @@ public class RestauranteMain {
         Scanner scanner = new Scanner(System.in);
 
         //Simulate all
-//        scheduler.simulate();
-        scheduler.collectLogs();
+        scheduler.simulate();
 
         //SimulateBy
 //        while (scheduler.canExecute()) {
@@ -59,7 +58,11 @@ public class RestauranteMain {
 //            scheduler.collectLogs();
 //        }
 
-        scheduler.simulateStepByStep();
+        //Step by step
+//        scheduler.simulateStepByStep();
+
+        scheduler.collectLogs();
+
 
     }
 
