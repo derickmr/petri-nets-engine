@@ -15,7 +15,7 @@ public class ChegadaNoBalcao extends Event {
         super(name, scheduler);
         this.grupo = grupo;
         this.entitySet = scheduler.getEntitySetByName("filaBalcao");
-        this.resource = scheduler.getResourceByName("bancos");
+        this.resource = scheduler.getResourceByName("balcao");
         this.filaComidaPronta = scheduler.getEntitySetByName("filaComidaPronta");
         this.esperandoNoBalcao = scheduler.getEntitySetByName("esperandoNoBalcao");
     }
@@ -24,7 +24,7 @@ public class ChegadaNoBalcao extends Event {
     public void execute() {
         super.execute();
 
-        if (resource.allocate(1)) {
+        if (resource.allocate(1)) { //tem lugar no balcão
             if (this.filaComidaPronta.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
                 scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição", grupo, scheduler)));
             } else {
@@ -37,7 +37,7 @@ public class ChegadaNoBalcao extends Event {
                 oGrupoComRefeicaoPronta.ifPresent(entity -> scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição", (GrupoCliente) entity, scheduler))));
 
             }
-        } else {
+        } else { //se balcão não disponível, espera na fila
             entitySet.insert(grupo);
         }
     }
