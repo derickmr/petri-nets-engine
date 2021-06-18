@@ -134,12 +134,16 @@ public class EntitySet {
         switch(this.mode) {
             case FIFO:
                 removedEntity = this.entities.remove(0);
+                break;
             case LIFO:
                 removedEntity = this.entities.remove(this.entities.size() - 1);
+                break;
             case PRIORITY:
                 removedEntity = this.entities.remove(this.getIndexEntityMaxPriority());
+                break;
             default:
                 removedEntity = this.entities.remove((int) (Math.random() * this.entities.size()));
+                break;
         }
 
         System.out.println("\nRemovendo entidade com id " + removedEntity.getId() + " e nome " + removedEntity.getName() + " da fila " + name);
