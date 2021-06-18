@@ -5,16 +5,17 @@ import com.unisinos.modelsimulator.EntitySet;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Resource;
 import com.unisinos.modelsimulator.Scheduler;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class TerminoPreparoRefeicao extends Event {
 
-  private Entity grupo;
+  private GrupoCliente grupo;
   private EntitySet esperandoNoBalcao;
   private EntitySet esperandoM2;
   private EntitySet esperandoM4;
   private EntitySet filaCozinha;
 
-  public TerminoPreparoRefeicao(String name, Entity grupo, Resource resource, Scheduler scheduler) {
+  public TerminoPreparoRefeicao(String name, GrupoCliente grupo, Resource resource, Scheduler scheduler) {
     super(name, resource, scheduler);
     this.grupo = grupo;
     this.resource = resource; // cozinheiro
@@ -45,7 +46,7 @@ public class TerminoPreparoRefeicao extends Event {
 
         var nextPedido = filaCozinha.remove();
         if (nextPedido != null) { //agenda próximo preparo
-          scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", nextPedido, scheduler)));
+          scheduler.scheduleNow(scheduler.createEvent(new InicioPreparoRefeicao("Inicio Preparo Refeição", (GrupoCliente) nextPedido, scheduler)));
         }
       } catch (Exception e) {
         e.printStackTrace();

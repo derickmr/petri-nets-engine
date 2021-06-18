@@ -1,6 +1,7 @@
 package com.unisinos.modelsimulator.restaurante.events;
 
 import com.unisinos.modelsimulator.*;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class FinalizarAtendimentoCaixa extends Event {
 
@@ -16,7 +17,7 @@ public class FinalizarAtendimentoCaixa extends Event {
         super.execute();
         resource.release(1);
 
-        var grupo = entitySet.remove();
+        GrupoCliente grupo = (GrupoCliente) entitySet.remove();
 
         if (grupo.getQuantity() == 1) {
             //Se for grupo de 1 cliente, vai para o Balcão; se não houver banco disponível, aguarda na FilaBalc.

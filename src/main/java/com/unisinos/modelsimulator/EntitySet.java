@@ -85,12 +85,17 @@ public class EntitySet {
     }
 
     public void insert(Entity entity) {
-        if (!isFull()) {
+        System.out.println("\nInserindo entidade com id " + entity.getId() + " e nome " + entity.getName() + " na fila " + name);
+        if (isFull()) {
+            System.out.println("\nNão foi possível inserir entidade com id " + entity.getId() + " e nome " + entity.getName() + " na fila " + name + " pois a fila está cheia.");
+        }
+        else {
             entities.add(entity);
             allEntities.add(entity);
             entitiesTimeInSet.put(entity.getId(), currentTime);
             updateEntitiesSizeInTime(entity);
         }
+        scheduler.nextStep();
     }
 
     public void insertFirstPosition(Entity entity) {
@@ -125,16 +130,21 @@ public class EntitySet {
         if (this.entities.size() == 0) {
             return null;
         }
+        Entity removedEntity;
         switch(this.mode) {
             case FIFO:
-                return this.entities.remove(0);
+                removedEntity = this.entities.remove(0);
             case LIFO:
-                return this.entities.remove(this.entities.size() - 1);
+                removedEntity = this.entities.remove(this.entities.size() - 1);
             case PRIORITY:
-                return this.entities.remove(this.getIndexEntityMaxPriority());
+                removedEntity = this.entities.remove(this.getIndexEntityMaxPriority());
             default:
-                return this.entities.remove((int) (Math.random() * this.entities.size()));
+                removedEntity = this.entities.remove((int) (Math.random() * this.entities.size()));
         }
+
+        System.out.println("\nRemovendo entidade com id " + removedEntity.getId() + " e nome " + removedEntity.getName() + " da fila " + name);
+        scheduler.nextStep();
+        return removedEntity;
     }
 
     public int getIndexEntityMaxPriority() {
@@ -149,10 +159,13 @@ public class EntitySet {
                 .stream()
                 .filter(entity -> entity.getId() == id).findFirst();
         if (entityOptional.isEmpty()){
-            System.out.println("Entity with id " + id + " not found for removal.");
+            System.out.println("Entidade com id " + id + " não encontrada para remoção.");
+            scheduler.nextStep();
             return null;
         }
         Entity entity = entityOptional.get();
+        System.out.println("\nRemovendo entidade com id " + entity.getId() + " e nome " + entity.getName() + " da fila " + name);
+        scheduler.nextStep();
         entities.remove(entity);
         return entity;
     }

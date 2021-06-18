@@ -5,6 +5,7 @@ import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Resource;
 import com.unisinos.modelsimulator.Scheduler;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class SaidaDaMesa4Lugares extends Event {
 
@@ -24,7 +25,7 @@ public class SaidaDaMesa4Lugares extends Event {
     super.execute();
     mesa4Lugares.release(1);
     if (!filaMesa4Lugares.isEmpty()) {
-      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa4Lugares("Chegada 4 lugares", filaMesa4Lugares.remove(), scheduler)));
+      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa4Lugares("Chegada 4 lugares", (GrupoCliente) filaMesa4Lugares.remove(), scheduler)));
     }
   }
 }

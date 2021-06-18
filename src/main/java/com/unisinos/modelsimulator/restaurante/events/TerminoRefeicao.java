@@ -4,13 +4,13 @@ import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Resource;
 import com.unisinos.modelsimulator.Scheduler;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 import org.apache.commons.math.MathException;
 
 public class TerminoRefeicao extends Event {
-    private Entity grupo;
+    private GrupoCliente grupo;
 
-
-    public TerminoRefeicao(String name, Entity grupo, Resource resource, Scheduler scheduler) {
+    public TerminoRefeicao(String name, GrupoCliente grupo, Resource resource, Scheduler scheduler) {
         super(name, resource, scheduler);
         this.grupo = grupo;
     }

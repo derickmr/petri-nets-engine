@@ -40,7 +40,7 @@ public class RestauranteMain {
         Scanner scanner = new Scanner(System.in);
 
         //Simulate all
-        scheduler.simulate();
+//        scheduler.simulate();
         scheduler.collectLogs();
 
         //SimulateBy
@@ -58,6 +58,8 @@ public class RestauranteMain {
 //            scheduler.simulateUntil(Double.parseDouble(value));
 //            scheduler.collectLogs();
 //        }
+
+        scheduler.simulateStepByStep();
 
     }
 

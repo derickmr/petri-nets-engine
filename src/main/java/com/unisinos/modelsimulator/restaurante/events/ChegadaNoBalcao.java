@@ -1,14 +1,15 @@
 package com.unisinos.modelsimulator.restaurante.events;
 
 import com.unisinos.modelsimulator.*;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class ChegadaNoBalcao extends Event {
 
-    private Entity grupo;
+    private GrupoCliente grupo;
     private EntitySet filaComidaPronta;
     private EntitySet esperandoNoBalcao;
 
-    public ChegadaNoBalcao(String name, Entity grupo, Scheduler scheduler) {
+    public ChegadaNoBalcao(String name, GrupoCliente grupo, Scheduler scheduler) {
         super(name, scheduler);
         this.grupo = grupo;
         this.entitySet = scheduler.getEntitySetByName("filaBalcao");

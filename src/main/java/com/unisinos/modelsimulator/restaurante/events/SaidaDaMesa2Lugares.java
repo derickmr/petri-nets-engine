@@ -1,6 +1,7 @@
 package com.unisinos.modelsimulator.restaurante.events;
 
 import com.unisinos.modelsimulator.*;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class SaidaDaMesa2Lugares extends Event {
 
@@ -20,7 +21,7 @@ public class SaidaDaMesa2Lugares extends Event {
     super.execute();
     mesa2Lugares.release(1);
     if (!filaMesa2Lugares.isEmpty()) {
-      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa2Lugares("Chegada 2 lugares", filaMesa2Lugares.remove(), scheduler)));
+      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNaMesa2Lugares("Chegada 2 lugares", (GrupoCliente) filaMesa2Lugares.remove(), scheduler)));
     }
   }
 }

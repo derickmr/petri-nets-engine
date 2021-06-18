@@ -5,6 +5,7 @@ import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Resource;
 import com.unisinos.modelsimulator.Scheduler;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class SaidaDoBalcao extends Event {
 
@@ -24,7 +25,7 @@ public class SaidaDoBalcao extends Event {
     super.execute();
     balcao.release(1);
     if (!filaBalcao.isEmpty()) {
-      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNoBalcao("Chegada 1 lugar", filaBalcao.remove(), scheduler)));
+      scheduler.scheduleNow(scheduler.createEvent(new ChegadaNoBalcao("Chegada 1 lugar", (GrupoCliente) filaBalcao.remove(), scheduler)));
     }
   }
 }

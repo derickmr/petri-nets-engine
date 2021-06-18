@@ -1,9 +1,5 @@
 package com.unisinos.modelsimulator;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
@@ -17,9 +13,11 @@ public class Scheduler {
     private double time;
     private double timeLimit;
     private boolean timeLimitMode;
+    private boolean stepByStepExecutionMode;
     private List<Event> events;
     private List<Resource> resources;
     private List<EntitySet> entitySets;
+    private List<Entity> entities;
 
     public Scheduler() {
         time = 0;
@@ -28,6 +26,8 @@ public class Scheduler {
         events = new ArrayList<>();
         resources = new ArrayList<>();
         entitySets = new ArrayList<>();
+        entities = new ArrayList<>();
+        stepByStepExecutionMode = false;
     }
 
     //Variável pra controlar os ids
@@ -59,12 +59,28 @@ public class Scheduler {
 
     public void simulate() {
         while (getNextEvent() != null) {
-            executeEvent(getNextEvent());
+            Event event = getNextEvent();
+            System.out.println("Iniciando execução do evento " + event.getName());
+            nextStep();
+            executeEvent(event);
         }
     }
 
     public void simulateOneStep() {
         executeEvent(getNextEvent());
+    }
+
+    public void simulateStepByStep() {
+        stepByStepExecutionMode = true;
+        simulate();
+    }
+
+    public void nextStep() {
+        if (stepByStepExecutionMode) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Aperte \"ENTER\" para continuar...");
+            scanner.nextLine();
+        }
     }
 
     public void simulateBy(double duration) {
@@ -145,6 +161,9 @@ public class Scheduler {
         resource.setId(currentId++);
         resources.add(resource);
 
+        System.out.println("Criando recurso com nome: " + name + " e id " + resource.getId());
+        nextStep();
+
         return resource;
     }
 
@@ -176,6 +195,8 @@ public class Scheduler {
         EntitySet entitySet = new EntitySet(name, entities, maxPossibleSize, this);
         entitySet.setId(currentId++);
         entitySets.add(entitySet);
+        System.out.println("\nCriando entitySet com nome " + name + ", id " + entitySet.getId() + " e tamanho " + maxPossibleSize);
+        nextStep();
         return entitySet;
     }
 
@@ -279,9 +300,21 @@ public class Scheduler {
         this.entitySets = entitySets;
     }
 
-    public Entity createGrupoCliente(String name) {
-        var grupoCliente = new GrupoCliente(name);
-        grupoCliente.setId(currentId++);
-        return grupoCliente;
+    public Entity createEntity(Entity entity) {
+        entity.setCreationTime(time);
+        entity.setScheduler(this);
+        entity.setId(currentId++);
+        entities.add(entity);
+        System.out.println("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
+        nextStep();
+        return entity;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
+    }
+
+    public void setEntities(List<Entity> entities) {
+        this.entities = entities;
     }
 }

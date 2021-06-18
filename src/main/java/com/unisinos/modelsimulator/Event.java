@@ -30,13 +30,6 @@ public class Event {
         this.executed = true;
     }
 
-    public void createEntity(Entity entity) {
-        entity.setCreationTime(scheduler.getTime());
-        entity.setScheduler(scheduler);
-        entity.setId(scheduler.getCurrentId());
-        scheduler.setCurrentId(scheduler.getCurrentId() + 1);
-    }
-
     public String getName() {
         return name;
     }

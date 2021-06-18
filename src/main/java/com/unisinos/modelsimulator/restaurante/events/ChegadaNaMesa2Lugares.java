@@ -4,14 +4,15 @@ import com.unisinos.modelsimulator.Entity;
 import com.unisinos.modelsimulator.EntitySet;
 import com.unisinos.modelsimulator.Event;
 import com.unisinos.modelsimulator.Scheduler;
+import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
 public class ChegadaNaMesa2Lugares extends Event {
 
-  private Entity grupo;
+  private GrupoCliente grupo;
   private EntitySet filaComidaPronta;
   private EntitySet esperandoM2;
 
-  public ChegadaNaMesa2Lugares(String name, Entity grupo, Scheduler scheduler) {
+  public ChegadaNaMesa2Lugares(String name, GrupoCliente grupo, Scheduler scheduler) {
     super(name, scheduler);
     this.grupo = grupo;
     this.resource = scheduler.getResourceByName("mesa2Lugares");
