@@ -3,6 +3,8 @@ package com.unisinos.modelsimulator.restaurante.events;
 import com.unisinos.modelsimulator.*;
 import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
 
+import java.util.Optional;
+
 public class ChegadaNoBalcao extends Event {
 
     private GrupoCliente grupo;
@@ -20,18 +22,24 @@ public class ChegadaNoBalcao extends Event {
 
     @Override
     public void execute() {
-      super.execute();
+        super.execute();
 
-      if (!resource.allocate(1)) { //'Grupo' não conseguiu lugar. Coloca na fila
-         entitySet.insertFirstPosition(grupo);
-      } else {
-        if (this.filaComidaPronta.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
-          filaComidaPronta.removeById(grupo.getId());
-          scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição",grupo, scheduler)));
+        if (resource.allocate(1)) {
+            if (this.filaComidaPronta.getById(grupo.getId()) != null) { // se refeicao ja ta pronta. Se não, TerminoPreparoRefeicao irá agendar
+                scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição", grupo, scheduler)));
+            } else {
+                esperandoNoBalcao.insert(grupo);
+
+                Optional<Entity> oGrupoComRefeicaoPronta = esperandoNoBalcao.getEntities().stream().filter(
+                        grupoEsperando -> esperandoNoBalcao.getById(grupoEsperando.getId()) != null
+                ).findFirst();
+
+                oGrupoComRefeicaoPronta.ifPresent(entity -> scheduler.scheduleNow(scheduler.createEvent(new InicioRefeicao("Inicio Refeição", (GrupoCliente) entity, scheduler))));
+
+            }
         } else {
-          esperandoNoBalcao.insert(grupo);
+            entitySet.insert(grupo);
         }
-      }
     }
 
 }
