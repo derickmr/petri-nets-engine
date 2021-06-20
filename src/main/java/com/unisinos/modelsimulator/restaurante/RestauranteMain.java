@@ -35,7 +35,7 @@ public class RestauranteMain {
         Event chegadaGrupo = scheduler.createEvent(new ChegadaGrupo("Chegada grupo", scheduler));
         scheduler.scheduleNow(chegadaGrupo);
 
-        scheduler.getEntitySets().forEach(set -> set.startLog(600));
+        scheduler.getEntitySets().forEach(set -> set.startLog(14400));
         Scanner scanner = new Scanner(System.in);
 
         //Simulate all
