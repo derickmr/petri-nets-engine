@@ -32,11 +32,11 @@ public class Resource {
 
     public boolean allocate(int quantity) { // true se conseguiu alocar os recursos
         if (this.quantity < quantity) {
-            System.out.println("Não foi possível alocar " + quantity + " quantidades do recurso " + name + " pois não há a quantidade disponível.");
+            scheduler.logMessage("Não foi possível alocar " + quantity + " quantidades do recurso " + name + " pois não há a quantidade disponível.");
             scheduler.nextStep();
             return false;
         }
-        System.out.println("Alocando " + quantity + " quantidades do recurso " + name);
+        scheduler.logMessage("Alocando " + quantity + " quantidades do recurso " + name);
         scheduler.nextStep();
         this.quantity -= quantity;
         saveAllocationStatistics();
@@ -44,7 +44,7 @@ public class Resource {
     }
 
     public void release(int quantity) {
-        System.out.println("Liberando " + quantity + " quantidades do recurso " + name);
+        scheduler.logMessage("Liberando " + quantity + " quantidades do recurso " + name);
         scheduler.nextStep();
         this.quantity += quantity;
         saveAllocationStatistics();

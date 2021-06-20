@@ -57,9 +57,9 @@ public class EntitySet {
     }
 
     public void insert(Entity entity) {
-        System.out.println("\nInserindo entidade com id " + entity.getId() + " e nome " + entity.getName() + " na fila " + name);
+        scheduler.logMessage("\nInserindo entidade com id " + entity.getId() + " e nome " + entity.getName() + " na fila " + name);
         if (isFull()) {
-            System.out.println("\nNão foi possível inserir entidade com id " + entity.getId() + " e nome " + entity.getName() + " na fila " + name + " pois a fila está cheia.");
+            scheduler.logMessage("\nNão foi possível inserir entidade com id " + entity.getId() + " e nome " + entity.getName() + " na fila " + name + " pois a fila está cheia.");
         }
         else {
             entities.add(entity);
@@ -111,7 +111,7 @@ public class EntitySet {
                 break;
         }
 
-        System.out.println("\nRemovendo entidade com id " + removedEntity.getId() + " e nome " + removedEntity.getName() + " da fila " + name);
+        scheduler.logMessage("\nRemovendo entidade com id " + removedEntity.getId() + " e nome " + removedEntity.getName() + " da fila " + name);
         scheduler.nextStep();
         List<EntitySet> entitySets = removedEntity.getSets();
         entitySets.remove(this);
@@ -131,12 +131,12 @@ public class EntitySet {
                 .stream()
                 .filter(entity -> entity.getId() == id).findFirst();
         if (entityOptional.isEmpty()){
-            System.out.println("Entidade com id " + id + " não encontrada para remoção.");
+            scheduler.logMessage("Entidade com id " + id + " não encontrada para remoção.");
             scheduler.nextStep();
             return null;
         }
         Entity entity = entityOptional.get();
-        System.out.println("\nRemovendo entidade com id " + entity.getId() + " e nome " + entity.getName() + " da fila " + name);
+        scheduler.logMessage("\nRemovendo entidade com id " + entity.getId() + " e nome " + entity.getName() + " da fila " + name);
         scheduler.nextStep();
         entities.remove(entity);
         return entity;

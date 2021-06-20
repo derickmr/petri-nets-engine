@@ -60,7 +60,7 @@ public class Scheduler {
     public void simulate() {
         while (getNextEvent() != null) {
             Event event = getNextEvent();
-            System.out.println("Iniciando execução do evento " + event.getName());
+            logMessage("Iniciando execução do evento " + event.getName());
             nextStep();
             executeEvent(event);
         }
@@ -165,7 +165,7 @@ public class Scheduler {
         resource.setId(currentId++);
         resources.add(resource);
 
-        System.out.println("Criando recurso com nome: " + name + " e id " + resource.getId());
+        logMessage("Criando recurso com nome: " + name + " e id " + resource.getId());
         nextStep();
 
         return resource;
@@ -199,7 +199,7 @@ public class Scheduler {
         EntitySet entitySet = new EntitySet(name, entities, maxPossibleSize, this);
         entitySet.setId(currentId++);
         entitySets.add(entitySet);
-        System.out.println("\nCriando entitySet com nome " + name + ", id " + entitySet.getId() + " e tamanho " + maxPossibleSize);
+        logMessage("\nCriando entitySet com nome " + name + ", id " + entitySet.getId() + " e tamanho " + maxPossibleSize);
         nextStep();
         return entitySet;
     }
@@ -309,7 +309,7 @@ public class Scheduler {
         entity.setScheduler(this);
         entity.setId(currentId++);
         entities.add(entity);
-        System.out.println("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
+        logMessage("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
         nextStep();
         return entity;
     }
@@ -320,5 +320,19 @@ public class Scheduler {
 
     public void setEntities(List<Entity> entities) {
         this.entities = entities;
+    }
+
+    public boolean isStepByStepExecutionMode() {
+        return stepByStepExecutionMode;
+    }
+
+    public void setStepByStepExecutionMode(boolean stepByStepExecutionMode) {
+        this.stepByStepExecutionMode = stepByStepExecutionMode;
+    }
+
+    public void logMessage(String message) {
+        if (stepByStepExecutionMode) {
+            System.out.println(message);
+        }
     }
 }
