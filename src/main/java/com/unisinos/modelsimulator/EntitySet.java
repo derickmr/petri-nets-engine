@@ -20,6 +20,7 @@ public class EntitySet {
     private boolean isLogging;
     private double entitySetCreationTime;
     private Map<Integer, Double> entitiesTimeInSet = new HashMap<>();
+    private Map<Integer, Double> entitiesTimeAddedToSet = new HashMap<>();
     private Map<Double, Integer> entitiesSizeInTime = new HashMap<>();
     private Scheduler scheduler;
 
@@ -30,18 +31,14 @@ public class EntitySet {
         this.mode = NONE;
         this.entities = new ArrayList<>();
         this.scheduler = scheduler;
+        this.entitySetCreationTime = scheduler.getTime();
     }
 
-
     /**
-     * Atualiza o tempo de permanência no set das entities que ainda estão associadas a esse set
+     * Atualiza o tempo de permanência no set da entidade que está sendo removida
      */
-    public void updateEntitiesTimeInSet() {
-        entitiesTimeInSet.entrySet().stream().filter(
-                entry -> getById(entry.getKey()) != null
-        ).forEach(
-                entry -> entitiesTimeInSet.put(entry.getKey(), getSetTotalTime())
-        );
+    public void updateEntitityTimeInSet(Entity entity) {
+        entitiesTimeInSet.put(entity.getId(), entitiesTimeInSet.get(entity.getId()) + (scheduler.getTime() - entitiesTimeAddedToSet.get(entity.getId())));
     }
 
     public EntitySetMode getMode() {
@@ -63,7 +60,8 @@ public class EntitySet {
             entitySets.add(this);
             entity.setSets(entitySets);
             allEntities.add(entity);
-            entitiesTimeInSet.put(entity.getId(), scheduler.getTime());
+            entitiesTimeAddedToSet.put(entity.getId(), scheduler.getTime());
+            entitiesTimeInSet.putIfAbsent(entity.getId(), 0.0);
             updateEntitiesSizeInTime();
         }
         scheduler.checkStepByStepExecution();
@@ -108,6 +106,7 @@ public class EntitySet {
         entitySets.remove(this);
         removedEntity.setSets(entitySets);
         updateEntitiesSizeInTime();
+        updateEntitityTimeInSet(removedEntity);
         return removedEntity;
     }
 
@@ -154,6 +153,17 @@ public class EntitySet {
         return sumEntitiesSizeInSet / entitiesSizeInTime.size();
     }
 
+    public void logTime() {
+        while (shouldLogTime()) {
+            log.put(lastLogTime + timeGap, entities.size());
+            lastLogTime += timeGap;
+        }
+    }
+
+    private boolean shouldLogTime() {
+        return isLogging && lastLogTime + timeGap <= scheduler.getTime();
+    }
+
     public Map<Double, Integer> getLog() {
         return log;
     }
@@ -162,23 +172,17 @@ public class EntitySet {
         return this.entities.size();
     }
 
-    public int getMaxPossibleSize() {
-        return this.maxPossibleSize;
-    }
-
-    public void setMaxPossibleSize(int maxPossibleSize) {
-        this.maxPossibleSize = maxPossibleSize;
-    }
-
     public double getSetTotalTime() {
         return scheduler.getTime() - entitySetCreationTime;
     }
 
+    //Média de tempo que as entidades ficam no set
     public double averageTimeInSet() {
         double sumEntitiesTimeInSet = entitiesTimeInSet.values().stream().mapToDouble(v -> v).sum();
         return sumEntitiesTimeInSet / getSetTotalTime();
     }
 
+    //Máximo de tempo que as entidades ficaram no set
     public double maxTimeInSet() {
         return entitiesTimeInSet.values().stream().mapToDouble(v -> v).max().getAsDouble();
     }
@@ -212,20 +216,6 @@ public class EntitySet {
         this.entities = entities;
     }
 
-    public void setSize(int size) {
-    }
-
-    public void logTime() {
-        while (shouldLogTime()) {
-            log.put(lastLogTime + timeGap, entities.size());
-            lastLogTime += timeGap;
-        }
-    }
-
-    private boolean shouldLogTime() {
-        return isLogging && lastLogTime + timeGap <= scheduler.getTime();
-    }
-
     public Scheduler getScheduler() {
         return scheduler;
     }
@@ -233,4 +223,13 @@ public class EntitySet {
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
     }
+
+    public int getMaxPossibleSize() {
+        return this.maxPossibleSize;
+    }
+
+    public void setMaxPossibleSize(int maxPossibleSize) {
+        this.maxPossibleSize = maxPossibleSize;
+    }
+
 }
