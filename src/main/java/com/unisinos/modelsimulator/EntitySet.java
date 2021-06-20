@@ -70,7 +70,7 @@ public class EntitySet {
             entitiesTimeInSet.put(entity.getId(), currentTime);
             updateEntitiesSizeInTime(entity);
         }
-        scheduler.nextStep();
+        scheduler.checkStepByStepExecution();
     }
 
     public void updateEntitiesSizeInTime(Entity entity) {
@@ -112,7 +112,7 @@ public class EntitySet {
         }
 
         scheduler.logMessage("\nRemovendo entidade com id " + removedEntity.getId() + " e nome " + removedEntity.getName() + " da fila " + name);
-        scheduler.nextStep();
+        scheduler.checkStepByStepExecution();
         List<EntitySet> entitySets = removedEntity.getSets();
         entitySets.remove(this);
         removedEntity.setSets(entitySets);
@@ -132,12 +132,12 @@ public class EntitySet {
                 .filter(entity -> entity.getId() == id).findFirst();
         if (entityOptional.isEmpty()){
             scheduler.logMessage("Entidade com id " + id + " não encontrada para remoção.");
-            scheduler.nextStep();
+            scheduler.checkStepByStepExecution();
             return null;
         }
         Entity entity = entityOptional.get();
         scheduler.logMessage("\nRemovendo entidade com id " + entity.getId() + " e nome " + entity.getName() + " da fila " + name);
-        scheduler.nextStep();
+        scheduler.checkStepByStepExecution();
         entities.remove(entity);
         return entity;
     }

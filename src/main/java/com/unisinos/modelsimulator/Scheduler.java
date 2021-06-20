@@ -2,10 +2,7 @@ package com.unisinos.modelsimulator;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.unisinos.modelsimulator.restaurante.entities.GrupoCliente;
-
 import org.apache.commons.math.MathException;
-import org.apache.commons.math.distribution.ExponentialDistributionImpl;
 import org.apache.commons.math.distribution.NormalDistributionImpl;
 
 public class Scheduler {
@@ -61,7 +58,7 @@ public class Scheduler {
         while (getNextEvent() != null) {
             Event event = getNextEvent();
             logMessage("Iniciando execução do evento " + event.getName());
-            nextStep();
+            checkStepByStepExecution();
             executeEvent(event);
         }
     }
@@ -75,7 +72,7 @@ public class Scheduler {
         simulate();
     }
 
-    public void nextStep() {
+    public void checkStepByStepExecution() {
         if (stepByStepExecutionMode) {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Aperte \"ENTER\" para continuar...");
@@ -166,7 +163,7 @@ public class Scheduler {
         resources.add(resource);
 
         logMessage("Criando recurso com nome: " + name + " e id " + resource.getId());
-        nextStep();
+        checkStepByStepExecution();
 
         return resource;
     }
@@ -200,7 +197,7 @@ public class Scheduler {
         entitySet.setId(currentId++);
         entitySets.add(entitySet);
         logMessage("\nCriando entitySet com nome " + name + ", id " + entitySet.getId() + " e tamanho " + maxPossibleSize);
-        nextStep();
+        checkStepByStepExecution();
         return entitySet;
     }
 
@@ -310,7 +307,7 @@ public class Scheduler {
         entity.setId(currentId++);
         entities.add(entity);
         logMessage("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
-        nextStep();
+        checkStepByStepExecution();
         return entity;
     }
 
