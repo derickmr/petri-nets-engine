@@ -6,9 +6,6 @@ import static com.unisinos.modelsimulator.EntitySetMode.*;
 import java.util.ArrayList;
 import java.util.Optional;
 
-//FIXME adicionei alguns atributos a mais pra controlar as estatisticas do set (currentTime, lastLogTime e etc.). nao sei se sao necessarios mesmo
-//Podem apagar se achar que nao faz sentido
-
 public class EntitySet {
 
     private String name;
@@ -17,7 +14,6 @@ public class EntitySet {
     private List<Entity> allEntities = new ArrayList<>();
     private EntitySetMode mode;
     private int maxPossibleSize;
-    private double currentTime;
     private double lastLogTime;
     private double timeGap;
     private Map<Double, Integer> log = new LinkedHashMap<>();
@@ -67,19 +63,14 @@ public class EntitySet {
             entitySets.add(this);
             entity.setSets(entitySets);
             allEntities.add(entity);
-            entitiesTimeInSet.put(entity.getId(), currentTime);
-            updateEntitiesSizeInTime(entity);
+            entitiesTimeInSet.put(entity.getId(), scheduler.getTime());
+            updateEntitiesSizeInTime();
         }
         scheduler.checkStepByStepExecution();
     }
 
-    public void updateEntitiesSizeInTime(Entity entity) {
-        var currentSizeInTime = this.entitiesSizeInTime.get(this.currentTime);
-        if (currentSizeInTime != null) {
-            this.entitiesSizeInTime.put(this.currentTime, this.entitiesSizeInTime.get(this.currentTime) + 1);
-        } else {
-            this.entitiesSizeInTime.put(this.currentTime, 1);
-        }
+    public void updateEntitiesSizeInTime() {
+        entitiesSizeInTime.put(scheduler.getTime(), getSize());
     }
 
     public Entity getById(int id) {
@@ -116,6 +107,7 @@ public class EntitySet {
         List<EntitySet> entitySets = removedEntity.getSets();
         entitySets.remove(this);
         removedEntity.setSets(entitySets);
+        updateEntitiesSizeInTime();
         return removedEntity;
     }
 
@@ -139,6 +131,7 @@ public class EntitySet {
         scheduler.logMessage("\nRemovendo entidade com id " + entity.getId() + " e nome " + entity.getName() + " da fila " + name);
         scheduler.checkStepByStepExecution();
         entities.remove(entity);
+        updateEntitiesSizeInTime();
         return entity;
     }
 
@@ -157,8 +150,8 @@ public class EntitySet {
     }
 
     public double averageSize() {
-//        TODO talvez criar um Map<Integer, Double> que indique o entities.size() no tempo x? Parecido com entitiesTimeInSet
-        return 0;
+        double sumEntitiesSizeInSet = entitiesSizeInTime.values().stream().mapToInt(v -> v).sum();
+        return sumEntitiesSizeInSet / entitiesSizeInTime.size();
     }
 
     public Map<Double, Integer> getLog() {
@@ -178,7 +171,7 @@ public class EntitySet {
     }
 
     public double getSetTotalTime() {
-        return currentTime - entitySetCreationTime;
+        return scheduler.getTime() - entitySetCreationTime;
     }
 
     public double averageTimeInSet() {

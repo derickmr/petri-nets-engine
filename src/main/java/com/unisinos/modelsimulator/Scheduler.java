@@ -119,6 +119,7 @@ public class Scheduler {
                 set -> {
                     System.out.println("\nSet: " + set.getName());
                     set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
+                    System.out.println("Average size: " + set.averageSize());
                 }
         );
 
