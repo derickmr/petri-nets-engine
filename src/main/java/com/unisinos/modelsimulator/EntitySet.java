@@ -131,6 +131,7 @@ public class EntitySet {
         scheduler.checkStepByStepExecution();
         entities.remove(entity);
         updateEntitiesSizeInTime();
+        updateEntitityTimeInSet(entity);
         return entity;
     }
 
@@ -179,7 +180,7 @@ public class EntitySet {
     //Média de tempo que as entidades ficam no set
     public double averageTimeInSet() {
         double sumEntitiesTimeInSet = entitiesTimeInSet.values().stream().mapToDouble(v -> v).sum();
-        return sumEntitiesTimeInSet / getSetTotalTime();
+        return sumEntitiesTimeInSet / entitiesTimeInSet.size();
     }
 
     //Máximo de tempo que as entidades ficaram no set

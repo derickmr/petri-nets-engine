@@ -120,8 +120,8 @@ public class Scheduler {
                     System.out.println("\nSet: " + set.getName());
                     set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
                     System.out.println("Average size: " + set.averageSize());
-                    System.out.println("Average time in set: " + set.averageTimeInSet());
-                    System.out.println("Max time in set: " + set.maxTimeInSet());
+                    System.out.println("Average time in set: " + set.averageTimeInSet() / 60);
+                    System.out.println("Max time in set: " + set.maxTimeInSet() / 60);
                 }
         );
 
