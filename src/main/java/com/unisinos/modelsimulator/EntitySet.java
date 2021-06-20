@@ -11,7 +11,6 @@ public class EntitySet {
     private String name;
     private int id;
     private List<Entity> entities;
-    private List<Entity> allEntities = new ArrayList<>();
     private EntitySetMode mode;
     private int maxPossibleSize;
     private double lastLogTime;
@@ -59,7 +58,6 @@ public class EntitySet {
             List<EntitySet> entitySets = entity.getSets();
             entitySets.add(this);
             entity.setSets(entitySets);
-            allEntities.add(entity);
             entitiesTimeAddedToSet.put(entity.getId(), scheduler.getTime());
             entitiesTimeInSet.putIfAbsent(entity.getId(), 0.0);
             updateEntitiesSizeInTime();
@@ -223,14 +221,6 @@ public class EntitySet {
 
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
-    }
-
-    public int getMaxPossibleSize() {
-        return this.maxPossibleSize;
-    }
-
-    public void setMaxPossibleSize(int maxPossibleSize) {
-        this.maxPossibleSize = maxPossibleSize;
     }
 
 }
