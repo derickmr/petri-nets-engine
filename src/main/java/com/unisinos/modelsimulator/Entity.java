@@ -1,9 +1,10 @@
 package com.unisinos.modelsimulator;
 
 import com.unisinos.petri.PetriNet;
+
+import java.util.ArrayList;
 import java.util.List;
 
-//ok
 public class Entity {
     private String name;
     private int id; // atribuído pelo Scheduler
@@ -11,17 +12,21 @@ public class Entity {
     private int priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
     private PetriNet petriNet;
     private Scheduler scheduler;
-
-    //TODO verificar como fazer/onde atribuir isso aqui
     private List<EntitySet> sets;
 
-    public Entity(String name) {
+    public Entity(String name, Scheduler scheduler) {
         this.name = name;
+        this.scheduler = scheduler;
+        sets = new ArrayList<>();
+        creationTime = scheduler.getTime();
     }
 
-    public Entity(String name, PetriNet petriNet) {
+    public Entity(String name, Scheduler scheduler, PetriNet petriNet) {
         this.name = name;
         this.petriNet = petriNet;
+        this.scheduler = scheduler;
+        sets = new ArrayList<>();
+        creationTime = scheduler.getTime();
     }
 
     public List<EntitySet> getSets() { // retorna lista de EntitySets nas quais a entidade está inserida

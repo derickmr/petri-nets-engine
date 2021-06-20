@@ -114,6 +114,10 @@ public class Scheduler {
                 Resource::allocationRate
         );
 
+        resources.forEach(
+                Resource::averageAllocation
+        );
+
         entitySets.forEach(
                 set -> {
                     System.out.println("\nSet: " + set.getName());

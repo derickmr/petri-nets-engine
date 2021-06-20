@@ -76,7 +76,9 @@ public class Resource {
     }
 
     public double averageAllocation() { // quantidade média destes recursos que foram alocados (em relação ao tempo total simulado)
-        return allocatedResourcesOverTime.values().stream().mapToInt(integer -> integer).sum() / allocatedResourcesOverTime.size();
+        double result = allocatedResourcesOverTime.values().stream().mapToInt(integer -> integer).sum() / scheduler.getTime();
+        System.out.println("Resource " + name + " average allocation: " +  result);
+        return result;
     }
 
     public Scheduler getScheduler() {

@@ -27,23 +27,6 @@ public class EntitySet {
     private Map<Double, Integer> entitiesSizeInTime = new HashMap<>();
     private Scheduler scheduler;
 
-
-    public EntitySet(String name, EntitySetMode mode, int maxPossibleSize) {
-        this.name = name;
-        this.maxPossibleSize = maxPossibleSize;
-//        TODO implement other types of modes
-        this.mode = NONE;
-        this.entities = new ArrayList<>();
-    }
-
-    public EntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize) {
-        this.name = name;
-        this.maxPossibleSize = maxPossibleSize;
-        this.entities = entities;
-        this.mode = NONE;
-        this.entities = new ArrayList<>();
-    }
-
     public EntitySet(String name, ArrayList<Entity> entities, int maxPossibleSize, Scheduler scheduler) {
         this.name = name;
         this.maxPossibleSize = maxPossibleSize;
@@ -51,17 +34,6 @@ public class EntitySet {
         this.mode = NONE;
         this.entities = new ArrayList<>();
         this.scheduler = scheduler;
-    }
-
-
-    public EntitySet(String name, EntitySetMode mode, int maxPossibleSize, double currentTime) {
-        this.name = name;
-        this.maxPossibleSize = maxPossibleSize;
-//        TODO implement other types of modes
-        this.mode = NONE;
-        this.entities = new ArrayList<>();
-        this.currentTime = currentTime;
-        this.entitySetCreationTime = currentTime;
     }
 
 
@@ -91,21 +63,14 @@ public class EntitySet {
         }
         else {
             entities.add(entity);
+            List<EntitySet> entitySets = entity.getSets();
+            entitySets.add(this);
+            entity.setSets(entitySets);
             allEntities.add(entity);
             entitiesTimeInSet.put(entity.getId(), currentTime);
             updateEntitiesSizeInTime(entity);
         }
         scheduler.nextStep();
-    }
-
-    public void insertFirstPosition(Entity entity) {
-        if (this.mode == FIFO) {
-            this.entities.add(0, entity);
-        } else {
-            this.entities.add(this.entities.size(), entity);
-        }
-        entitiesTimeInSet.put(entity.getId(), currentTime);
-        updateEntitiesSizeInTime(entity);
     }
 
     public void updateEntitiesSizeInTime(Entity entity) {
@@ -148,6 +113,9 @@ public class EntitySet {
 
         System.out.println("\nRemovendo entidade com id " + removedEntity.getId() + " e nome " + removedEntity.getName() + " da fila " + name);
         scheduler.nextStep();
+        List<EntitySet> entitySets = removedEntity.getSets();
+        entitySets.remove(this);
+        removedEntity.setSets(entitySets);
         return removedEntity;
     }
 

@@ -1,6 +1,5 @@
 package com.unisinos.modelsimulator;
 
-//ok
 public class Event {
 
     private String name;
@@ -53,7 +52,6 @@ public class Event {
     public Scheduler getScheduler() {
         return scheduler;
     }
-
 
     public EntitySet getEntitySet() {
         return entitySet;
