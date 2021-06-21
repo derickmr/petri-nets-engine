@@ -19,7 +19,7 @@ public class EntitySet {
     private boolean isLogging;
     private double entitySetCreationTime;
     private Map<Integer, Double> entitiesTimeInSet = new HashMap<>();
-    private Map<Integer, Double> entitiesTimeAddedToSet = new HashMap<>();
+    private Map<Integer, Double> lastUpdateTime = new HashMap<>();
     private Map<Double, Integer> entitiesSizeInTime = new HashMap<>();
     private Scheduler scheduler;
 
@@ -34,10 +34,11 @@ public class EntitySet {
     }
 
     /**
-     * Atualiza o tempo de permanência no set da entidade que está sendo removida
+     * Atualiza o tempo de permanência no set da entidade especificada no parâmetro
      */
     public void updateEntitityTimeInSet(Entity entity) {
-        entitiesTimeInSet.put(entity.getId(), entitiesTimeInSet.get(entity.getId()) + (scheduler.getTime() - entitiesTimeAddedToSet.get(entity.getId())));
+        entitiesTimeInSet.put(entity.getId(), entitiesTimeInSet.get(entity.getId()) + (scheduler.getTime() - lastUpdateTime.get(entity.getId())));
+        lastUpdateTime.put(entity.getId(), scheduler.getTime());
     }
 
     public EntitySetMode getMode() {
@@ -58,7 +59,7 @@ public class EntitySet {
             List<EntitySet> entitySets = entity.getSets();
             entitySets.add(this);
             entity.setSets(entitySets);
-            entitiesTimeAddedToSet.put(entity.getId(), scheduler.getTime());
+            lastUpdateTime.put(entity.getId(), scheduler.getTime());
             entitiesTimeInSet.putIfAbsent(entity.getId(), 0.0);
             updateEntitiesSizeInTime();
         }
@@ -177,6 +178,10 @@ public class EntitySet {
 
     //Média de tempo que as entidades ficam no set
     public double averageTimeInSet() {
+        if (!entities.isEmpty()) {
+            entities.forEach(this::updateEntitityTimeInSet);
+        }
+        
         double sumEntitiesTimeInSet = entitiesTimeInSet.values().stream().mapToDouble(v -> v).sum();
         return sumEntitiesTimeInSet / entitiesTimeInSet.size();
     }
