@@ -15,6 +15,8 @@ public class Scheduler {
     private List<Resource> resources;
     private List<EntitySet> entitySets;
     private List<Entity> entities;
+    private List<Entity> destroyedEntities;
+    private int maxEntities;
 
     public Scheduler() {
         time = 0;
@@ -24,7 +26,9 @@ public class Scheduler {
         resources = new ArrayList<>();
         entitySets = new ArrayList<>();
         entities = new ArrayList<>();
+        destroyedEntities = new ArrayList<>();
         stepByStepExecutionMode = false;
+        maxEntities = 0;
     }
 
     //Variável pra controlar os ids
@@ -125,6 +129,8 @@ public class Scheduler {
                 }
         );
 
+        System.out.println("\nAverage time in model: " + averageTimeInModel()/60);
+
         System.out.println("Tempo atual: " + time);
 
     }
@@ -144,20 +150,19 @@ public class Scheduler {
         Entity entity = getEntity(id);
 
         if (entity != null) {
-            //TODO o que seria o destruir? entity = null? remover de todas as filas?
+            entitySets.forEach(
+                    set -> set.removeById(id)
+            );
+
+            entity.setDestructionTime(time);
+            entities.remove(entity);
+            destroyedEntities.add(entity);
         }
 
     }
 
     public Entity getEntity(int id) {
-        for (Event event : getEvents()) {
-            for (Entity entity : event.getEntitySet().getEntities()) {
-                if (entity.getId() == id){
-                    return entity;
-                }
-            }
-        }
-        return null;
+        return entities.stream().filter(entity -> entity.getId() == id).findFirst().orElse(null);
     }
 
     public Resource createResource(String name, int quantity) {
@@ -238,22 +243,39 @@ public class Scheduler {
     // coleta de estatística
 
     public int getEntityTotalQuantity() {
-        //TODO
-        return 0;
+        return entities.size() + destroyedEntities.size();
     }
 
+    /**
+     * retorna quantidade de entidades criadas cujo nome corresponde ao parâmetro, até o momento
+     * @param name
+     * @return
+     */
     public int getEntityTotalQuantity(String name) {
-        return 0;
+        return (int) entities.stream().filter(
+                entity -> entity.getName().equals(name)
+        ).count();
     }
 
+    /**
+     * retorna o tempo médio que as entidades permanecem no modelo, desde sua criação até sua destruição
+     * @return
+     */
     public double averageTimeInModel() {
-        //TODO
-        return 0;
+        double result = 0.0;
+
+        if (!entities.isEmpty()) {
+            result += entities.stream().mapToDouble(entity -> time - entity.getCreationTime()).sum() / entities.size();
+        }
+        if (!destroyedEntities.isEmpty()) {
+            result += destroyedEntities.stream().mapToDouble(entity -> entity.getDestructionTime() - entity.getCreationTime()).sum() / destroyedEntities.size();
+        }
+
+        return result;
     }
 
     public int maxEntitiesPresent() {
-        //implement
-        return 0;
+        return maxEntities;
     }
 
     public void setTime(double time) {
@@ -309,6 +331,9 @@ public class Scheduler {
         entity.setScheduler(this);
         entity.setId(currentId++);
         entities.add(entity);
+        if (entities.size() > maxEntities) {
+            maxEntities = entities.size();
+        }
         logMessage("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
         checkStepByStepExecution();
         return entity;

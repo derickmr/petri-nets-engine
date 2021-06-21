@@ -9,6 +9,7 @@ public class Entity {
     private String name;
     private int id; // atribuído pelo Scheduler
     private double creationTime; // atribuído pelo Scheduler
+    private double destructionTime; //atribuído pelo Scheduler
     private int priority; // sem prioridade: -1 (0: + alta e 255: + baixa)
     private PetriNet petriNet;
     private Scheduler scheduler;
@@ -85,4 +86,11 @@ public class Entity {
         this.sets = sets;
     }
 
+    public double getDestructionTime() {
+        return destructionTime;
+    }
+
+    public void setDestructionTime(double destructionTime) {
+        this.destructionTime = destructionTime;
+    }
 }
