@@ -56,6 +56,22 @@ public class Scheduler {
         this.time += time;
     }
 
+    //Próximo evento a ser executado
+    public Event getNextEvent() {
+        for (Event event : getEvents()) {
+            if (event.getEventTime() >= time) {
+                return event;
+            }
+        }
+        return null;
+    }
+
+    //Eventos sempre ordenados pelo tempo a ser executado
+    public List<Event> getEvents() {
+        events.sort(Comparator.comparingDouble(Event::getEventTime));
+        return events.stream().filter(e -> !e.executed).collect(Collectors.toList());
+    }
+
     // controlando tempo de execução
 
     public void simulate() {
@@ -109,32 +125,6 @@ public class Scheduler {
         }
     }
 
-    public void collectLogs() {
-
-        resources.forEach(
-                Resource::allocationRate
-        );
-
-        resources.forEach(
-                Resource::averageAllocation
-        );
-
-        entitySets.forEach(
-                set -> {
-                    System.out.println("\nSet: " + set.getName());
-                    set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
-                    System.out.println("Average size: " + set.averageSize());
-                    System.out.println("Average time in set: " + set.averageTimeInSet() / 60);
-                    System.out.println("Max time in set: " + set.maxTimeInSet() / 60);
-                }
-        );
-
-        System.out.println("\nAverage time in model: " + averageTimeInModel()/60);
-
-        System.out.println("Tempo atual: " + time);
-
-    }
-
     public void simulateUntil(double absoluteTime) {
         timeLimit = absoluteTime;
         timeLimitMode = true;
@@ -143,8 +133,24 @@ public class Scheduler {
         }
     }
 
+    public void setTime(double time) {
+        this.time = time;
+    }
+
     // criação destruição e acesso para componentes
 
+    public Entity createEntity(Entity entity) {
+        entity.setCreationTime(time);
+        entity.setScheduler(this);
+        entity.setId(currentId++);
+        entities.add(entity);
+        if (entities.size() > maxEntities) {
+            maxEntities = entities.size();
+        }
+        logMessage("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
+        checkStepByStepExecution();
+        return entity;
+    }
 
     public void destroyEntity(int id) {
         Entity entity = getEntity(id);
@@ -242,6 +248,39 @@ public class Scheduler {
 
     // coleta de estatística
 
+    public void logMessage(String message) {
+        if (stepByStepExecutionMode) {
+            System.out.println(message);
+        }
+    }
+
+    public void collectLogs() {
+
+        resources.forEach(
+                Resource::allocationRate
+        );
+
+        resources.forEach(
+                Resource::averageAllocation
+        );
+
+        entitySets.forEach(
+                set -> {
+                    System.out.println("\nSet: " + set.getName());
+                    set.getLog().forEach((key, value) -> System.out.println("Time (in minutes): " + key/60 + "; Quantity: " + value));
+                    System.out.println("Average size: " + set.averageSize());
+                    System.out.println("Average time in set: " + set.averageTimeInSet() / 60);
+                    System.out.println("Max time in set: " + set.maxTimeInSet() / 60);
+                }
+        );
+
+        System.out.println("\nAverage time in model: " + averageTimeInModel()/60);
+
+        System.out.println("Tempo atual: " + time);
+
+    }
+
+    //Quantidade total de entidades que passaram pelo modelo
     public int getEntityTotalQuantity() {
         return entities.size() + destroyedEntities.size();
     }
@@ -274,28 +313,9 @@ public class Scheduler {
         return result;
     }
 
+    //Quantidade máxima de entidades ativas no modelo desde o inicio
     public int maxEntitiesPresent() {
         return maxEntities;
-    }
-
-    public void setTime(double time) {
-        this.time = time;
-    }
-
-    //Próximo evento a ser executado
-    public Event getNextEvent() {
-        for (Event event : getEvents()) {
-            if (event.getEventTime() >= time) {
-                return event;
-            }
-        }
-        return null;
-    }
-
-    //Eventos sempre ordenados pelo tempo a ser executado
-    public List<Event> getEvents() {
-        events.sort(Comparator.comparingDouble(Event::getEventTime));
-        return events.stream().filter(e -> !e.executed).collect(Collectors.toList());
     }
 
     public void setEvents(List<Event> events) {
@@ -326,19 +346,6 @@ public class Scheduler {
         this.entitySets = entitySets;
     }
 
-    public Entity createEntity(Entity entity) {
-        entity.setCreationTime(time);
-        entity.setScheduler(this);
-        entity.setId(currentId++);
-        entities.add(entity);
-        if (entities.size() > maxEntities) {
-            maxEntities = entities.size();
-        }
-        logMessage("\nCriando entidade com nome: " + entity.getName() + " e id " + entity.getId());
-        checkStepByStepExecution();
-        return entity;
-    }
-
     public List<Entity> getEntities() {
         return entities;
     }
@@ -355,9 +362,4 @@ public class Scheduler {
         this.stepByStepExecutionMode = stepByStepExecutionMode;
     }
 
-    public void logMessage(String message) {
-        if (stepByStepExecutionMode) {
-            System.out.println(message);
-        }
-    }
 }
