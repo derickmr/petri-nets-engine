@@ -33,14 +33,6 @@ public class EntitySet {
         this.entitySetCreationTime = scheduler.getTime();
     }
 
-    /**
-     * Atualiza o tempo de permanência no set da entidade especificada no parâmetro
-     */
-    public void updateEntitityTimeInSet(Entity entity) {
-        entitiesTimeInSet.put(entity.getId(), entitiesTimeInSet.get(entity.getId()) + (scheduler.getTime() - lastUpdateTime.get(entity.getId())));
-        lastUpdateTime.put(entity.getId(), scheduler.getTime());
-    }
-
     public EntitySetMode getMode() {
         return mode;
     }
@@ -64,19 +56,6 @@ public class EntitySet {
             updateEntitiesSizeInTime();
         }
         scheduler.checkStepByStepExecution();
-    }
-
-    public void updateEntitiesSizeInTime() {
-        entitiesSizeInTime.put(scheduler.getTime(), getSize());
-    }
-
-    public Entity getById(int id) {
-        Optional<Entity> entityOptional = entities.stream().filter(entity -> entity.getId() == id).findFirst();
-        if (entityOptional.isPresent()) {
-            Entity entity = entityOptional.get();
-            return entity;
-        }
-        return null;
     }
 
     public Entity remove() {
@@ -134,25 +113,41 @@ public class EntitySet {
         return entity;
     }
 
-    public boolean isEmpty() {
-        return entities.isEmpty();
+    public Entity getById(int id) {
+        Optional<Entity> entityOptional = entities.stream().filter(entity -> entity.getId() == id).findFirst();
+        if (entityOptional.isPresent()) {
+            Entity entity = entityOptional.get();
+            return entity;
+        }
+        return null;
     }
 
-    public boolean isFull() {
-        return entities.size() >= maxPossibleSize;
+    /**
+     * Atualiza o tempo de permanência no set da entidade especificada no parâmetro
+     */
+    public void updateEntitityTimeInSet(Entity entity) {
+        entitiesTimeInSet.put(entity.getId(), entitiesTimeInSet.get(entity.getId()) + (scheduler.getTime() - lastUpdateTime.get(entity.getId())));
+        lastUpdateTime.put(entity.getId(), scheduler.getTime());
     }
 
-    public Entity findEntity(int id) {
-        return this.entities.stream()
-                .filter(entity -> entity.getId() == id)
-                .findFirst().orElse(null);
+    /**
+     * Atualiza o tamanho do set no tempo atual
+     */
+    public void updateEntitiesSizeInTime() {
+        entitiesSizeInTime.put(scheduler.getTime(), getSize());
     }
 
+
+    //Tamanho médio do set ao decorrer do tempo
     public double averageSize() {
         double sumEntitiesSizeInSet = entitiesSizeInTime.values().stream().mapToInt(v -> v).sum();
-        return sumEntitiesSizeInSet / entitiesSizeInTime.size();
+        if (entitiesTimeInSet.size() > 0) {
+            return sumEntitiesSizeInSet / entitiesSizeInTime.size();
+        }
+        return sumEntitiesSizeInSet;
     }
 
+    //Faz o log da quantidade de entidades de x em x unidades de tempo
     public void logTime() {
         while (shouldLogTime()) {
             log.put(lastLogTime + timeGap, entities.size());
@@ -160,18 +155,12 @@ public class EntitySet {
         }
     }
 
-    private boolean shouldLogTime() {
-        return isLogging && lastLogTime + timeGap <= scheduler.getTime();
-    }
-
-    public Map<Double, Integer> getLog() {
-        return log;
-    }
-
+    //Quantidade de entidades atualmente no set
     public int getSize() {
         return this.entities.size();
     }
 
+    //Tempo total do set desde sua criação
     public double getSetTotalTime() {
         return scheduler.getTime() - entitySetCreationTime;
     }
@@ -183,17 +172,38 @@ public class EntitySet {
         }
         
         double sumEntitiesTimeInSet = entitiesTimeInSet.values().stream().mapToDouble(v -> v).sum();
-        return sumEntitiesTimeInSet / entitiesTimeInSet.size();
+
+        if (entitiesTimeInSet.size() > 0) {
+            return sumEntitiesTimeInSet / entitiesTimeInSet.size();
+        }
+        return sumEntitiesTimeInSet;
     }
 
     //Máximo de tempo que as entidades ficaram no set
     public double maxTimeInSet() {
-        return entitiesTimeInSet.values().stream().mapToDouble(v -> v).max().getAsDouble();
+        OptionalDouble oResult = entitiesTimeInSet.values().stream().mapToDouble(v -> v).max();
+        return oResult.orElse(0.0);
     }
 
     public void startLog(double timeGap) {
         isLogging = true;
         this.timeGap = timeGap;
+    }
+
+    public boolean isEmpty() {
+        return entities.isEmpty();
+    }
+
+    public boolean isFull() {
+        return entities.size() >= maxPossibleSize;
+    }
+
+    private boolean shouldLogTime() {
+        return isLogging && lastLogTime + timeGap <= scheduler.getTime();
+    }
+
+    public Map<Double, Integer> getLog() {
+        return log;
     }
 
     public void stopLog() {
